@@ -15,7 +15,7 @@
 <body>
 <div class="app">
   <aside class="sidebar">
-    <div class="brand"><div class="brand-mark">🚌</div><div><strong>FleetPilot</strong><small>BUS MANAGEMENT</small></div></div>
+    <div class="brand"><div class="brand-mark">🚌</div><div><strong>DevuSons</strong><small>BUS MANAGEMENT</small></div></div>
     <nav class="nav" id="sideNav">
       <button class="active" data-page="dashboard"><span class="ico">▦</span>Dashboard</button>
       <button data-page="buses"><span class="ico">🚌</span>Buses</button>
@@ -27,10 +27,10 @@
     <div class="sidebar-foot">Fleet overview<br><strong style="color:#fff">7 buses configured</strong><br>Data is saved in this browser.</div>
   </aside>
   <main class="main">
-    <header class="topbar"><div><div class="crumb">FleetPilot / <span id="crumbName">Dashboard</span></div><h1 id="pageTitle">Dashboard</h1></div><div class="top-right"><div class="today-pill" id="todayPill"></div><div class="avatar">A</div></div></header>
+    <header class="topbar"><div><div class="crumb">DevuSons / <span id="crumbName">Dashboard</span></div><h1 id="pageTitle">Dashboard</h1></div><div class="top-right"><div class="today-pill" id="todayPill"></div><div class="avatar">A</div></div></header>
     <div class="content">
       <section class="page active" id="page-dashboard">
-        <div class="welcome"><div><h2>Good day 👋</h2><p>Here's what's happening across your fleet today.</p></div><button class="btn btn-primary" onclick="openEntry()">＋ Add daily entry</button></div>
+        <div class="welcome"><div><h2>DevuSons 👋</h2><p>Here's what's happening across your fleet today.</p></div><button class="btn btn-primary" onclick="openEntry()">＋ Add daily entry</button></div>
         <div class="stats" id="dashboardStats"></div>
         <div class="section-head"><div><h3>Your fleet <span class="muted" id="busCountLabel"></span></h3><p>Daily performance at a glance</p></div><button class="btn btn-light" onclick="navigate('buses')">Manage buses ↗</button></div>
         <div class="bus-grid" id="dashboardBuses"></div>
@@ -74,7 +74,7 @@
 <div class="modal-backdrop" id="modalBackdrop" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="modal-head"><h3 id="modalTitle">Add daily entry</h3><button class="close" onclick="closeModal()">×</button></div><div class="modal-body" id="modalBody"></div></div></div>
 <div class="toast" id="toast"></div>
 <script>
-const STORE='fleetpilot_v1';
+const STORE='DevuSons_v1';
 const today=new Date(); const iso=d=>{const x=new Date(d);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`};
 const money=n=>'₹'+Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:2});
 const num=n=>Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:1});
@@ -114,11 +114,11 @@ function renderDrivers(){let q=(document.getElementById('driverSearch')?.value||
 function monthEntries(){let m=document.getElementById('reportMonth')?.value||iso(today).slice(0,7);return state.entries.filter(e=>e.date.startsWith(m))}
 function renderReports(){let es=monthEntries(),t=statsFor(es);document.getElementById('reportSummary').innerHTML=[['Total distance',num(t.km)+' km'],['Diesel consumed',num(t.liters)+' L'],['Diesel expenditure',money(t.cost)]].map(x=>`<div class="stat"><div class="stat-head">${x[0]}</div><div class="stat-value">${x[1]}</div><div class="stat-foot">Selected month</div></div>`).join('');let per=state.buses.map(b=>({b,es:es.filter(e=>e.busId===b.id)}));drawBars('distanceChart',per.map(x=>({label:x.b.reg.replace('BUS ','B'),value:statsFor(x.es).km})),false);drawBars('dieselChart',per.map(x=>({label:x.b.reg.replace('BUS ','B'),value:statsFor(x.es).liters})),true);document.getElementById('reportRows').innerHTML=per.map(x=>{let s=statsFor(x.es),drivers=[...new Set(x.es.map(e=>e.driver))].join(', ')||x.b.driver||'—';return `<tr><td><strong>${esc(x.b.reg)}</strong></td><td>${esc(drivers)}</td><td>${s.trips}</td><td>${num(s.km)} km</td><td>${num(s.liters)} L</td><td>${s.mpg?num(s.mpg)+' km/L':'—'}</td><td>${money(s.cost)}</td></tr>`}).join('')}
 function drawBars(id,data,blue){let el=document.getElementById(id),max=Math.max(1,...data.map(x=>x.value));el.innerHTML=data.map(x=>`<div class="bar-col"><div class="bar-value">${num(x.value)}</div><div class="bar ${blue?'blue':''}" style="height:${Math.max(x.value?3:1,x.value/max*125)}px" title="${x.value}"></div><div class="bar-label">${esc(x.label)}</div></div>`).join('')}
-function exportCSV(){let rows=[['Date','Bus','Driver','Route','Start km','End km','Distance km','Diesel liters','Price per liter','Diesel cost','Notes'],...state.entries.map(e=>[e.date,bus(e.busId).reg,e.driver,e.route,e.start,e.end,e.km,e.liters,e.price,e.cost,e.notes])];let csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');let blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='fleetpilot-records-'+iso(today)+'.csv';a.click();URL.revokeObjectURL(url);toast('CSV export downloaded')}
+function exportCSV(){let rows=[['Date','Bus','Driver','Route','Start km','End km','Distance km','Diesel liters','Price per liter','Diesel cost','Notes'],...state.entries.map(e=>[e.date,bus(e.busId).reg,e.driver,e.route,e.start,e.end,e.km,e.liters,e.price,e.cost,e.notes])];let csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');let blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='DevuSons-records-'+iso(today)+'.csv';a.click();URL.revokeObjectURL(url);toast('CSV export downloaded')}
 function loadSettings(){document.getElementById('fleetName').value=state.settings.fleetName||'My Bus Fleet';document.getElementById('defaultPrice').value=state.settings.defaultPrice??95}
-function saveSettings(){state.settings.fleetName=document.getElementById('fleetName').value.trim()||'My Bus Fleet';state.settings.defaultPrice=+document.getElementById('defaultPrice').value||0;save();toast('Settings saved');document.title=(state.settings.fleetName||'FleetPilot')+' — Fleet Manager'}
+function saveSettings(){state.settings.fleetName=document.getElementById('fleetName').value.trim()||'My Bus Fleet';state.settings.defaultPrice=+document.getElementById('defaultPrice').value||0;save();toast('Settings saved');document.title=(state.settings.fleetName||'DevuSons')+' — Fleet Manager'}
 function resetDemo(){if(!confirm('Reset all buses, drivers, and daily records to the original demo data? All locally saved changes will be lost.'))return;state=defaultState();save();renderAll();toast('Demo data reset')}
-function renderAll(){renderDashboard();renderBusesPage();renderEntries();renderReports();renderDrivers();loadSettings();document.title=(state.settings.fleetName||'FleetPilot')+' — Fleet Manager'}
+function renderAll(){renderDashboard();renderBusesPage();renderEntries();renderReports();renderDrivers();loadSettings();document.title=(state.settings.fleetName||'DevuSons')+' — Fleet Manager'}
 document.getElementById('reportMonth').value=iso(today).slice(0,7);
 renderAll();
 </script>
