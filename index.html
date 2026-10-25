@@ -3,123 +3,1748 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="theme-color" content="#102a43" />
-<title>DevuSons — Bus Fleet Manager</title>
+<meta name="theme-color" content="#0b1728" />
+<title>Devusons — Bus Fleet Management System</title>
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- FontAwesome 6 Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 <style>
-:root{--navy:#102a43;--navy2:#183b56;--green:#159a72;--green-soft:#e7f7f0;--bg:#f4f7fb;--card:#fff;--text:#152536;--muted:#718096;--line:#e5ebf2;--orange:#ed9b40;--red:#d9485f;--shadow:0 8px 24px rgba(16,42,67,.06)}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}button,input,select,textarea{font:inherit}button{cursor:pointer}.app{display:flex;min-height:100vh}.sidebar{width:244px;background:var(--navy);color:#fff;padding:26px 16px;display:flex;flex-direction:column;gap:24px;flex-shrink:0}.brand{display:flex;align-items:center;gap:11px;padding:0 8px}.brand-mark{width:40px;height:40px;border-radius:13px;background:var(--green);display:grid;place-items:center;font-size:22px}.brand strong{display:block;font-size:17px;letter-spacing:.2px}.brand small{color:#b9c9d6;font-size:11px}.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;color:#c7d4df;text-align:left;padding:13px 14px;border-radius:12px;display:flex;align-items:center;gap:12px;font-weight:600}.nav button.active,.nav button:hover{background:#24465f;color:#fff}.nav .ico{width:21px;text-align:center;font-size:17px}.sidebar-foot{margin-top:auto;border-top:1px solid #2e4c62;padding:18px 8px 0;color:#b9c9d6;font-size:12px;line-height:1.6}.main{flex:1;min-width:0}.topbar{height:78px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 34px;gap:15px}.crumb{font-size:13px;color:var(--muted)}.topbar h1{font-size:21px;margin:3px 0 0}.top-right{display:flex;align-items:center;gap:12px}.today-pill{border:1px solid var(--line);padding:9px 12px;border-radius:11px;color:#53677b;font-size:12px;background:#fff}.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#e2f4ed;color:#117451;font-weight:800}.content{padding:28px 34px 100px;max-width:1500px;margin:auto}.welcome{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:23px}.welcome h2{font-size:25px;margin:0 0 7px;letter-spacing:-.5px}.welcome p{margin:0;color:var(--muted);font-size:14px}.btn{border:0;border-radius:11px;padding:12px 16px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.15s}.btn-primary{background:var(--green);color:#fff;box-shadow:0 5px 12px #159a7224}.btn-primary:hover{background:#118661}.btn-light{background:#fff;border:1px solid var(--line);color:#40566b}.btn-danger{background:#fff0f1;color:var(--red);border:1px solid #ffd5da}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:26px}.stat{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:19px;box-shadow:var(--shadow)}.stat-head{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;font-weight:650}.stat-icon{width:36px;height:36px;border-radius:11px;background:#e9f7f2;display:grid;place-items:center;font-size:18px}.stat:nth-child(2) .stat-icon{background:#edf3ff}.stat:nth-child(3) .stat-icon{background:#fff3e5}.stat:nth-child(4) .stat-icon{background:#f1edff}.stat-value{font-size:28px;font-weight:800;letter-spacing:-.8px;margin:12px 0 5px}.stat-foot{font-size:11px;color:var(--muted)}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:26px 0 14px}.section-head h3{margin:0;font-size:17px}.section-head p{margin:5px 0 0;color:var(--muted);font-size:12px}.bus-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.bus-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px;box-shadow:var(--shadow);min-width:0}.bus-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.bus-id{display:flex;gap:11px;align-items:center;min-width:0}.bus-symbol{width:43px;height:43px;border-radius:13px;background:#edf4fa;display:grid;place-items:center;font-size:22px;flex-shrink:0}.bus-id h4{margin:0 0 4px;font-size:14px}.bus-id p{margin:0;color:var(--muted);font-size:11px}.status{border-radius:100px;padding:5px 8px;font-size:10px;font-weight:750;white-space:nowrap}.status.active{background:var(--green-soft);color:#14805e}.status.maintenance{background:#fff0e0;color:#a35b11}.status.inactive{background:#edf0f4;color:#66788a}.bus-driver{font-size:12px;color:#586d80;margin:15px 0 12px;display:flex;align-items:center;gap:7px}.bus-metrics{display:grid;grid-template-columns:1fr 1fr;gap:9px}.metric{padding:10px;background:#f7f9fc;border-radius:10px}.metric span{display:block;color:var(--muted);font-size:10px;margin-bottom:5px}.metric strong{font-size:16px}.bus-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:13px;padding-top:12px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}.text-btn{border:0;background:transparent;color:var(--green);font-weight:750;padding:5px}.panel{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:16px;border-bottom:1px solid var(--line)}.input,.select,.textarea{width:100%;border:1px solid #dce5ed;border-radius:10px;padding:11px 12px;background:#fff;color:var(--text);outline:none}.input:focus,.select:focus,.textarea:focus{border-color:#159a72;box-shadow:0 0 0 3px #159a7218}.toolbar .input{max-width:260px}.toolbar .select{width:auto;min-width:145px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:740px}th,td{text-align:left;padding:14px 16px;border-bottom:1px solid #edf1f5;font-size:12px;white-space:nowrap}th{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#7a8b9b;background:#fbfcfe}td{color:#41566a}td strong{color:#1d3348}.empty{text-align:center;padding:40px;color:var(--muted)}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.field label{display:block;font-size:12px;font-weight:700;margin:0 0 7px;color:#40566b}.field small{display:block;color:var(--muted);font-size:10px;margin-top:5px}.field.full{grid-column:1/-1}.form-card{padding:22px}.form-actions{display:flex;gap:10px;justify-content:flex-end;padding-top:20px;margin-top:20px;border-top:1px solid var(--line)}.notice{padding:12px 14px;border-radius:11px;background:#edf8f4;color:#176f54;font-size:12px;line-height:1.5;margin-bottom:17px}.charts-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}.chart-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}.chart-card h3{margin:0;font-size:15px}.chart-card p{margin:6px 0 15px;font-size:11px;color:var(--muted)}.bar-chart{height:190px;display:flex;align-items:flex-end;gap:13px;padding:12px 5px 0;border-bottom:1px solid var(--line)}.bar-col{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:8px;min-width:0}.bar{width:min(34px,75%);border-radius:7px 7px 2px 2px;background:linear-gradient(180deg,#38c99a,#159a72);min-height:3px;position:relative}.bar.blue{background:linear-gradient(180deg,#8db6ff,#4f7fe7)}.bar-label{font-size:10px;color:var(--muted)}.bar-value{font-size:10px;color:#40566b;font-weight:700}.legend{display:flex;gap:15px;font-size:10px;color:var(--muted);margin-top:14px}.legend i{display:inline-block;width:8px;height:8px;border-radius:3px;margin-right:5px;background:var(--green)}.legend .blue-dot{background:#4f7fe7}.report-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}.report-summary .stat{padding:15px}.report-summary .stat-value{font-size:22px}.mobile-nav{display:none}.page{display:none}.page.active{display:block}.toast{position:fixed;right:20px;bottom:24px;background:#173b53;color:#fff;padding:13px 17px;border-radius:12px;box-shadow:0 10px 30px #102a4333;font-size:13px;z-index:50;opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:translateY(0)}.modal-backdrop{position:fixed;inset:0;background:#0c203c70;display:none;align-items:center;justify-content:center;padding:18px;z-index:40}.modal-backdrop.open{display:flex}.modal{background:#fff;width:min(620px,100%);border-radius:18px;max-height:90vh;overflow:auto;box-shadow:0 20px 70px #102a4340}.modal-head{padding:20px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}.modal-head h3{margin:0;font-size:17px}.close{border:0;background:#f1f4f8;border-radius:9px;width:32px;height:32px;font-size:18px}.modal-body{padding:22px}.muted{color:var(--muted)}.hidden{display:none!important}
-@media(max-width:1100px){.bus-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.content{padding:24px}.topbar{padding:0 24px}.sidebar{width:220px}.charts-grid{grid-template-columns:1fr}}
-@media(max-width:700px){.app{display:block}.sidebar{display:none}.topbar{height:68px;padding:0 17px}.topbar h1{font-size:18px}.crumb,.today-pill{display:none}.content{padding:22px 15px 100px}.welcome{align-items:flex-start;flex-direction:column}.welcome h2{font-size:23px}.welcome .btn{width:100%}.stats{gap:10px}.stat{padding:14px;border-radius:14px}.stat-value{font-size:23px}.stat-head{font-size:11px;gap:5px}.stat-icon{width:30px;height:30px}.bus-grid{grid-template-columns:1fr;gap:11px}.bus-card{padding:15px}.section-head{margin-top:23px}.section-head h3{font-size:16px}.toolbar{padding:12px}.toolbar .input,.toolbar .select{max-width:none;width:100%}.form-card{padding:16px}.form-grid{grid-template-columns:1fr;gap:13px}.field.full{grid-column:auto}.form-actions .btn{flex:1}.report-summary{grid-template-columns:1fr}.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:30;background:#fff;border-top:1px solid var(--line);justify-content:space-around;padding:8px 5px calc(8px + env(safe-area-inset-bottom));box-shadow:0 -5px 18px #102a4308}.mobile-nav button{border:0;background:transparent;color:#8191a0;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:4px 8px}.mobile-nav button .ico{font-size:19px}.mobile-nav button.active{color:var(--green)}.mobile-nav button.add{color:#fff;background:var(--green);border-radius:13px;padding:7px 13px;margin-top:-18px;box-shadow:0 5px 14px #159a7240}.mobile-nav button.add .ico{font-size:22px}.top-right{gap:7px}.avatar{width:34px;height:34px}.charts-grid{gap:12px}.chart-card{padding:16px}.bar-chart{gap:7px}.bar-label{font-size:9px}.form-actions{position:sticky;bottom:0;background:#fff;padding-bottom:2px}.table-wrap{margin:0}.modal-backdrop{align-items:flex-end;padding:0}.modal{border-radius:20px 20px 0 0;max-height:92vh}.modal-body{padding:17px}}
+:root{
+  --primary:#2563eb;
+  --primary-hover:#1d4ed8;
+  --primary-subtle:#eff6ff;
+  --primary-border:#bfdbfe;
+  --primary-gradient:linear-gradient(135deg, #2563eb, #1d4ed8);
+  
+  --sidebar-bg:#0a1526;
+  --sidebar-card:#112038;
+  --sidebar-hover:#172a4a;
+  --sidebar-border:#1b3052;
+  --sidebar-text:#94a3b8;
+  --sidebar-text-active:#ffffff;
+  
+  --bg-app:#f3f6fa;
+  --card-bg:#ffffff;
+  --card-border:#e2e8f0;
+  --card-shadow:0 8px 24px rgba(15,23,42,.06);
+  --card-shadow-hover:0 14px 32px rgba(15,23,42,.1);
+  
+  --text-main:#0f172a;
+  --text-muted:#64748b;
+  --text-light:#94a3b8;
+  --line:#e2e8f0;
+  
+  --emerald:#059669;
+  --emerald-subtle:#ecfdf5;
+  --emerald-border:#a7f3d0;
+  
+  --amber:#d97706;
+  --amber-subtle:#fffbeb;
+  --amber-border:#fde68a;
+  
+  --cyan:#0284c7;
+  --cyan-subtle:#f0f9ff;
+  --cyan-border:#bae6fd;
+  
+  --red:#dc2626;
+  --red-subtle:#fef2f2;
+  --red-border:#fecaca;
+  
+  --indigo:#4f46e5;
+  --indigo-subtle:#eef2ff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Plus Jakarta Sans','Inter',ui-sans-serif,system-ui,-apple-system,sans-serif;
+  background:var(--bg-app);
+  color:var(--text-main);
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+
+/* Sidebar */
+.sidebar{
+  width:260px;
+  background:var(--sidebar-bg);
+  color:#fff;
+  padding:24px 16px;
+  display:flex;
+  flex-direction:column;
+  gap:22px;
+  flex-shrink:0;
+  border-right:1px solid var(--sidebar-border);
+}
+.brand{display:flex;align-items:center;gap:12px;padding:0 8px}
+.brand-mark{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  background:var(--primary-gradient);
+  display:grid;
+  place-items:center;
+  font-size:20px;
+  color:#fff;
+  box-shadow:0 6px 16px rgba(37,99,235,.35);
+}
+.brand strong{display:block;font-size:17px;font-weight:800;letter-spacing:-.3px}
+.brand small{color:#7dd3fc;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.nav{display:grid;gap:6px}
+.nav button{
+  border:0;
+  background:transparent;
+  color:var(--sidebar-text);
+  text-align:left;
+  padding:12px 14px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  font-weight:600;
+  font-size:13.5px;
+  transition:.18s;
+}
+.nav button i{
+  width:20px;
+  text-align:center;
+  font-size:15px;
+  color:#64748b;
+  transition:.18s;
+}
+.nav button.active{
+  background:var(--primary);
+  color:#fff;
+  box-shadow:0 6px 16px rgba(37,99,235,.3);
+}
+.nav button.active i{color:#fff}
+.nav button:not(.active):hover{
+  background:var(--sidebar-hover);
+  color:#fff;
+}
+.nav button:not(.active):hover i{color:#93c5fd}
+.sidebar-foot{
+  margin-top:auto;
+  background:var(--sidebar-card);
+  border:1px solid var(--sidebar-border);
+  border-radius:14px;
+  padding:15px;
+  color:#94a3b8;
+  font-size:11.5px;
+  line-height:1.55;
+}
+.sidebar-foot strong{color:#fff;display:block;font-size:13px;margin:3px 0 2px}
+
+/* Main Area */
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{
+  height:76px;
+  background:#fff;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 34px;
+  gap:15px;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+.crumb{font-size:12px;color:var(--text-muted);font-weight:500}
+.topbar h1{font-size:20px;font-weight:800;margin:3px 0 0;letter-spacing:-.4px}
+.top-right{display:flex;align-items:center;gap:12px}
+.today-pill{
+  border:1px solid var(--line);
+  padding:8px 14px;
+  border-radius:10px;
+  color:#475569;
+  font-size:12px;
+  font-weight:600;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+.today-pill i{color:var(--primary)}
+.avatar{
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  background:var(--primary-subtle);
+  color:var(--primary);
+  font-weight:800;
+  font-size:14px;
+  border:1px solid var(--primary-border);
+}
+.content{padding:28px 34px 100px;max-width:1500px;width:100%;margin:0 auto}
+
+/* Welcome Header */
+.welcome{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:18px;
+  margin-bottom:24px;
+  flex-wrap:wrap;
+}
+.welcome h2{font-size:26px;font-weight:800;margin:0 0 6px;letter-spacing:-.6px}
+.welcome p{margin:0;color:var(--text-muted);font-size:14px}
+
+/* Buttons */
+.btn{
+  border:0;
+  border-radius:11px;
+  padding:11px 18px;
+  font-weight:700;
+  font-size:13.5px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  transition:.15s;
+}
+.btn i{font-size:14px}
+.btn-primary{
+  background:var(--primary);
+  color:#fff;
+  box-shadow:0 6px 16px rgba(37,99,235,.28);
+}
+.btn-primary:hover{
+  background:var(--primary-hover);
+  transform:translateY(-1px);
+  box-shadow:0 8px 20px rgba(37,99,235,.35);
+}
+.btn-light{
+  background:#fff;
+  border:1px solid var(--line);
+  color:#334155;
+}
+.btn-light:hover{background:#f8fafc;border-color:#cbd5e1}
+.btn-danger{
+  background:var(--red-subtle);
+  color:var(--red);
+  border:1px solid var(--red-border);
+}
+.btn-danger:hover{background:#fee2e2}
+.btn-success{
+  background:var(--emerald);
+  color:#fff;
+  box-shadow:0 6px 16px rgba(5,150,105,.25);
+}
+.btn-success:hover{background:#047857}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:26px}
+.stat{
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:18px;
+  padding:20px;
+  box-shadow:var(--card-shadow);
+  transition:transform .15s,box-shadow .15s;
+}
+.stat:hover{transform:translateY(-2px);box-shadow:var(--card-shadow-hover)}
+.stat-head{display:flex;justify-content:space-between;align-items:center;color:var(--text-muted);font-size:12px;font-weight:700}
+.stat-icon{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  font-size:16px;
+}
+.stat:nth-child(1) .stat-icon{background:var(--primary-subtle);color:var(--primary)}
+.stat:nth-child(2) .stat-icon{background:var(--emerald-subtle);color:var(--emerald)}
+.stat:nth-child(3) .stat-icon{background:var(--amber-subtle);color:var(--amber)}
+.stat:nth-child(4) .stat-icon{background:var(--indigo-subtle);color:var(--indigo)}
+.stat-value{font-size:28px;font-weight:800;letter-spacing:-.8px;margin:12px 0 4px}
+.stat-foot{font-size:11.5px;color:var(--text-muted)}
+
+/* Section Headings */
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:28px 0 14px}
+.section-head h3{margin:0;font-size:18px;font-weight:800;letter-spacing:-.3px}
+.section-head p{margin:4px 0 0;color:var(--text-muted);font-size:12.5px}
+
+/* Bus Grid */
+.bus-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.bus-card{
+  background:#fff;
+  border:1px solid var(--card-border);
+  border-radius:18px;
+  padding:20px;
+  box-shadow:var(--card-shadow);
+  min-width:0;
+  transition:transform .18s,box-shadow .18s;
+  display:flex;
+  flex-direction:column;
+}
+.bus-card:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--card-shadow-hover);
+  border-color:var(--primary-border);
+}
+.bus-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.bus-id{display:flex;gap:12px;align-items:center;min-width:0}
+.bus-symbol{
+  width:46px;
+  height:46px;
+  border-radius:14px;
+  background:linear-gradient(135deg, #eff6ff, #dbeafe);
+  color:var(--primary);
+  display:grid;
+  place-items:center;
+  font-size:19px;
+  flex-shrink:0;
+}
+.bus-id h4{margin:0 0 4px;font-size:16px;font-weight:800;letter-spacing:-.3px}
+.bus-city{
+  margin:0;
+  color:var(--cyan);
+  font-size:12px;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+}
+.status{
+  border-radius:100px;
+  padding:4px 10px;
+  font-size:10.5px;
+  font-weight:800;
+  white-space:nowrap;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  letter-spacing:.2px;
+}
+.status.active{background:var(--emerald-subtle);color:var(--emerald);border:1px solid var(--emerald-border)}
+.status.maintenance{background:var(--amber-subtle);color:var(--amber);border:1px solid var(--amber-border)}
+.status.inactive{background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0}
+
+.bus-driver{
+  font-size:12.5px;
+  color:#334155;
+  margin:15px 0 14px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  background:#f8fafc;
+  padding:8px 12px;
+  border-radius:11px;
+  border:1px solid #edf2f7;
+}
+.bus-driver i{color:var(--primary);font-size:13px}
+.bus-driver strong{color:#0f172a}
+
+.bus-metrics{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:auto}
+.metric{padding:10px 12px;background:#f8fafc;border-radius:11px;border:1px solid #f1f5f9}
+.metric span{display:block;color:var(--text-muted);font-size:10.5px;font-weight:600;margin-bottom:4px}
+.metric strong{font-size:15px;font-weight:800}
+
+.bus-bottom{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:15px;
+  padding-top:13px;
+  border-top:1px solid var(--line);
+  font-size:11.5px;
+}
+.city-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:4px 10px;
+  border-radius:8px;
+  background:var(--cyan-subtle);
+  color:var(--cyan);
+  font-size:11.5px;
+  font-weight:700;
+  border:1px solid var(--cyan-border);
+}
+.text-btn{border:0;background:transparent;color:var(--primary);font-weight:700;padding:5px;display:inline-flex;align-items:center;gap:5px}
+.text-btn:hover{text-decoration:underline}
+
+/* Panels & Tables */
+.panel{background:#fff;border:1px solid var(--card-border);border-radius:18px;box-shadow:var(--card-shadow);overflow:hidden}
+.toolbar{display:flex;gap:11px;align-items:center;flex-wrap:wrap;padding:16px 20px;border-bottom:1px solid var(--line);background:#fafbfc}
+.input,.select,.textarea{
+  width:100%;
+  border:1px solid #cbd5e1;
+  border-radius:11px;
+  padding:11px 14px;
+  background:#fff;
+  color:var(--text-main);
+  outline:none;
+  transition:.15s;
+  font-size:13.5px;
+}
+.input:focus,.select:focus,.textarea:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(37,99,235,.15);
+}
+.toolbar .input{max-width:280px}
+.toolbar .select{width:auto;min-width:160px}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{text-align:left;padding:14px 18px;border-bottom:1px solid #edf2f7;font-size:13px;white-space:nowrap}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:#64748b;font-weight:700;background:#f8fafc}
+td{color:#334155}
+td strong{color:#0f172a;font-weight:700}
+.empty{text-align:center;padding:45px 20px;color:var(--text-muted);font-size:14px}
+.empty i{font-size:32px;display:block;margin-bottom:10px;color:#cbd5e1}
+
+/* Form Styles */
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.field label{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;margin:0 0 8px;color:#334155}
+.field small{display:block;color:var(--text-muted);font-size:11px;margin-top:5px;line-height:1.4}
+.field.full{grid-column:1/-1}
+.form-card{padding:24px}
+.form-actions{display:flex;gap:11px;justify-content:flex-end;padding-top:20px;margin-top:22px;border-top:1px solid var(--line)}
+
+.notice{
+  padding:14px 16px;
+  border-radius:12px;
+  background:var(--primary-subtle);
+  color:#1e40af;
+  border:1px solid var(--primary-border);
+  font-size:13px;
+  line-height:1.55;
+  margin-bottom:20px;
+  display:flex;
+  gap:11px;
+  align-items:flex-start;
+}
+.notice i{font-size:16px;margin-top:2px;color:var(--primary)}
+
+/* Charts */
+.charts-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:18px}
+.chart-card{background:#fff;border:1px solid var(--card-border);border-radius:18px;padding:22px;box-shadow:var(--card-shadow)}
+.chart-card h3{margin:0;font-size:16px;font-weight:800}
+.chart-card p{margin:5px 0 16px;font-size:12px;color:var(--text-muted)}
+.bar-chart{height:195px;display:flex;align-items:flex-end;gap:12px;padding:12px 6px 0;border-bottom:1px solid var(--line)}
+.bar-col{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:8px;min-width:0}
+.bar{
+  width:min(34px,75%);
+  border-radius:8px 8px 3px 3px;
+  background:linear-gradient(180deg, #3b82f6, #1d4ed8);
+  min-height:4px;
+  transition:height .3s cubic-bezier(.4,0,.2,1);
+}
+.bar.emerald{background:linear-gradient(180deg, #10b981, #047857)}
+.bar.amber{background:linear-gradient(180deg, #f59e0b, #b45309)}
+.bar-label{font-size:10.5px;color:var(--text-muted);font-weight:700;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.bar-value{font-size:10.5px;color:#334155;font-weight:800}
+.legend{display:flex;gap:16px;font-size:11.5px;color:var(--text-muted);margin-top:15px;font-weight:600}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:3px}
+.legend .blue-dot{background:#2563eb}
+.legend .emerald-dot{background:#059669}
+
+.report-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.report-summary .stat{padding:16px}
+.report-summary .stat-value{font-size:24px}
+
+.mobile-nav{display:none}
+.page{display:none}
+.page.active{display:block}
+
+/* Toast */
+.toast{
+  position:fixed;
+  right:24px;
+  bottom:26px;
+  background:#0f172a;
+  color:#fff;
+  padding:14px 20px;
+  border-radius:14px;
+  box-shadow:0 12px 36px rgba(15,23,42,.3);
+  font-size:13.5px;
+  font-weight:600;
+  z-index:60;
+  opacity:0;
+  transform:translateY(12px);
+  pointer-events:none;
+  transition:.22s cubic-bezier(.4,0,.2,1);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.toast.show{opacity:1;transform:translateY(0)}
+
+/* Modal */
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,.65);
+  backdrop-filter:blur(3px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:50;
+}
+.modal-backdrop.open{display:flex}
+.modal{
+  background:#fff;
+  width:min(660px,100%);
+  border-radius:20px;
+  max-height:90vh;
+  overflow:auto;
+  box-shadow:0 24px 60px rgba(15,23,42,.25);
+  animation:popIn .2s ease-out;
+}
+@keyframes popIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+.modal-head{
+  padding:20px 24px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.modal-head h3{margin:0;font-size:18px;font-weight:800;letter-spacing:-.3px}
+.close{
+  border:0;
+  background:#f1f5f9;
+  color:#64748b;
+  border-radius:10px;
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  font-size:15px;
+  transition:.15s;
+}
+.close:hover{background:#e2e8f0;color:#0f172a}
+.modal-body{padding:24px}
+.hidden{display:none!important}
+
+/* Responsive */
+@media(max-width:1100px){
+  .bus-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .content{padding:24px}
+  .topbar{padding:0 24px}
+  .sidebar{width:230px}
+  .charts-grid{grid-template-columns:1fr}
+}
+@media(max-width:720px){
+  .app{display:block}
+  .sidebar{display:none}
+  .topbar{height:68px;padding:0 18px}
+  .topbar h1{font-size:18px}
+  .crumb,.today-pill{display:none}
+  .content{padding:20px 16px 95px}
+  .welcome{flex-direction:column;align-items:flex-start}
+  .welcome h2{font-size:22px}
+  .welcome .btn{width:100%}
+  .stats{gap:12px;grid-template-columns:1fr 1fr}
+  .stat{padding:15px}
+  .stat-value{font-size:22px}
+  .bus-grid{grid-template-columns:1fr;gap:13px}
+  .toolbar{padding:14px}
+  .toolbar .input,.toolbar .select{max-width:none;width:100%}
+  .form-card{padding:18px}
+  .form-grid{grid-template-columns:1fr;gap:14px}
+  .field.full{grid-column:auto}
+  .form-actions .btn{flex:1}
+  .report-summary{grid-template-columns:1fr}
+  .mobile-nav{
+    display:flex;
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    z-index:40;
+    background:#fff;
+    border-top:1px solid var(--line);
+    justify-content:space-around;
+    padding:8px 6px calc(8px + env(safe-area-inset-bottom));
+    box-shadow:0 -6px 20px rgba(15,23,42,.07);
+  }
+  .mobile-nav button{
+    border:0;
+    background:transparent;
+    color:#64748b;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    font-size:10px;
+    font-weight:700;
+    padding:4px 8px;
+  }
+  .mobile-nav button i{font-size:17px}
+  .mobile-nav button.active{color:var(--primary)}
+  .mobile-nav button.add{
+    color:#fff;
+    background:var(--primary);
+    border-radius:14px;
+    padding:8px 14px;
+    margin-top:-16px;
+    box-shadow:0 6px 16px rgba(37,99,235,.4);
+  }
+  .modal-backdrop{align-items:flex-end;padding:0}
+  .modal{border-radius:22px 22px 0 0;max-height:92vh}
+  .modal-body{padding:20px}
+}
 </style>
 </head>
 <body>
 <div class="app">
+  <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="brand"><div class="brand-mark">🚌</div><div><strong>DevuSons</strong><small>BUS MANAGEMENT</small></div></div>
+    <div class="brand">
+      <div class="brand-mark"><i class="fa-solid fa-bus-simple"></i></div>
+      <div>
+        <strong id="sidebarFleetTitle">Devusons Fleet</strong>
+        <small>Fleet Operations</small>
+      </div>
+    </div>
     <nav class="nav" id="sideNav">
-      <button class="active" data-page="dashboard"><span class="ico">▦</span>Dashboard</button>
-      <button data-page="buses"><span class="ico">🚌</span>Buses</button>
-      <button data-page="entries"><span class="ico">☷</span>Daily records</button>
-      <button data-page="reports"><span class="ico">▥</span>Reports & analytics</button>
-      <button data-page="drivers"><span class="ico">♙</span>Drivers</button>
-      <button data-page="settings"><span class="ico">⚙</span>Settings</button>
+      <button class="active" data-page="dashboard"><i class="fa-solid fa-gauge-high"></i>Dashboard</button>
+      <button data-page="buses"><i class="fa-solid fa-bus"></i>Buses</button>
+      <button data-page="entries"><i class="fa-solid fa-clipboard-list"></i>Daily records</button>
+      <button data-page="reports"><i class="fa-solid fa-chart-line"></i>Reports & analytics</button>
+      <button data-page="drivers"><i class="fa-solid fa-users"></i>Driver staff</button>
+      <button data-page="settings"><i class="fa-solid fa-sliders"></i>Settings</button>
     </nav>
-    <div class="sidebar-foot">Fleet overview<br><strong style="color:#fff">7 buses configured</strong><br>Data is saved in this browser.</div>
+    <div class="sidebar-foot">
+      <span>Operational Fleet</span>
+      <strong>7 Buses Active</strong>
+      <div>Vijayawada • Kakinada • Addaripeta • Kapileswaram</div>
+    </div>
   </aside>
+
+  <!-- MAIN -->
   <main class="main">
-    <header class="topbar"><div><div class="crumb">DevuSons / <span id="crumbName">Dashboard</span></div><h1 id="pageTitle">Dashboard</h1></div><div class="top-right"><div class="today-pill" id="todayPill"></div><div class="avatar">A</div></div></header>
+    <header class="topbar">
+      <div>
+        <div class="crumb"><span id="topbarOrgName">Devusons Fleet</span> / <span id="crumbName">Dashboard</span></div>
+        <h1 id="pageTitle">Dashboard</h1>
+      </div>
+      <div class="top-right">
+        <div class="today-pill" id="todayPill"><i class="fa-regular fa-calendar-days"></i></div>
+        <div class="avatar"><i class="fa-solid fa-user-shield"></i></div>
+      </div>
+    </header>
+
     <div class="content">
+      <!-- DASHBOARD PAGE -->
       <section class="page active" id="page-dashboard">
-        <div class="welcome"><div><h2>DevuSons 👋</h2><p>Here's what's happening across your fleet today.</p></div><button class="btn btn-primary" onclick="openEntry()">＋ Add daily entry</button></div>
+        <div class="welcome">
+          <div>
+            <h2>Fleet overview 👋</h2>
+            <p>Live metrics and performance across your 7 buses and rotating driver staff.</p>
+          </div>
+          <button class="btn btn-primary" onclick="openEntry()"><i class="fa-solid fa-plus"></i>Add daily record</button>
+        </div>
         <div class="stats" id="dashboardStats"></div>
-        <div class="section-head"><div><h3>Your fleet <span class="muted" id="busCountLabel"></span></h3><p>Daily performance at a glance</p></div><button class="btn btn-light" onclick="navigate('buses')">Manage buses ↗</button></div>
+        <div class="section-head">
+          <div>
+            <h3>Active buses <span class="text-muted" id="busCountLabel" style="font-weight:normal;font-size:14px"></span></h3>
+            <p>Vehicles and operating cities</p>
+          </div>
+          <button class="btn btn-light" onclick="navigate('buses')"><i class="fa-solid fa-arrow-up-right-from-square"></i>Manage buses</button>
+        </div>
         <div class="bus-grid" id="dashboardBuses"></div>
-        <div class="section-head"><div><h3>Recent activity</h3><p>Latest daily records added to your fleet</p></div><button class="text-btn" onclick="navigate('entries')">View all →</button></div>
-        <div class="panel"><div class="table-wrap"><table><thead><tr><th>Date</th><th>Bus</th><th>Driver</th><th>Distance</th><th>Diesel</th><th>Cost</th></tr></thead><tbody id="recentRows"></tbody></table></div></div>
+        <div class="section-head">
+          <div>
+            <h3>Recent daily trips</h3>
+            <p>Latest manual trip distance and diesel logs</p>
+          </div>
+          <button class="text-btn" onclick="navigate('entries')">View all records <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="panel">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Bus</th>
+                  <th>City</th>
+                  <th>Driver</th>
+                  <th>Distance</th>
+                  <th>Diesel</th>
+                  <th>Cost</th>
+                </tr>
+              </thead>
+              <tbody id="recentRows"></tbody>
+            </table>
+          </div>
+        </div>
       </section>
+
+      <!-- BUSES PAGE -->
       <section class="page" id="page-buses">
-        <div class="welcome"><div><h2>Manage your buses</h2><p>Keep your 7 bus profiles and operational status up to date.</p></div><button class="btn btn-primary" onclick="openBusModal()">＋ Add bus</button></div>
-        <div class="panel"><div class="toolbar"><input id="busSearch" class="input" placeholder="Search bus number or driver…" oninput="renderBusesPage()"><select id="busStatusFilter" class="select" onchange="renderBusesPage()"><option value="">All statuses</option><option>Active</option><option>Maintenance</option><option>Inactive</option></select></div><div id="busesPageGrid" class="bus-grid" style="padding:16px"></div></div>
+        <div class="welcome">
+          <div>
+            <h2>Manage buses</h2>
+            <p>7 buses operating across Vijayawada, Kakinada, Addaripeta, and Kapileswaram.</p>
+          </div>
+          <button class="btn btn-primary" onclick="openBusModal()"><i class="fa-solid fa-plus"></i>Add bus</button>
+        </div>
+        <div class="panel">
+          <div class="toolbar">
+            <input id="busSearch" class="input" placeholder="Search bus number or city…" oninput="renderBusesPage()">
+            <select id="busStatusFilter" class="select" onchange="renderBusesPage()">
+              <option value="">All statuses</option>
+              <option>Active</option>
+              <option>Maintenance</option>
+              <option>Inactive</option>
+            </select>
+          </div>
+          <div id="busesPageGrid" class="bus-grid" style="padding:20px"></div>
+        </div>
       </section>
+
+      <!-- DAILY RECORDS PAGE -->
       <section class="page" id="page-entries">
-        <div class="welcome"><div><h2>Daily records</h2><p>Review and correct your bus operating records.</p></div><button class="btn btn-primary" onclick="openEntry()">＋ Add entry</button></div>
-        <div class="panel"><div class="toolbar"><input type="date" id="entryFrom" class="input" aria-label="From date" onchange="renderEntries()"><input type="date" id="entryTo" class="input" aria-label="To date" onchange="renderEntries()"><select id="entryBusFilter" class="select" onchange="renderEntries()"><option value="">All buses</option></select><input id="entrySearch" class="input" placeholder="Search driver or route…" oninput="renderEntries()"><button class="btn btn-light" onclick="clearEntryFilters()">Clear</button></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Bus</th><th>Driver</th><th>Odometer</th><th>Distance</th><th>Diesel</th><th>Mileage</th><th>Cost</th><th>Actions</th></tr></thead><tbody id="entryRows"></tbody></table></div></div>
+        <div class="welcome">
+          <div>
+            <h2>Daily trip records</h2>
+            <p>Drivers record their trip distance and diesel consumption directly for each shift.</p>
+          </div>
+          <button class="btn btn-primary" onclick="openEntry()"><i class="fa-solid fa-plus"></i>Record new trip</button>
+        </div>
+        <div class="panel">
+          <div class="toolbar">
+            <input type="date" id="entryFrom" class="input" aria-label="From date" onchange="renderEntries()">
+            <input type="date" id="entryTo" class="input" aria-label="To date" onchange="renderEntries()">
+            <select id="entryBusFilter" class="select" onchange="renderEntries()">
+              <option value="">All buses</option>
+            </select>
+            <input id="entrySearch" class="input" placeholder="Search driver, route, or city…" oninput="renderEntries()">
+            <button class="btn btn-light" onclick="clearEntryFilters()"><i class="fa-solid fa-rotate-left"></i>Reset</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Bus</th>
+                  <th>City</th>
+                  <th>Driver</th>
+                  <th>Distance (km)</th>
+                  <th>Diesel</th>
+                  <th>Mileage</th>
+                  <th>Cost</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="entryRows"></tbody>
+            </table>
+          </div>
+        </div>
       </section>
+
+      <!-- REPORTS PAGE -->
       <section class="page" id="page-reports">
-        <div class="welcome"><div><h2>Reports & analytics</h2><p>Understand mileage, distance, and fuel spending.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-light" onclick="exportCSV()">↓ Export Excel/CSV</button><button class="btn btn-primary" onclick="window.print()">Print / Save PDF</button></div></div>
-        <div class="toolbar" style="background:#fff;border:1px solid var(--line);border-radius:13px;margin-bottom:16px"><label style="font-size:12px;font-weight:700">Report month</label><input id="reportMonth" class="input" type="month" onchange="renderReports()"></div>
+        <div class="welcome">
+          <div>
+            <h2>Reports & analytics</h2>
+            <p>Track distance covered, diesel consumption, and expenditure by bus and city.</p>
+          </div>
+          <div style="display:flex;gap:9px;flex-wrap:wrap">
+            <button class="btn btn-light" onclick="exportCSV()"><i class="fa-solid fa-file-csv"></i>Export Excel / CSV</button>
+            <button class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print"></i>Print / Save PDF</button>
+          </div>
+        </div>
+        <div class="toolbar" style="background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:18px">
+          <label style="font-size:13px;font-weight:700;display:flex;align-items:center;gap:7px;">
+            <i class="fa-solid fa-calendar-week" style="color:var(--primary)"></i> Select month:
+          </label>
+          <input id="reportMonth" class="input" type="month" onchange="renderReports()">
+        </div>
         <div id="reportSummary" class="report-summary"></div>
-        <div class="charts-grid"><div class="chart-card"><h3>Distance by bus</h3><p>Total kilometers for the selected month</p><div id="distanceChart" class="bar-chart"></div><div class="legend"><span><i></i>Distance (km)</span></div></div><div class="chart-card"><h3>Diesel consumed by bus</h3><p>Total liters for the selected month</p><div id="dieselChart" class="bar-chart"></div><div class="legend"><span><i class="blue-dot"></i>Diesel (L)</span></div></div></div>
-        <div class="section-head"><div><h3>Monthly bus summary</h3><p>Compare all buses for the selected month</p></div></div>
-        <div class="panel"><div class="table-wrap"><table><thead><tr><th>Bus</th><th>Driver(s)</th><th>Trips</th><th>Distance</th><th>Diesel</th><th>Avg. mileage</th><th>Diesel cost</th></tr></thead><tbody id="reportRows"></tbody></table></div></div>
+        <div class="charts-grid">
+          <div class="chart-card">
+            <h3>Average mileage by bus</h3>
+            <p>Fuel efficiency (km/L) for the selected month</p>
+            <div id="mileageChart" class="bar-chart"></div>
+            <div class="legend"><span><i class="emerald-dot"></i>Avg. Mileage (km/L)</span></div>
+          </div>
+          <div class="chart-card">
+            <h3>Diesel consumed by bus</h3>
+            <p>Total liters consumed in selected month</p>
+            <div id="dieselChart" class="bar-chart"></div>
+            <div class="legend"><span><i class="blue-dot"></i>Diesel (Liters)</span></div>
+          </div>
+        </div>
+        <div class="section-head">
+          <div>
+            <h3>Monthly bus breakdown</h3>
+            <p>Comprehensive statistics for each vehicle</p>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Bus</th>
+                  <th>City</th>
+                  <th>Drivers</th>
+                  <th>Trips</th>
+                  <th>Distance</th>
+                  <th>Diesel</th>
+                  <th>Avg. mileage</th>
+                  <th>Diesel cost</th>
+                </tr>
+              </thead>
+              <tbody id="reportRows"></tbody>
+            </table>
+          </div>
+        </div>
       </section>
+
+      <!-- DRIVER STAFF PAGE -->
       <section class="page" id="page-drivers">
-        <div class="welcome"><div><h2>Driver directory</h2><p>Manage driver information and assigned buses.</p></div><button class="btn btn-primary" onclick="openDriverModal()">＋ Add driver</button></div>
-        <div class="panel"><div class="toolbar"><input class="input" id="driverSearch" placeholder="Search driver name or phone…" oninput="renderDrivers()"></div><div class="table-wrap"><table><thead><tr><th>Driver</th><th>Mobile</th><th>License number</th><th>Assigned bus</th><th>Status</th><th>Actions</th></tr></thead><tbody id="driverRows"></tbody></table></div></div>
+        <div class="welcome">
+          <div>
+            <h2>Driver staff directory <span id="driverCountLabel" class="text-muted" style="font-size:15px;font-weight:normal"></span></h2>
+            <p>Drivers rotate across all buses daily. View staff roster and lifetime stats.</p>
+          </div>
+          <button class="btn btn-primary" onclick="openDriverModal()"><i class="fa-solid fa-user-plus"></i>Add driver</button>
+        </div>
+        <div class="panel">
+          <div class="toolbar">
+            <input class="input" id="driverSearch" placeholder="Search driver by name, phone, or license..." oninput="renderDrivers()">
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Driver name</th>
+                  <th>Mobile number</th>
+                  <th>License number</th>
+                  <th>Total trips logged</th>
+                  <th>Distance driven</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="driverRows"></tbody>
+            </table>
+          </div>
+        </div>
       </section>
+
+      <!-- SETTINGS PAGE -->
       <section class="page" id="page-settings">
-        <div class="welcome"><div><h2>Settings</h2><p>Configure the fleet and manage local data.</p></div></div>
-        <div class="panel form-card"><div class="notice"><strong>Demo mode:</strong> This is a working browser-based prototype. Records are stored in this browser using local storage, not in a shared online database. Use the export option to keep a backup.</div><h3 style="margin-top:0">Fleet configuration</h3><div class="form-grid"><div class="field"><label>Fleet / organization name</label><input id="fleetName" class="input" value="My Bus Fleet"></div><div class="field"><label>Default diesel price (₹/liter)</label><input id="defaultPrice" class="input" type="number" min="0" step=".01" value="95"></div></div><div class="form-actions" style="justify-content:flex-start"><button class="btn btn-primary" onclick="saveSettings()">Save settings</button><button class="btn btn-light" onclick="exportCSV()">Export all records (CSV)</button><button class="btn btn-danger" onclick="resetDemo()">Reset demo data</button></div><p class="muted" style="font-size:12px;line-height:1.6">Before real-world use with multiple staff or phones, connect a secure backend and database, configure authentication, and set up backups. This prototype does not provide cloud synchronization.</p></div>
+        <div class="welcome">
+          <div>
+            <h2>Settings & data management</h2>
+            <p>Configure fleet details and download or restore database backups.</p>
+          </div>
+        </div>
+        <div class="panel form-card">
+          <div class="notice">
+            <i class="fa-solid fa-shield-halved"></i>
+            <div>
+              <strong>Production data safe & offline:</strong> All bus records, driver staff, and trip entries are saved securely in your browser's persistent local storage. Use the backup option to download backup copies anytime.
+            </div>
+          </div>
+          <h3 style="margin-top:0">Fleet configuration</h3>
+          <div class="form-grid">
+            <div class="field">
+              <label><i class="fa-solid fa-building" style="color:var(--primary)"></i> Fleet / organization name</label>
+              <input id="fleetName" class="input" value="Devusons Bus Fleet">
+            </div>
+            <div class="field">
+              <label><i class="fa-solid fa-gas-pump" style="color:var(--amber)"></i> Default diesel price (₹/liter)</label>
+              <input id="defaultPrice" class="input" type="number" min="0" step=".01" value="95">
+            </div>
+          </div>
+          <div class="form-actions" style="justify-content:flex-start;flex-wrap:wrap">
+            <button class="btn btn-primary" onclick="saveSettings()"><i class="fa-solid fa-check"></i>Save settings</button>
+            <button class="btn btn-light" onclick="backupDatabase()"><i class="fa-solid fa-cloud-arrow-down"></i>Backup database (JSON)</button>
+            <label class="btn btn-light" style="cursor:pointer">
+              <i class="fa-solid fa-cloud-arrow-up"></i>Restore database
+              <input type="file" id="restoreFileInput" accept=".json" style="display:none" onchange="restoreDatabase(event)">
+            </label>
+            <button class="btn btn-light" onclick="exportCSV()"><i class="fa-solid fa-file-csv"></i>Export all CSV</button>
+            <button class="btn btn-danger" onclick="clearTripRecords()"><i class="fa-solid fa-trash-can"></i>Clear trip records</button>
+          </div>
+        </div>
       </section>
     </div>
   </main>
 </div>
+
+<!-- Mobile Nav -->
 <nav class="mobile-nav" id="mobileNav">
-  <button class="active" data-page="dashboard"><span class="ico">▦</span>Home</button>
-  <button data-page="buses"><span class="ico">🚌</span>Buses</button>
-  <button class="add" onclick="openEntry()"><span class="ico">＋</span>Add</button>
-  <button data-page="entries"><span class="ico">☷</span>Records</button>
-  <button data-page="reports"><span class="ico">▥</span>Reports</button>
+  <button class="active" data-page="dashboard"><i class="fa-solid fa-gauge-high"></i>Dashboard</button>
+  <button data-page="buses"><i class="fa-solid fa-bus"></i>Buses</button>
+  <button class="add" onclick="openEntry()"><i class="fa-solid fa-plus"></i>Add</button>
+  <button data-page="entries"><i class="fa-solid fa-clipboard-list"></i>Records</button>
+  <button data-page="drivers"><i class="fa-solid fa-users"></i>Drivers</button>
 </nav>
-<div class="modal-backdrop" id="modalBackdrop" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="modal-head"><h3 id="modalTitle">Add daily entry</h3><button class="close" onclick="closeModal()">×</button></div><div class="modal-body" id="modalBody"></div></div></div>
+
+<!-- Modal Backdrop -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modalTitle">Record trip</h3>
+      <button class="close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
+
 <script>
-const STORE='DevuSons_v1';
-const today=new Date(); const iso=d=>{const x=new Date(d);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`};
-const money=n=>'₹'+Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:2});
-const num=n=>Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:1});
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const defaultState=()=>({settings:{fleetName:'My Bus Fleet',defaultPrice:95},buses:Array.from({length:7},(_,i)=>({id:'bus'+(i+1),reg:'BUS '+String(i+1).padStart(2,'0'),model:'School / Staff Bus',driver:'Driver '+(i+1),status:'Active',fuel:'Diesel',odo:10000+i*1200})),drivers:Array.from({length:7},(_,i)=>({id:'drv'+(i+1),name:'Driver '+(i+1),phone:'',license:'',busId:'bus'+(i+1),status:'Active'})),entries:[]});
-let state;try{state=JSON.parse(localStorage.getItem(STORE))||defaultState()}catch(e){state=defaultState()}
-function save(){localStorage.setItem(STORE,JSON.stringify(state))}
-function bus(id){return state.buses.find(b=>b.id===id)||{reg:'Unknown bus',driver:'—'}}
-function entryTotals(entries){return entries.reduce((a,e)=>({km:a.km+(+e.km||0),liters:a.liters+(+e.liters||0),cost:a.cost+(+e.cost||0)}),{km:0,liters:0,cost:0})}
-function mileage(e){return +e.liters>0?(+e.km||0)/(+e.liters):0}
-function todayEntries(){return state.entries.filter(e=>e.date===iso(today))}
-function statsFor(entries){let t=entryTotals(entries);return {...t,trips:entries.length,mpg:t.liters?t.km/t.liters:0}}
-function fmtDate(s){if(!s)return '—';return new Date(s+'T12:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}
-function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
-function navigate(page){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+page).classList.add('active');document.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));let names={dashboard:'Dashboard',buses:'Buses',entries:'Daily records',reports:'Reports & analytics',drivers:'Drivers',settings:'Settings'};document.getElementById('pageTitle').textContent=names[page];document.getElementById('crumbName').textContent=names[page];if(page==='dashboard')renderDashboard();if(page==='buses')renderBusesPage();if(page==='entries')renderEntries();if(page==='reports')renderReports();if(page==='drivers')renderDrivers();if(page==='settings')loadSettings();window.scrollTo({top:0,behavior:'smooth'})}
-document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.page)));
-document.getElementById('todayPill').textContent=today.toLocaleDateString('en-IN',{weekday:'short',day:'2-digit',month:'short',year:'numeric'});
-function busCard(b,entries){let t=statsFor(entries),status=(b.status||'Active').toLowerCase();return `<article class="bus-card"><div class="bus-top"><div class="bus-id"><div class="bus-symbol">🚌</div><div><h4>${esc(b.reg)}</h4><p>${esc(b.model||'Bus')}</p></div></div><span class="status ${status}">${esc(b.status||'Active')}</span></div><div class="bus-driver">♙ ${esc(b.driver||'Driver not assigned')}</div><div class="bus-metrics"><div class="metric"><span>Distance today</span><strong>${num(t.km)} <small>km</small></strong></div><div class="metric"><span>Diesel today</span><strong>${num(t.liters)} <small>L</small></strong></div><div class="metric"><span>Mileage today</span><strong>${t.mpg?num(t.mpg):'—'} <small>km/L</small></strong></div><div class="metric"><span>Diesel cost</span><strong>${money(t.cost)}</strong></div></div><div class="bus-bottom"><span>Odometer: ${num(b.odo)} km</span><button class="text-btn" onclick="openBusModal('${b.id}')">Manage →</button></div></article>`}
-function renderDashboard(){let es=todayEntries(),t=statsFor(es),active=state.buses.filter(b=>b.status==='Active').length;document.getElementById('dashboardStats').innerHTML=[['Fleet buses',state.buses.length,'🚌','Configured vehicles'],['Distance today',num(t.km)+' km','↗','Across all recorded trips'],['Diesel consumed',num(t.liters)+' L','⛽','Today’s recorded usage'],['Diesel cost',money(t.cost),'₹','Based on entry prices']].map(x=>`<div class="stat"><div class="stat-head"><span>${x[0]}</span><span class="stat-icon">${x[2]}</span></div><div class="stat-value">${x[1]}</div><div class="stat-foot">${x[3]}</div></div>`).join('');document.getElementById('busCountLabel').textContent='('+active+' active)';document.getElementById('dashboardBuses').innerHTML=state.buses.map(b=>busCard(b,es.filter(e=>e.busId===b.id))).join('')||'<div class="empty">No buses yet.</div>';let recent=[...state.entries].sort((a,b)=>(b.date+b.created).localeCompare(a.date+a.created)).slice(0,6);document.getElementById('recentRows').innerHTML=recent.length?recent.map(e=>`<tr><td>${fmtDate(e.date)}</td><td><strong>${esc(bus(e.busId).reg)}</strong></td><td>${esc(e.driver)}</td><td>${num(e.km)} km</td><td>${num(e.liters)} L</td><td>${money(e.cost)}</td></tr>`).join(''):'<tr><td colspan="6" class="empty">No entries yet. Add your first daily record.</td></tr>'}
-function renderBusesPage(){let q=(document.getElementById('busSearch')?.value||'').toLowerCase(),st=document.getElementById('busStatusFilter')?.value||'';let arr=state.buses.filter(b=>(b.reg+' '+b.driver).toLowerCase().includes(q)&&(!st||b.status===st));document.getElementById('busesPageGrid').innerHTML=arr.map(b=>busCard(b,state.entries.filter(e=>e.busId===b.id&&e.date===iso(today)))).join('')||'<div class="empty">No matching buses.</div>'}
-function fillBusFilters(){let opts=state.buses.map(b=>`<option value="${b.id}">${esc(b.reg)}</option>`).join('');let el=document.getElementById('entryBusFilter');if(el){let old=el.value;el.innerHTML='<option value="">All buses</option>'+opts;if(old)el.value=old}}
-function renderEntries(){fillBusFilters();let from=document.getElementById('entryFrom')?.value||'',to=document.getElementById('entryTo')?.value||'',bid=document.getElementById('entryBusFilter')?.value||'',q=(document.getElementById('entrySearch')?.value||'').toLowerCase();let arr=[...state.entries].filter(e=>(!from||e.date>=from)&&(!to||e.date<=to)&&(!bid||e.busId===bid)&&((e.driver+' '+(e.route||'')+' '+bus(e.busId).reg).toLowerCase().includes(q))).sort((a,b)=>(b.date+b.created).localeCompare(a.date+a.created));document.getElementById('entryRows').innerHTML=arr.length?arr.map(e=>`<tr><td>${fmtDate(e.date)}</td><td><strong>${esc(bus(e.busId).reg)}</strong></td><td>${esc(e.driver)}</td><td>${num(e.start)} → ${num(e.end)}</td><td>${num(e.km)} km</td><td>${num(e.liters)} L</td><td>${mileage(e)?num(mileage(e))+' km/L':'—'}</td><td>${money(e.cost)}</td><td><button class="text-btn" onclick="openEntry('${e.id}')">Edit</button><button class="text-btn" style="color:var(--red)" onclick="deleteEntry('${e.id}')">Delete</button></td></tr>`).join(''):'<tr><td colspan="9" class="empty">No records match these filters.</td></tr>'}
-function clearEntryFilters(){['entryFrom','entryTo','entryBusFilter','entrySearch'].forEach(id=>document.getElementById(id).value='');renderEntries()}
-function openModal(title,body){document.getElementById('modalTitle').textContent=title;document.getElementById('modalBody').innerHTML=body;document.getElementById('modalBackdrop').classList.add('open')}
-function closeModal(){document.getElementById('modalBackdrop').classList.remove('open')}
-function openEntry(id){let e=id?state.entries.find(x=>x.id===id):null;let bId=e?.busId||state.buses[0]?.id||'';let b=bus(bId);let body=`<form id="entryForm" onsubmit="saveEntry(event,'${e?.id||''}')"><div class="notice">Record each trip or daily shift. If a bus makes multiple trips, add a separate entry for each trip.</div><div class="form-grid"><div class="field"><label>Date *</label><input class="input" name="date" type="date" required value="${e?.date||iso(today)}"></div><div class="field"><label>Bus *</label><select class="select" name="busId" id="entryBusSelect" required onchange="updateEntryDriver()">${state.buses.map(x=>`<option value="${x.id}" ${x.id===bId?'selected':''}>${esc(x.reg)}</option>`).join('')}</select></div><div class="field"><label>Driver name *</label><input class="input" name="driver" id="entryDriver" required value="${esc(e?.driver||b.driver||'')}" placeholder="Driver name"></div><div class="field"><label>Route / trip (optional)</label><input class="input" name="route" value="${esc(e?.route||'')}" placeholder="e.g. Campus – City"></div><div class="field"><label>Starting odometer (km) *</label><input class="input" name="start" type="number" min="0" step=".1" required value="${e?.start??b.odo??''}" oninput="calcEntry()"></div><div class="field"><label>Ending odometer (km) *</label><input class="input" name="end" type="number" min="0" step=".1" required value="${e?.end??''}" oninput="calcEntry()"></div><div class="field"><label>Distance traveled (km)</label><input class="input" id="calcKm" readonly value="${e?.km??0}"></div><div class="field"><label>Diesel consumed (liters) *</label><input class="input" name="liters" type="number" min="0.01" step=".01" required value="${e?.liters??''}" oninput="calcEntry()" placeholder="e.g. 24.5"></div><div class="field"><label>Diesel price (₹/liter) *</label><input class="input" name="price" type="number" min="0" step=".01" required value="${e?.price??state.settings.defaultPrice}" oninput="calcEntry()"></div><div class="field"><label>Calculated diesel cost</label><input class="input" id="calcCost" readonly value="${money(e?.cost||0)}"></div><div class="field full"><label>Notes (optional)</label><textarea class="textarea" name="notes" rows="2" placeholder="Any issues, delays, or observations">${esc(e?.notes||'')}</textarea></div></div><div id="entryWarning" class="hidden" style="color:var(--red);font-size:12px;margin-top:12px"></div><div class="form-actions"><button type="button" class="btn btn-light" onclick="closeModal()">Cancel</button><button class="btn btn-primary" type="submit">✓ Save entry</button></div></form>`;openModal(e?'Edit daily entry':'Add daily entry',body);calcEntry()}
-function updateEntryDriver(){let id=document.getElementById('entryBusSelect').value;let d=document.getElementById('entryDriver');if(d&&!d.dataset.touched)d.value=bus(id).driver||'';let form=document.getElementById('entryForm');if(form){let start=form.elements.start;if(start&&!form.dataset.editing)start.value=bus(id).odo||0;calcEntry()}}
-function calcEntry(){let f=document.getElementById('entryForm');if(!f)return;let s=+f.elements.start.value||0,e=+f.elements.end.value||0,l=+f.elements.liters.value||0,p=+f.elements.price.value||0;document.getElementById('calcKm').value=(e>=s?num(e-s):'Check readings');document.getElementById('calcCost').value=money(l*p);let w=document.getElementById('entryWarning');if(e<s){w.textContent='Ending odometer must be greater than or equal to starting odometer.';w.classList.remove('hidden')}else if(l>0&&e>s&&(e-s)/l>10){w.textContent='Mileage is unusually high. Please double-check distance and diesel consumption.';w.classList.remove('hidden')}else{w.classList.add('hidden')}f.elements.driver.oninput=()=>{f.elements.driver.dataset.touched='1'}}
-function saveEntry(ev,id){ev.preventDefault();let f=ev.target,d=new FormData(f),start=+d.get('start'),end=+d.get('end'),liters=+d.get('liters'),price=+d.get('price'),bid=d.get('busId');if(end<start){toast('Ending odometer cannot be lower than starting reading.');return}if(liters<=0){toast('Enter diesel consumed in liters.');return}let km=+(end-start).toFixed(2),date=d.get('date');let duplicate=state.entries.find(x=>x.id!==id&&x.busId===bid&&x.date===date&&x.start===start&&x.end===end);if(duplicate&&!confirm('A similar entry already exists for this bus and date. Save anyway?'))return;let entry={id:id||'ent'+Date.now(),date,busId:bid,driver:d.get('driver').trim(),route:d.get('route').trim(),start,end,km,liters,price,cost:+(liters*price).toFixed(2),notes:d.get('notes').trim(),created:id?(state.entries.find(x=>x.id===id)?.created||Date.now()):Date.now()};if(id)state.entries=state.entries.map(x=>x.id===id?entry:x);else state.entries.push(entry);let selectedBus=bus(bid);selectedBus.odo=Math.max(+selectedBus.odo||0,end);selectedBus.driver=entry.driver;let driver=state.drivers.find(x=>x.name.toLowerCase()===entry.driver.toLowerCase());if(driver)driver.busId=bid;save();closeModal();renderAll();toast(id?'Entry updated successfully':'Daily entry saved successfully')}
-function deleteEntry(id){if(!confirm('Delete this daily record? This cannot be undone.'))return;state.entries=state.entries.filter(e=>e.id!==id);save();renderAll();toast('Record deleted')}
-function openBusModal(id){let b=id?state.buses.find(x=>x.id===id):null;if(!b&&state.buses.length>=7){toast('Seven buses are already configured. Edit a bus instead.');return}let x=b||{id:'bus'+Date.now(),reg:'',model:'School / Staff Bus',driver:'',status:'Active',fuel:'Diesel',odo:0};openModal(b?'Manage bus':'Add bus',`<form onsubmit="saveBus(event,'${b?.id||''}')"><div class="form-grid"><div class="field"><label>Registration / bus number *</label><input class="input" name="reg" required value="${esc(x.reg)}" placeholder="e.g. AP05 AB 1234"></div><div class="field"><label>Bus model</label><input class="input" name="model" value="${esc(x.model)}"></div><div class="field"><label>Assigned driver</label><input class="input" name="driver" value="${esc(x.driver)}" placeholder="Driver name"></div><div class="field"><label>Current odometer (km)</label><input class="input" name="odo" type="number" min="0" value="${x.odo||0}"></div><div class="field"><label>Fuel type</label><select class="select" name="fuel"><option ${x.fuel==='Diesel'?'selected':''}>Diesel</option><option ${x.fuel==='Petrol'?'selected':''}>Petrol</option><option ${x.fuel==='CNG'?'selected':''}>CNG</option><option ${x.fuel==='Electric'?'selected':''}>Electric</option></select></div><div class="field"><label>Status</label><select class="select" name="status">${['Active','Maintenance','Inactive'].map(s=>`<option ${x.status===s?'selected':''}>${s}</option>`).join('')}</select></div></div><div class="form-actions"><button type="button" class="btn btn-light" onclick="closeModal()">Cancel</button>${b?`<button type="button" class="btn btn-danger" onclick="deleteBus('${b.id}')">Delete bus</button>`:''}<button class="btn btn-primary">Save bus</button></div></form>`)}
-function saveBus(ev,id){ev.preventDefault();let d=new FormData(ev.target),reg=d.get('reg').trim();if(state.buses.some(b=>b.reg.toLowerCase()===reg.toLowerCase()&&b.id!==id)){toast('That bus number already exists.');return}let x={id:id||'bus'+Date.now(),reg,model:d.get('model').trim(),driver:d.get('driver').trim(),odo:+d.get('odo')||0,fuel:d.get('fuel'),status:d.get('status')};if(id)state.buses=state.buses.map(b=>b.id===id?x:b);else state.buses.push(x);let dr=state.drivers.find(d=>d.name.toLowerCase()===x.driver.toLowerCase());if(dr)dr.busId=x.id;save();closeModal();renderAll();toast('Bus details saved')}
-function deleteBus(id){if(state.entries.some(e=>e.busId===id)){toast('This bus has records. Change its status instead of deleting it.');return}if(!confirm('Delete this bus?'))return;state.buses=state.buses.filter(b=>b.id!==id);save();closeModal();renderAll();toast('Bus deleted')}
-function openDriverModal(id){let d=id?state.drivers.find(x=>x.id===id):null,x=d||{id:'drv'+Date.now(),name:'',phone:'',license:'',busId:state.buses[0]?.id||'',status:'Active'};openModal(d?'Edit driver':'Add driver',`<form onsubmit="saveDriver(event,'${d?.id||''}')"><div class="form-grid"><div class="field"><label>Full name *</label><input class="input" name="name" required value="${esc(x.name)}"></div><div class="field"><label>Mobile number</label><input class="input" name="phone" type="tel" value="${esc(x.phone)}"></div><div class="field"><label>License number</label><input class="input" name="license" value="${esc(x.license)}"></div><div class="field"><label>Currently assigned bus</label><select class="select" name="busId"><option value="">Not assigned</option>${state.buses.map(b=>`<option value="${b.id}" ${x.busId===b.id?'selected':''}>${esc(b.reg)}</option>`).join('')}</select></div><div class="field"><label>Status</label><select class="select" name="status"><option ${x.status==='Active'?'selected':''}>Active</option><option ${x.status==='Inactive'?'selected':''}>Inactive</option></select></div></div><div class="form-actions"><button type="button" class="btn btn-light" onclick="closeModal()">Cancel</button><button class="btn btn-primary">Save driver</button></div></form>`)}
-function saveDriver(ev,id){ev.preventDefault();let d=new FormData(ev.target),x={id:id||'drv'+Date.now(),name:d.get('name').trim(),phone:d.get('phone').trim(),license:d.get('license').trim(),busId:d.get('busId'),status:d.get('status')};if(id)state.drivers=state.drivers.map(a=>a.id===id?x:a);else state.drivers.push(x);if(x.busId){let b=bus(x.busId);b.driver=x.name}save();closeModal();renderAll();toast('Driver details saved')}
-function renderDrivers(){let q=(document.getElementById('driverSearch')?.value||'').toLowerCase(),arr=state.drivers.filter(d=>(d.name+' '+d.phone+' '+d.license).toLowerCase().includes(q));document.getElementById('driverRows').innerHTML=arr.length?arr.map(d=>`<tr><td><strong>${esc(d.name)}</strong></td><td>${esc(d.phone||'—')}</td><td>${esc(d.license||'—')}</td><td>${esc(d.busId?bus(d.busId).reg:'Not assigned')}</td><td><span class="status ${(d.status||'Active').toLowerCase()}">${esc(d.status||'Active')}</span></td><td><button class="text-btn" onclick="openDriverModal('${d.id}')">Edit</button></td></tr>`).join(''):'<tr><td colspan="6" class="empty">No drivers found.</td></tr>'}
-function monthEntries(){let m=document.getElementById('reportMonth')?.value||iso(today).slice(0,7);return state.entries.filter(e=>e.date.startsWith(m))}
-function renderReports(){let es=monthEntries(),t=statsFor(es);document.getElementById('reportSummary').innerHTML=[['Total distance',num(t.km)+' km'],['Diesel consumed',num(t.liters)+' L'],['Diesel expenditure',money(t.cost)]].map(x=>`<div class="stat"><div class="stat-head">${x[0]}</div><div class="stat-value">${x[1]}</div><div class="stat-foot">Selected month</div></div>`).join('');let per=state.buses.map(b=>({b,es:es.filter(e=>e.busId===b.id)}));drawBars('distanceChart',per.map(x=>({label:x.b.reg.replace('BUS ','B'),value:statsFor(x.es).km})),false);drawBars('dieselChart',per.map(x=>({label:x.b.reg.replace('BUS ','B'),value:statsFor(x.es).liters})),true);document.getElementById('reportRows').innerHTML=per.map(x=>{let s=statsFor(x.es),drivers=[...new Set(x.es.map(e=>e.driver))].join(', ')||x.b.driver||'—';return `<tr><td><strong>${esc(x.b.reg)}</strong></td><td>${esc(drivers)}</td><td>${s.trips}</td><td>${num(s.km)} km</td><td>${num(s.liters)} L</td><td>${s.mpg?num(s.mpg)+' km/L':'—'}</td><td>${money(s.cost)}</td></tr>`}).join('')}
-function drawBars(id,data,blue){let el=document.getElementById(id),max=Math.max(1,...data.map(x=>x.value));el.innerHTML=data.map(x=>`<div class="bar-col"><div class="bar-value">${num(x.value)}</div><div class="bar ${blue?'blue':''}" style="height:${Math.max(x.value?3:1,x.value/max*125)}px" title="${x.value}"></div><div class="bar-label">${esc(x.label)}</div></div>`).join('')}
-function exportCSV(){let rows=[['Date','Bus','Driver','Route','Start km','End km','Distance km','Diesel liters','Price per liter','Diesel cost','Notes'],...state.entries.map(e=>[e.date,bus(e.busId).reg,e.driver,e.route,e.start,e.end,e.km,e.liters,e.price,e.cost,e.notes])];let csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');let blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='DevuSons-records-'+iso(today)+'.csv';a.click();URL.revokeObjectURL(url);toast('CSV export downloaded')}
-function loadSettings(){document.getElementById('fleetName').value=state.settings.fleetName||'My Bus Fleet';document.getElementById('defaultPrice').value=state.settings.defaultPrice??95}
-function saveSettings(){state.settings.fleetName=document.getElementById('fleetName').value.trim()||'My Bus Fleet';state.settings.defaultPrice=+document.getElementById('defaultPrice').value||0;save();toast('Settings saved');document.title=(state.settings.fleetName||'DevuSons')+' — Fleet Manager'}
-function resetDemo(){if(!confirm('Reset all buses, drivers, and daily records to the original demo data? All locally saved changes will be lost.'))return;state=defaultState();save();renderAll();toast('Demo data reset')}
-function renderAll(){renderDashboard();renderBusesPage();renderEntries();renderReports();renderDrivers();loadSettings();document.title=(state.settings.fleetName||'DevuSons')+' — Fleet Manager'}
-document.getElementById('reportMonth').value=iso(today).slice(0,7);
+const STORE = 'fleetpilot_prod_v1';
+const today = new Date();
+const iso = d => {
+  const x = new Date(d);
+  return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;
+};
+const money = n => '₹' + Number(n||0).toLocaleString('en-IN', {maximumFractionDigits:2});
+const num = n => Number(n||0).toLocaleString('en-IN', {maximumFractionDigits:1});
+const esc = s => String(s??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+// Initial production state with the 7 buses and 22 driver staff roster
+const defaultState = () => ({
+  settings: { fleetName: 'Devusons Bus Fleet', defaultPrice: 95 },
+  buses: [
+    { id: 'bus_1245', reg: '1245', city: 'Vijayawada', status: 'Active', fuel: 'Diesel' },
+    { id: 'bus_4494', reg: '4494', city: 'Addaripeta', status: 'Active', fuel: 'Diesel' },
+    { id: 'bus_0069', reg: '0069', city: 'Kakinada', status: 'Active', fuel: 'Diesel' },
+    { id: 'bus_7188', reg: '7188', city: 'Kakinada', status: 'Active', fuel: 'Diesel' },
+    { id: 'bus_9829', reg: '9829', city: 'Kakinada', status: 'Active', fuel: 'Diesel' },
+    { id: 'bus_4179', reg: '4179', city: 'Kapileswaram', status: 'Active', fuel: 'Diesel' },
+    { id: 'bus_4179u', reg: '4179 Ultra', city: 'Kakinada', status: 'Active', fuel: 'Diesel' }
+  ],
+  drivers: [
+    { id: 'drv1', name: 'K. Appa Rao', phone: '98480 12341', license: 'AP05 2018001', status: 'Active' },
+    { id: 'drv2', name: 'P. Suresh Babu', phone: '98480 12342', license: 'AP05 2017002', status: 'Active' },
+    { id: 'drv3', name: 'M. Venkatesh', phone: '98480 12343', license: 'AP05 2019003', status: 'Active' },
+    { id: 'drv4', name: 'Ch. Satyanarayana', phone: '98480 12344', license: 'AP05 2016004', status: 'Active' },
+    { id: 'drv5', name: 'B. Ramesh Kumar', phone: '98480 12345', license: 'AP05 2020005', status: 'Active' },
+    { id: 'drv6', name: 'G. Krishna Murthy', phone: '98480 12346', license: 'AP05 2015006', status: 'Active' },
+    { id: 'drv7', name: 'T. Durga Rao', phone: '98480 12347', license: 'AP05 2018007', status: 'Active' },
+    { id: 'drv8', name: 'S. Veerabhadram', phone: '98480 12348', license: 'AP05 2019008', status: 'Active' },
+    { id: 'drv9', name: 'N. Srinivas', phone: '98480 12349', license: 'AP05 2017009', status: 'Active' },
+    { id: 'drv10', name: 'K. Ravi Teja', phone: '98480 12350', license: 'AP05 2021010', status: 'Active' },
+    { id: 'drv11', name: 'Y. Subba Rao', phone: '98480 12351', license: 'AP05 2016011', status: 'Active' },
+    { id: 'drv12', name: 'V. Sivaiah', phone: '98480 12352', license: 'AP05 2020012', status: 'Active' },
+    { id: 'drv13', name: 'D. Somaraju', phone: '98480 12353', license: 'AP05 2018013', status: 'Active' },
+    { id: 'drv14', name: 'P. Naidu', phone: '98480 12354', license: 'AP05 2019014', status: 'Active' },
+    { id: 'drv15', name: 'A. Jagadeesh', phone: '98480 12355', license: 'AP05 2017015', status: 'Active' },
+    { id: 'drv16', name: 'M. Anil Kumar', phone: '98480 12356', license: 'AP05 2021016', status: 'Active' },
+    { id: 'drv17', name: 'K. Tirupathi Rao', phone: '98480 12357', license: 'AP05 2018017', status: 'Active' },
+    { id: 'drv18', name: 'G. Prasad', phone: '98480 12358', license: 'AP05 2016018', status: 'Active' },
+    { id: 'drv19', name: 'R. Kondala Rao', phone: '98480 12359', license: 'AP05 2019019', status: 'Active' },
+    { id: 'drv20', name: 'B. Nageswara Rao', phone: '98480 12360', license: 'AP05 2015020', status: 'Active' },
+    { id: 'drv21', name: 'Ch. Ramana', phone: '98480 12361', license: 'AP05 2020021', status: 'Active' },
+    { id: 'drv22', name: 'V. Mahesh', phone: '98480 12362', license: 'AP05 2022022', status: 'Active' }
+  ],
+  entries: [] // Clean empty production records ready for actual usage
+});
+
+let state;
+try {
+  let raw = localStorage.getItem(STORE);
+  if (raw) {
+    state = JSON.parse(raw);
+  } else {
+    // Check previous key if user already started
+    let old = localStorage.getItem('fleetpilot_v2');
+    if (old) {
+      let parsed = JSON.parse(old);
+      state = parsed;
+      if (!state.buses || state.buses.length < 7) state.buses = defaultState().buses;
+      if (!state.drivers || state.drivers.length < 20) state.drivers = defaultState().drivers;
+    } else {
+      state = defaultState();
+    }
+    localStorage.setItem(STORE, JSON.stringify(state));
+  }
+} catch(e) {
+  state = defaultState();
+}
+
+function save(){
+  localStorage.setItem(STORE, JSON.stringify(state));
+}
+
+function bus(id){
+  return state.buses.find(b => b.id === id) || { reg: 'Unknown bus', city: '—' };
+}
+
+function getLastDriverForBus(busId){
+  let busEntries = state.entries.filter(e => e.busId === busId).sort((a,b) => (b.date + b.created).localeCompare(a.date + a.created));
+  if (busEntries.length > 0) {
+    return { name: busEntries[0].driver, date: busEntries[0].date };
+  }
+  return null;
+}
+
+function statsForDriver(driverName){
+  let drvEntries = state.entries.filter(e => e.driver.toLowerCase() === driverName.toLowerCase());
+  let km = drvEntries.reduce((a, e) => a + (+e.km || 0), 0);
+  let liters = drvEntries.reduce((a, e) => a + (+e.liters || 0), 0);
+  let cost = drvEntries.reduce((a, e) => a + (+e.cost || 0), 0);
+  return { trips: drvEntries.length, km, liters, cost };
+}
+
+function entryTotals(entries){
+  return entries.reduce((a, e) => ({
+    km: a.km + (+e.km || 0),
+    liters: a.liters + (+e.liters || 0),
+    cost: a.cost + (+e.cost || 0)
+  }), { km: 0, liters: 0, cost: 0 });
+}
+
+function mileage(e){
+  return +e.liters > 0 ? (+e.km || 0) / (+e.liters) : 0;
+}
+
+function todayEntries(){
+  return state.entries.filter(e => e.date === iso(today));
+}
+
+function statsFor(entries){
+  let t = entryTotals(entries);
+  return { ...t, trips: entries.length, mpg: t.liters ? t.km / t.liters : 0 };
+}
+
+function fmtDate(s){
+  if (!s) return '—';
+  return new Date(s + 'T12:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function toast(msg){
+  let t = document.getElementById('toast');
+  t.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981"></i><span>${msg}</span>`;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function navigate(page){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('[data-page]').forEach(b => b.classList.toggle('active', b.dataset.page === page));
+  let names = {
+    dashboard: 'Dashboard',
+    buses: 'Buses',
+    entries: 'Daily records',
+    reports: 'Reports & analytics',
+    drivers: 'Driver staff',
+    settings: 'Settings'
+  };
+  document.getElementById('pageTitle').textContent = names[page];
+  document.getElementById('crumbName').textContent = names[page];
+  if (page === 'dashboard') renderDashboard();
+  if (page === 'buses') renderBusesPage();
+  if (page === 'entries') renderEntries();
+  if (page === 'reports') renderReports();
+  if (page === 'drivers') renderDrivers();
+  if (page === 'settings') loadSettings();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.querySelectorAll('[data-page]').forEach(b => b.addEventListener('click', () => navigate(b.dataset.page)));
+document.getElementById('todayPill').innerHTML = `<i class="fa-regular fa-calendar-days"></i> ${today.toLocaleDateString('en-IN', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' })}`;
+
+function busCard(b, entries){
+  let t = statsFor(entries), status = (b.status || 'Active').toLowerCase();
+  let busLabel = b.reg.toLowerCase().includes('bus') ? b.reg : 'Bus ' + b.reg;
+  let last = getLastDriverForBus(b.id);
+  let statusIcon = status === 'active' ? '<i class="fa-solid fa-circle-check"></i>' : (status === 'maintenance' ? '<i class="fa-solid fa-wrench"></i>' : '<i class="fa-solid fa-circle-pause"></i>');
+
+  return `<article class="bus-card">
+    <div class="bus-top">
+      <div class="bus-id">
+        <div class="bus-symbol"><i class="fa-solid fa-bus"></i></div>
+        <div>
+          <h4>${esc(busLabel)}</h4>
+          <p class="bus-city"><i class="fa-solid fa-location-dot"></i> ${esc(b.city || 'City not set')}</p>
+        </div>
+      </div>
+      <span class="status ${status}">${statusIcon} ${esc(b.status || 'Active')}</span>
+    </div>
+    <div class="bus-driver">
+      <i class="fa-solid fa-user-clock"></i>
+      <span>${last ? `Last driven by: <strong>${esc(last.name)}</strong> <small class="text-muted">(${fmtDate(last.date)})</small>` : 'Available in pool (Rotating drivers)'}</span>
+    </div>
+    <div class="bus-metrics">
+      <div class="metric"><span>Distance today</span><strong>${num(t.km)} <small>km</small></strong></div>
+      <div class="metric"><span>Diesel today</span><strong>${num(t.liters)} <small>L</small></strong></div>
+      <div class="metric"><span>Mileage today</span><strong>${t.mpg ? num(t.mpg) : '—'} <small>km/L</small></strong></div>
+      <div class="metric"><span>Diesel cost</span><strong>${money(t.cost)}</strong></div>
+    </div>
+    <div class="bus-bottom">
+      <span class="city-pill"><i class="fa-solid fa-location-dot"></i> ${esc(b.city || 'Location')}</span>
+      <button class="text-btn" onclick="openBusModal('${b.id}')"><i class="fa-solid fa-pen-to-square"></i>Manage</button>
+    </div>
+  </article>`;
+}
+
+function renderDashboard(){
+  let es = todayEntries(), t = statsFor(es), active = state.buses.filter(b => b.status === 'Active').length;
+  document.getElementById('dashboardStats').innerHTML = [
+    ['Fleet buses', state.buses.length, '<i class="fa-solid fa-bus"></i>', 'Configured vehicles'],
+    ['Driver staff', state.drivers.length, '<i class="fa-solid fa-users"></i>', 'Active rotating staff'],
+    ['Distance today', num(t.km) + ' km', '<i class="fa-solid fa-route"></i>', 'Total logged across trips'],
+    ['Diesel cost today', money(t.cost), '<i class="fa-solid fa-indian-rupee-sign"></i>', `${num(t.liters)} L consumed`]
+  ].map(x => `<div class="stat"><div class="stat-head"><span>${x[0]}</span><span class="stat-icon">${x[2]}</span></div><div class="stat-value">${x[1]}</div><div class="stat-foot">${x[3]}</div></div>`).join('');
+
+  document.getElementById('busCountLabel').textContent = '(' + active + ' of ' + state.buses.length + ' active)';
+  document.getElementById('dashboardBuses').innerHTML = state.buses.map(b => busCard(b, es.filter(e => e.busId === b.id))).join('') || '<div class="empty"><i class="fa-solid fa-bus"></i>No buses configured.</div>';
+
+  let recent = [...state.entries].sort((a,b) => (b.date + b.created).localeCompare(a.date + a.created)).slice(0, 7);
+  document.getElementById('recentRows').innerHTML = recent.length ? recent.map(e => {
+    let b = bus(e.busId);
+    let busLabel = b.reg.toLowerCase().includes('bus') ? b.reg : 'Bus ' + b.reg;
+    return `<tr>
+      <td>${fmtDate(e.date)}</td>
+      <td><strong>${esc(busLabel)}</strong></td>
+      <td><span class="city-pill"><i class="fa-solid fa-location-dot"></i> ${esc(b.city || '—')}</span></td>
+      <td><i class="fa-solid fa-user-check" style="font-size:11px;color:var(--primary);margin-right:4px"></i>${esc(e.driver)}</td>
+      <td><strong>${num(e.km)} km</strong></td>
+      <td>${num(e.liters)} L</td>
+      <td>${money(e.cost)}</td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="7" class="empty"><i class="fa-solid fa-clipboard"></i>No trips recorded yet. Click "Add daily record" to record the first trip.</td></tr>';
+}
+
+function renderBusesPage(){
+  let q = (document.getElementById('busSearch')?.value || '').toLowerCase();
+  let st = document.getElementById('busStatusFilter')?.value || '';
+  let arr = state.buses.filter(b => (b.reg + ' ' + (b.city || '')).toLowerCase().includes(q) && (!st || b.status === st));
+  document.getElementById('busesPageGrid').innerHTML = arr.map(b => busCard(b, state.entries.filter(e => e.busId === b.id && e.date === iso(today)))).join('') || '<div class="empty"><i class="fa-solid fa-magnifying-glass"></i>No matching buses found.</div>';
+}
+
+function fillBusFilters(){
+  let opts = state.buses.map(b => `<option value="${b.id}">Bus ${esc(b.reg)} — 📍 ${esc(b.city)}</option>`).join('');
+  let el = document.getElementById('entryBusFilter');
+  if (el) {
+    let old = el.value;
+    el.innerHTML = '<option value="">All buses</option>' + opts;
+    if (old) el.value = old;
+  }
+}
+
+function renderEntries(){
+  fillBusFilters();
+  let from = document.getElementById('entryFrom')?.value || '';
+  let to = document.getElementById('entryTo')?.value || '';
+  let bid = document.getElementById('entryBusFilter')?.value || '';
+  let q = (document.getElementById('entrySearch')?.value || '').toLowerCase();
+
+  let arr = [...state.entries].filter(e => {
+    let b = bus(e.busId);
+    let matchText = (e.driver + ' ' + (e.route || '') + ' ' + b.reg + ' ' + (b.city || '')).toLowerCase();
+    return (!from || e.date >= from) && (!to || e.date <= to) && (!bid || e.busId === bid) && matchText.includes(q);
+  }).sort((a,b) => (b.date + b.created).localeCompare(a.date + a.created));
+
+  document.getElementById('entryRows').innerHTML = arr.length ? arr.map(e => {
+    let b = bus(e.busId);
+    let busLabel = b.reg.toLowerCase().includes('bus') ? b.reg : 'Bus ' + b.reg;
+    return `<tr>
+      <td>${fmtDate(e.date)}</td>
+      <td><strong>${esc(busLabel)}</strong></td>
+      <td><span class="city-pill"><i class="fa-solid fa-location-dot"></i> ${esc(b.city || '—')}</span></td>
+      <td><i class="fa-solid fa-user-check" style="font-size:11px;color:var(--primary);margin-right:4px"></i>${esc(e.driver)}</td>
+      <td><strong>${num(e.km)} km</strong></td>
+      <td>${num(e.liters)} L</td>
+      <td>${mileage(e) ? num(mileage(e)) + ' km/L' : '—'}</td>
+      <td>${money(e.cost)}</td>
+      <td>
+        <button class="text-btn" onclick="openEntry('${e.id}')"><i class="fa-solid fa-pen"></i> Edit</button>
+        <button class="text-btn" style="color:var(--red)" onclick="deleteEntry('${e.id}')"><i class="fa-solid fa-trash-can"></i></button>
+      </td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="9" class="empty"><i class="fa-solid fa-folder-open"></i>No trip records match the selected filters.</td></tr>';
+}
+
+function clearEntryFilters(){
+  ['entryFrom','entryTo','entryBusFilter','entrySearch'].forEach(id => {
+    let el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  renderEntries();
+}
+
+function openModal(title, body){
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = body;
+  document.getElementById('modalBackdrop').classList.add('open');
+}
+
+function closeModal(){
+  document.getElementById('modalBackdrop').classList.remove('open');
+}
+
+function handleDriverSelectChange(sel){
+  let newWrap = document.getElementById('newDriverContainer');
+  let newInp = document.getElementById('newDriverInput');
+  if (sel.value === '__NEW__') {
+    newWrap.classList.remove('hidden');
+    if (newInp) { newInp.required = true; newInp.focus(); }
+  } else {
+    newWrap.classList.add('hidden');
+    if (newInp) { newInp.required = false; }
+  }
+}
+
+function openEntry(id){
+  let e = id ? state.entries.find(x => x.id === id) : null;
+  let bId = e?.busId || state.buses[0]?.id || '';
+
+  // Sort drivers alphabetically for easy selection
+  let sortedDrivers = [...state.drivers].sort((a,b) => a.name.localeCompare(b.name));
+
+  let body = `<form id="entryForm" onsubmit="saveEntry(event,'${e?.id || ''}')">
+    <div class="notice">
+      <i class="fa-solid fa-circle-info"></i>
+      <div>
+        <strong>Driver trip entry:</strong> Select your name and the bus you operated today. Enter the manual distance traveled and diesel pumped.
+      </div>
+    </div>
+    <div class="form-grid">
+      <!-- DRIVER SELECTION -->
+      <div class="field full" style="background:var(--primary-subtle);padding:16px;border-radius:14px;border:1px solid var(--primary-border);">
+        <label style="color:var(--primary);font-size:13.5px;font-weight:800;">
+          <i class="fa-solid fa-user-check"></i> Select Driver (Your Name) *
+        </label>
+        <select class="select" name="driver" id="entryDriverSelect" required onchange="handleDriverSelectChange(this)" style="font-weight:700;font-size:14px;">
+          <option value="">-- Choose your name from driver staff --</option>
+          ${sortedDrivers.map(d => `<option value="${esc(d.name)}" ${d.name === (e?.driver || '') ? 'selected' : ''}>${esc(d.name)} ${d.phone ? '— (' + esc(d.phone) + ')' : ''}</option>`).join('')}
+          <option value="__NEW__">➕ Add New / Substitute Driver...</option>
+        </select>
+        <div id="newDriverContainer" class="hidden" style="margin-top:10px;">
+          <label style="font-size:12px;color:var(--text-muted);">Enter new driver full name *</label>
+          <input class="input" id="newDriverInput" placeholder="Driver's Full Name (e.g. S. Narayana)">
+        </div>
+        <small style="color:#475569;margin-top:6px;">Drivers rotate daily across buses. Select yourself to credit this trip to your record.</small>
+      </div>
+
+      <!-- BUS SELECTION -->
+      <div class="field">
+        <label><i class="fa-solid fa-bus" style="color:var(--primary)"></i> Select Bus *</label>
+        <select class="select" name="busId" id="entryBusSelect" required style="font-weight:700;">
+          ${state.buses.map(b => `<option value="${b.id}" ${b.id === bId ? 'selected' : ''}>Bus ${esc(b.reg)} — 📍 ${esc(b.city)}</option>`).join('')}
+        </select>
+      </div>
+
+      <!-- DATE -->
+      <div class="field">
+        <label><i class="fa-regular fa-calendar" style="color:var(--primary)"></i> Date of trip *</label>
+        <input class="input" name="date" type="date" required value="${e?.date || iso(today)}">
+      </div>
+
+      <!-- MANUAL DISTANCE -->
+      <div class="field">
+        <label><i class="fa-solid fa-route" style="color:var(--primary)"></i> Distance traveled (km) *</label>
+        <input class="input" name="km" id="entryKm" type="number" min="0.1" step="0.1" required value="${e?.km ?? ''}" oninput="calcEntry()" placeholder="e.g. 74.5" style="font-size:15px;font-weight:700;">
+        <small>Manual kilometers driven for this shift</small>
+      </div>
+
+      <!-- DIESEL CONSUMPTION -->
+      <div class="field">
+        <label><i class="fa-solid fa-gas-pump" style="color:var(--amber)"></i> Diesel filled (Liters) *</label>
+        <input class="input" name="liters" id="entryLiters" type="number" min="0" step="0.01" required value="${e?.liters ?? ''}" oninput="calcEntry()" placeholder="e.g. 18.0 (enter 0 if no diesel pumped)" style="font-size:15px;font-weight:700;">
+        <small>Enter 0 if this shift had no diesel refill</small>
+      </div>
+
+      <!-- DIESEL PRICE -->
+      <div class="field">
+        <label><i class="fa-solid fa-indian-rupee-sign" style="color:var(--emerald)"></i> Diesel price (₹/Liter) *</label>
+        <input class="input" name="price" id="entryPrice" type="number" min="0" step="0.01" required value="${e?.price ?? state.settings.defaultPrice}" oninput="calcEntry()">
+      </div>
+
+      <!-- CALCULATED DIESEL COST -->
+      <div class="field">
+        <label><i class="fa-solid fa-calculator" style="color:var(--indigo)"></i> Calculated diesel cost</label>
+        <input class="input" id="calcCost" readonly value="${money(e?.cost || 0)}" style="font-weight:800;color:var(--text-main);background:#f8fafc;font-size:15px;">
+      </div>
+
+      <!-- LIVE EFFICIENCY BADGE -->
+      <div class="field full">
+        <div id="entryEfficiencyBadge" style="padding:11px 16px;background:var(--emerald-subtle);border:1px solid var(--emerald-border);border-radius:12px;font-size:13px;color:#065f46;display:none;font-weight:600;"></div>
+      </div>
+
+      <!-- ROUTE -->
+      <div class="field">
+        <label><i class="fa-solid fa-signs-post" style="color:var(--text-muted)"></i> Route / shift description</label>
+        <input class="input" name="route" value="${esc(e?.route || '')}" placeholder="e.g. Vijayawada – Guntur Route, Shift 1">
+      </div>
+
+      <!-- NOTES -->
+      <div class="field">
+        <label><i class="fa-solid fa-note-sticky" style="color:var(--text-muted)"></i> Remarks / Notes</label>
+        <textarea class="textarea" name="notes" rows="2" placeholder="Fuel bunk name, road conditions, delay notes...">${esc(e?.notes || '')}</textarea>
+      </div>
+    </div>
+    <div id="entryWarning" class="hidden" style="color:var(--red);font-size:12.5px;margin-top:12px;font-weight:600"></div>
+    <div class="form-actions">
+      <button type="button" class="btn btn-light" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" type="submit"><i class="fa-solid fa-check"></i>Save daily entry</button>
+    </div>
+  </form>`;
+
+  openModal(e ? 'Edit trip record' : 'Record new trip', body);
+  calcEntry();
+}
+
+function calcEntry(){
+  let f = document.getElementById('entryForm');
+  if (!f) return;
+  let km = +f.elements.km.value || 0;
+  let liters = +f.elements.liters.value || 0;
+  let price = +f.elements.price.value || 0;
+
+  document.getElementById('calcCost').value = money(liters * price);
+
+  let badge = document.getElementById('entryEfficiencyBadge');
+  if (badge) {
+    if (km > 0 && liters > 0) {
+      let mpg = (km / liters).toFixed(2);
+      badge.style.display = 'block';
+      badge.innerHTML = `<i class="fa-solid fa-gauge" style="color:var(--emerald);margin-right:6px"></i><strong>Fuel efficiency:</strong> ${mpg} km/L (${km} km on ${liters} L diesel)`;
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
+  let w = document.getElementById('entryWarning');
+  if (w) {
+    if (km > 0 && liters > 0 && (km / liters) > 12) {
+      w.textContent = 'Notice: Mileage is unusually high (> 12 km/L). Please double check distance and liters.';
+      w.classList.remove('hidden');
+    } else {
+      w.classList.add('hidden');
+    }
+  }
+}
+
+function saveEntry(ev, id){
+  ev.preventDefault();
+  let f = ev.target, d = new FormData(f);
+  let km = +d.get('km');
+  let liters = +d.get('liters');
+  let price = +d.get('price');
+  let bid = d.get('busId');
+  let date = d.get('date');
+  let driverSel = d.get('driver').trim();
+  let driverName = driverSel;
+
+  if (driverSel === '__NEW__') {
+    let customName = document.getElementById('newDriverInput')?.value.trim();
+    if (!customName) {
+      toast('Please enter the new driver name.');
+      return;
+    }
+    driverName = customName;
+  }
+
+  if (!driverName) {
+    toast('Please select or enter driver name.');
+    return;
+  }
+  if (km <= 0) {
+    toast('Please enter distance traveled in km.');
+    return;
+  }
+
+  let entry = {
+    id: id || 'ent' + Date.now(),
+    date,
+    busId: bid,
+    driver: driverName,
+    route: d.get('route').trim(),
+    km: +km.toFixed(2),
+    liters: +liters.toFixed(2),
+    price: +price.toFixed(2),
+    cost: +(liters * price).toFixed(2),
+    notes: d.get('notes').trim(),
+    created: id ? (state.entries.find(x => x.id === id)?.created || Date.now()) : Date.now()
+  };
+
+  if (id) {
+    state.entries = state.entries.map(x => x.id === id ? entry : x);
+  } else {
+    state.entries.push(entry);
+  }
+
+  // Dynamically ensure driver is in staff roster
+  let existingDrv = state.drivers.find(x => x.name.toLowerCase() === driverName.toLowerCase());
+  if (!existingDrv) {
+    state.drivers.push({
+      id: 'drv' + Date.now(),
+      name: driverName,
+      phone: '',
+      license: '',
+      status: 'Active'
+    });
+  }
+
+  save();
+  closeModal();
+  renderAll();
+  toast(id ? 'Trip entry updated successfully' : 'Trip entry recorded successfully');
+}
+
+function deleteEntry(id){
+  if (!confirm('Are you sure you want to delete this trip record?')) return;
+  state.entries = state.entries.filter(e => e.id !== id);
+  save();
+  renderAll();
+  toast('Record deleted');
+}
+
+function openBusModal(id){
+  let b = id ? state.buses.find(x => x.id === id) : null;
+  let x = b || { id: 'bus' + Date.now(), reg: '', city: 'Kakinada', status: 'Active', fuel: 'Diesel' };
+
+  openModal(b ? 'Manage bus profile' : 'Add new bus', `<form onsubmit="saveBus(event,'${b?.id || ''}')">
+    <div class="form-grid">
+      <div class="field">
+        <label><i class="fa-solid fa-bus" style="color:var(--primary)"></i> Bus number *</label>
+        <input class="input" name="reg" required value="${esc(x.reg)}" placeholder="e.g. 1245 or 4179 Ultra" style="font-weight:700">
+        <small>Bus identifier (e.g. 1245, 4494, 0069, 7188, 9829, 4179, 4179 Ultra)</small>
+      </div>
+      <div class="field">
+        <label><i class="fa-solid fa-location-dot" style="color:var(--cyan)"></i> City / Base location *</label>
+        <input class="input" name="city" required value="${esc(x.city || '')}" placeholder="e.g. Vijayawada, Kakinada, Addaripeta, Kapileswaram" style="font-weight:700">
+        <small>Assigned city / operating base</small>
+      </div>
+      <div class="field">
+        <label><i class="fa-solid fa-gas-pump" style="color:var(--amber)"></i> Fuel type</label>
+        <select class="select" name="fuel">
+          <option ${(x.fuel || 'Diesel') === 'Diesel' ? 'selected' : ''}>Diesel</option>
+          <option ${x.fuel === 'Petrol' ? 'selected' : ''}>Petrol</option>
+          <option ${x.fuel === 'CNG' ? 'selected' : ''}>CNG</option>
+          <option ${x.fuel === 'Electric' ? 'selected' : ''}>Electric</option>
+        </select>
+      </div>
+      <div class="field">
+        <label><i class="fa-solid fa-circle-check" style="color:var(--emerald)"></i> Operational status</label>
+        <select class="select" name="status">
+          ${['Active','Maintenance','Inactive'].map(s => `<option ${x.status === s ? 'selected' : ''}>${s}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="button" class="btn btn-light" onclick="closeModal()">Cancel</button>
+      ${b ? `<button type="button" class="btn btn-danger" onclick="deleteBus('${b.id}')"><i class="fa-solid fa-trash-can"></i>Delete</button>` : ''}
+      <button class="btn btn-primary" type="submit"><i class="fa-solid fa-check"></i>Save bus</button>
+    </div>
+  </form>`);
+}
+
+function saveBus(ev, id){
+  ev.preventDefault();
+  let d = new FormData(ev.target);
+  let reg = d.get('reg').trim();
+  let city = d.get('city').trim();
+
+  if (!reg) { toast('Please enter a bus number.'); return; }
+  if (!city) { toast('Please enter the city.'); return; }
+
+  if (state.buses.some(b => b.reg.toLowerCase() === reg.toLowerCase() && b.id !== id)) {
+    toast('That bus number already exists in your fleet.');
+    return;
+  }
+
+  let x = {
+    id: id || 'bus' + Date.now(),
+    reg,
+    city,
+    fuel: d.get('fuel'),
+    status: d.get('status')
+  };
+
+  if (id) {
+    state.buses = state.buses.map(b => b.id === id ? x : b);
+  } else {
+    state.buses.push(x);
+  }
+
+  save();
+  closeModal();
+  renderAll();
+  toast('Bus profile saved');
+}
+
+function deleteBus(id){
+  if (state.entries.some(e => e.busId === id)) {
+    toast('This bus has existing trip records. Change its status to Maintenance or Inactive instead of deleting.');
+    return;
+  }
+  if (!confirm('Delete this bus from fleet?')) return;
+  state.buses = state.buses.filter(b => b.id !== id);
+  save();
+  closeModal();
+  renderAll();
+  toast('Bus deleted');
+}
+
+function openDriverModal(id){
+  let d = id ? state.drivers.find(x => x.id === id) : null;
+  let x = d || { id: 'drv' + Date.now(), name: '', phone: '', license: '', status: 'Active' };
+
+  openModal(d ? 'Edit driver profile' : 'Add driver staff', `<form onsubmit="saveDriver(event,'${d?.id || ''}')">
+    <div class="form-grid">
+      <div class="field full">
+        <label><i class="fa-solid fa-user" style="color:var(--primary)"></i> Full name *</label>
+        <input class="input" name="name" required value="${esc(x.name)}" placeholder="Driver's full name" style="font-weight:700">
+      </div>
+      <div class="field">
+        <label><i class="fa-solid fa-phone" style="color:var(--emerald)"></i> Mobile number</label>
+        <input class="input" name="phone" type="tel" value="${esc(x.phone)}" placeholder="e.g. 98480 12345">
+      </div>
+      <div class="field">
+        <label><i class="fa-solid fa-id-card" style="color:var(--indigo)"></i> Driving license number</label>
+        <input class="input" name="license" value="${esc(x.license)}" placeholder="e.g. AP05 2020001">
+      </div>
+      <div class="field full">
+        <label><i class="fa-solid fa-circle-check" style="color:var(--emerald)"></i> Staff status</label>
+        <select class="select" name="status">
+          <option ${x.status === 'Active' ? 'selected' : ''}>Active</option>
+          <option ${x.status === 'Inactive' ? 'selected' : ''}>Inactive</option>
+        </select>
+        <small>Drivers dynamically exchange buses every day and select themselves upon recording trips.</small>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="button" class="btn btn-light" onclick="closeModal()">Cancel</button>
+      ${d ? `<button type="button" class="btn btn-danger" onclick="deleteDriver('${d.id}')"><i class="fa-solid fa-trash-can"></i>Delete</button>` : ''}
+      <button class="btn btn-primary" type="submit"><i class="fa-solid fa-check"></i>Save driver</button>
+    </div>
+  </form>`);
+}
+
+function saveDriver(ev, id){
+  ev.preventDefault();
+  let d = new FormData(ev.target);
+  let name = d.get('name').trim();
+  if (!name) { toast('Please enter driver name.'); return; }
+
+  let x = {
+    id: id || 'drv' + Date.now(),
+    name,
+    phone: d.get('phone').trim(),
+    license: d.get('license').trim(),
+    status: d.get('status')
+  };
+
+  if (id) {
+    state.drivers = state.drivers.map(a => a.id === id ? x : a);
+  } else {
+    state.drivers.push(x);
+  }
+
+  save();
+  closeModal();
+  renderAll();
+  toast('Driver profile saved');
+}
+
+function deleteDriver(id){
+  let d = state.drivers.find(x => x.id === id);
+  if (!confirm(`Remove ${d?.name || 'this driver'} from driver staff?`)) return;
+  state.drivers = state.drivers.filter(x => x.id !== id);
+  save();
+  closeModal();
+  renderAll();
+  toast('Driver removed from staff');
+}
+
+function renderDrivers(){
+  let q = (document.getElementById('driverSearch')?.value || '').toLowerCase();
+  let arr = state.drivers.filter(d => (d.name + ' ' + (d.phone || '') + ' ' + (d.license || '')).toLowerCase().includes(q))
+                         .sort((a,b) => a.name.localeCompare(b.name));
+
+  let countEl = document.getElementById('driverCountLabel');
+  if (countEl) countEl.textContent = `(${state.drivers.length} registered members)`;
+
+  document.getElementById('driverRows').innerHTML = arr.length ? arr.map(d => {
+    let stats = statsForDriver(d.name);
+    return `<tr>
+      <td><strong style="font-size:13.5px"><i class="fa-solid fa-id-badge" style="color:var(--primary);margin-right:7px"></i>${esc(d.name)}</strong></td>
+      <td>${d.phone ? '<i class="fa-solid fa-phone" style="font-size:11px;color:var(--text-muted);margin-right:5px"></i>' + esc(d.phone) : '—'}</td>
+      <td>${esc(d.license || '—')}</td>
+      <td><strong>${stats.trips}</strong> <span class="text-muted">trips</span></td>
+      <td><strong>${num(stats.km)} km</strong></td>
+      <td><span class="status ${(d.status || 'Active').toLowerCase()}">${esc(d.status || 'Active')}</span></td>
+      <td>
+        <button class="text-btn" onclick="openDriverModal('${d.id}')"><i class="fa-solid fa-pen"></i> Edit</button>
+        <button class="text-btn" style="color:var(--red)" onclick="deleteDriver('${d.id}')"><i class="fa-solid fa-trash-can"></i></button>
+      </td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="7" class="empty"><i class="fa-solid fa-users"></i>No drivers found matching your search.</td></tr>';
+}
+
+function monthEntries(){
+  let m = document.getElementById('reportMonth')?.value || iso(today).slice(0, 7);
+  return state.entries.filter(e => e.date.startsWith(m));
+}
+
+function renderReports(){
+  let es = monthEntries(), t = statsFor(es);
+  document.getElementById('reportSummary').innerHTML = [
+    ['Total distance', num(t.km) + ' km'],
+    ['Diesel consumed', num(t.liters) + ' L'],
+    ['Diesel expenditure', money(t.cost)]
+  ].map(x => `<div class="stat"><div class="stat-head">${x[0]}</div><div class="stat-value">${x[1]}</div><div class="stat-foot">Selected month</div></div>`).join('');
+
+  let per = state.buses.map(b => ({ b, es: es.filter(e => e.busId === b.id) }));
+
+  drawBars('mileageChart', per.map(x => ({
+    label: x.b.reg,
+    value: statsFor(x.es).mpg,
+    suffix: ' km/L',
+    type: 'emerald'
+  })));
+
+  drawBars('dieselChart', per.map(x => ({
+    label: x.b.reg,
+    value: statsFor(x.es).liters,
+    suffix: ' L',
+    type: 'blue'
+  })));
+
+  document.getElementById('reportRows').innerHTML = per.map(x => {
+    let s = statsFor(x.es);
+    let drivers = [...new Set(x.es.map(e => e.driver))].filter(Boolean).join(', ') || '—';
+    let busLabel = x.b.reg.toLowerCase().includes('bus') ? x.b.reg : 'Bus ' + x.b.reg;
+    return `<tr>
+      <td><strong>${esc(busLabel)}</strong></td>
+      <td><span class="city-pill"><i class="fa-solid fa-location-dot"></i> ${esc(x.b.city || '—')}</span></td>
+      <td>${esc(drivers)}</td>
+      <td>${s.trips}</td>
+      <td><strong>${num(s.km)} km</strong></td>
+      <td>${num(s.liters)} L</td>
+      <td>${s.mpg ? num(s.mpg) + ' km/L' : '—'}</td>
+      <td>${money(s.cost)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function drawBars(id, data){
+  let el = document.getElementById(id);
+  if (!el) return;
+  let max = Math.max(1, ...data.map(x => x.value || 0));
+  el.innerHTML = data.map(x => {
+    let displayVal = (x.value > 0) ? num(x.value) : (x.suffix === ' km/L' ? '—' : '0');
+    let titleVal = (x.value > 0) ? `${num(x.value)}${x.suffix || ''}` : (x.suffix === ' km/L' ? 'No data' : `0${x.suffix || ''}`);
+    let cls = x.type === 'emerald' ? 'emerald' : 'blue';
+    return `<div class="bar-col">
+      <div class="bar-value">${displayVal}</div>
+      <div class="bar ${cls}" style="height:${Math.max(x.value > 0 ? 4 : 2, (x.value || 0) / max * 130)}px" title="${esc(x.label)}: ${titleVal}"></div>
+      <div class="bar-label">${esc(x.label)}</div>
+    </div>`;
+  }).join('');
+}
+
+function exportCSV(){
+  let rows = [
+    ['Date', 'Bus Number', 'City', 'Driver', 'Route', 'Distance (km)', 'Diesel (liters)', 'Price per Liter (INR)', 'Diesel Cost (INR)', 'Remarks'],
+    ...state.entries.map(e => {
+      let b = bus(e.busId);
+      return [
+        e.date,
+        b.reg,
+        b.city || '',
+        e.driver,
+        e.route || '',
+        e.km,
+        e.liters,
+        e.price,
+        e.cost,
+        e.notes || ''
+      ];
+    })
+  ];
+
+  let csv = rows.map(r => r.map(v => '"' + String(v ?? '').replace(/"/g, '""') + '"').join(',')).join('\r\n');
+  let blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+  let url = URL.createObjectURL(blob);
+  let a = document.createElement('a');
+  a.href = url;
+  a.download = 'devusons-fleet-records-' + iso(today) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('CSV export downloaded successfully');
+}
+
+function backupDatabase(){
+  let dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(state, null, 2));
+  let a = document.createElement('a');
+  a.setAttribute('href', dataStr);
+  a.setAttribute('download', 'devusons-fleet-backup-' + iso(today) + '.json');
+  a.click();
+  toast('Database backup JSON downloaded');
+}
+
+function restoreDatabase(ev){
+  let file = ev.target.files?.[0];
+  if (!file) return;
+  let reader = new FileReader();
+  reader.onload = function(e){
+    try {
+      let parsed = JSON.parse(e.target.result);
+      if (parsed.buses && parsed.drivers) {
+        state = parsed;
+        save();
+        renderAll();
+        toast('Database restored successfully');
+      } else {
+        alert('Invalid backup file structure.');
+      }
+    } catch(err) {
+      alert('Error reading backup file: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function clearTripRecords(){
+  if (!confirm('Are you sure you want to delete all trip records? Bus profiles and driver staff will be kept.')) return;
+  state.entries = [];
+  save();
+  renderAll();
+  toast('All trip records cleared');
+}
+
+function loadSettings(){
+  document.getElementById('fleetName').value = state.settings.fleetName || 'Devusons Bus Fleet';
+  document.getElementById('defaultPrice').value = state.settings.defaultPrice ?? 95;
+  document.getElementById('sidebarFleetTitle').textContent = state.settings.fleetName || 'Devusons Fleet';
+  document.getElementById('topbarOrgName').textContent = state.settings.fleetName || 'Devusons Fleet';
+}
+
+function saveSettings(){
+  state.settings.fleetName = document.getElementById('fleetName').value.trim() || 'Devusons Bus Fleet';
+  state.settings.defaultPrice = +document.getElementById('defaultPrice').value || 0;
+  save();
+  loadSettings();
+  toast('Settings saved');
+  document.title = (state.settings.fleetName || 'Devusons') + ' — Bus Fleet Manager';
+}
+
+function renderAll(){
+  renderDashboard();
+  renderBusesPage();
+  renderEntries();
+  renderReports();
+  renderDrivers();
+  loadSettings();
+  document.title = (state.settings.fleetName || 'Devusons') + ' — Bus Fleet Manager';
+}
+
+document.getElementById('reportMonth').value = iso(today).slice(0, 7);
 renderAll();
 </script>
 </body>
