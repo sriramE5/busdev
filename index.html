@@ -9,6 +9,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Firebase Cloud Database Compat SDK v10.12.0 -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <!-- FontAwesome 6 Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 <!-- PWA Manifest & App Icons -->
@@ -738,6 +741,46 @@ td strong{color:#0f172a;font-weight:700}
   transition:color .15s;
 }
 .btn-toggle-eye:hover{color:var(--primary)}
+
+/* Cloud Database Status Badges & Settings UI */
+.cloud-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 10px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:.15s;
+  user-select:none;
+}
+.cloud-badge.online{background:var(--emerald-subtle);color:var(--emerald);border:1px solid var(--emerald-border)}
+.cloud-badge.syncing{background:var(--amber-subtle);color:var(--amber);border:1px solid var(--amber-border)}
+.cloud-badge.local{background:#f1f5f9;color:#64748b;border:1px solid #cbd5e1}
+.cloud-badge.error{background:var(--red-subtle);color:var(--red);border:1px solid var(--red-border)}
+.cloud-badge:hover{transform:translateY(-1px);filter:brightness(.97)}
+.cloud-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  display:inline-block;
+}
+.cloud-dot.online{background:var(--emerald);box-shadow:0 0 6px rgba(5,150,105,0.6)}
+.cloud-dot.syncing{background:var(--amber);box-shadow:0 0 6px rgba(217,119,6,0.6)}
+.cloud-dot.local{background:#94a3b8}
+.cloud-dot.error{background:var(--red)}
+.cloud-stats-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:10px;
+  margin-bottom:18px;
+  padding:14px;
+  background:#f8fafc;
+  border-radius:12px;
+  border:1px solid #e2e8f0;
+}
+
 .network-badge{
   display:inline-flex;
   align-items:center;
@@ -1111,6 +1154,11 @@ td strong{color:#0f172a;font-weight:700}
         </div>
       </div>
       <div class="top-right">
+        <div id="cloudDbBadge" class="cloud-badge local" onclick="navigate('settings')" title="Cloud Database Status - Click for settings">
+          <span class="cloud-dot local"></span>
+          <i class="fa-solid fa-hard-drive"></i>
+          <span class="hide-mobile">Local Storage</span>
+        </div>
         <div id="networkStatusBadge"></div>
         <button class="btn-install-pwa" onclick="installPWA()" title="Install app on device">
           <i class="fa-solid fa-download"></i> <span class="hide-mobile">Install App</span>
@@ -1424,16 +1472,151 @@ td strong{color:#0f172a;font-weight:700}
         </div>
       </section>
 
-      <!-- SETTINGS PAGE -->
+      <!-- SETTINGS & CLOUD DATABASE PAGE -->
       <section class="page" id="page-settings">
         <div class="welcome">
           <div>
-            <h2>Settings & backup</h2>
-            <p>Fleet profile and data backup / restore tools.</p>
+            <h2>Settings & Cloud Database</h2>
+            <p>Configure real-time multi-device cloud synchronization, fleet profile, and data backups.</p>
           </div>
         </div>
+
+        <!-- CLOUD DATABASE (FIREBASE FIRESTORE) CARD -->
+        <div class="panel form-card" style="margin-bottom:24px;border:1.5px solid var(--primary-border);box-shadow:0 8px 30px rgba(37,99,235,.07)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px">
+            <div>
+              <h3 style="margin:0 0 6px;display:flex;align-items:center;gap:10px;font-size:18px">
+                <i class="fa-solid fa-cloud" style="color:var(--primary)"></i> Firebase Firestore Cloud Database
+              </h3>
+              <p style="margin:0;color:var(--text-muted);font-size:13px">
+                Connects all 20+ driver phones and admin devices to the same real-time cloud database with offline-first support.
+              </p>
+            </div>
+            <div id="cloudDbDetailBadge">
+              <span class="cloud-badge local"><span class="cloud-dot local"></span> Local Storage Mode</span>
+            </div>
+          </div>
+
+          <!-- Live Cloud Stats Grid -->
+          <div class="cloud-stats-grid">
+            <div>
+              <small style="color:var(--text-muted);font-size:10.5px;font-weight:700;text-transform:uppercase;display:block">Database Mode</small>
+              <div id="cloudDbModeText" style="font-size:14px;font-weight:800;color:var(--text-main);margin-top:2px">Local Storage</div>
+            </div>
+            <div>
+              <small style="color:var(--text-muted);font-size:10.5px;font-weight:700;text-transform:uppercase;display:block">Project ID</small>
+              <div id="cloudDbProjectText" style="font-size:13px;font-weight:700;color:var(--primary);margin-top:2px;overflow:hidden;text-overflow:ellipsis">None (Local)</div>
+            </div>
+            <div>
+              <small style="color:var(--text-muted);font-size:10.5px;font-weight:700;text-transform:uppercase;display:block">Fleet Buses</small>
+              <div id="cloudBusesCountText" style="font-size:14px;font-weight:800;color:var(--cyan);margin-top:2px">7 Buses</div>
+            </div>
+            <div>
+              <small style="color:var(--text-muted);font-size:10.5px;font-weight:700;text-transform:uppercase;display:block">Driver Staff</small>
+              <div id="cloudDriversCountText" style="font-size:14px;font-weight:800;color:var(--emerald);margin-top:2px">22 Drivers</div>
+            </div>
+            <div>
+              <small style="color:var(--text-muted);font-size:10.5px;font-weight:700;text-transform:uppercase;display:block">Trip Records</small>
+              <div id="cloudEntriesCountText" style="font-size:14px;font-weight:800;color:var(--amber);margin-top:2px">0 Records</div>
+            </div>
+          </div>
+
+          <!-- Quick Firebase Config Input -->
+          <div style="background:#fafbfc;border:1px solid #e2e8f0;border-radius:14px;padding:18px;margin-bottom:20px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <label style="font-size:13px;font-weight:700;color:#1e293b;display:flex;align-items:center;gap:7px">
+                <i class="fa-solid fa-code" style="color:var(--primary)"></i> Firebase Web Config (Paste snippet or JSON)
+              </label>
+              <button type="button" class="text-btn" onclick="toggleCloudConfigFields()" id="toggleCloudFieldsBtn" style="font-size:12px">
+                <i class="fa-solid fa-sliders"></i> Show individual fields
+              </button>
+            </div>
+            <textarea id="firebaseConfigPaste" class="textarea" rows="4" style="font-family:monospace;font-size:12px;background:#ffffff;line-height:1.4" placeholder='Paste your Firebase configuration here:
+const firebaseConfig = {
+  apiKey: "AIzaSy...",
+  authDomain: "devusons-fleet.firebaseapp.com",
+  projectId: "devusons-fleet",
+  storageBucket: "devusons-fleet.firebasestorage.app",
+  messagingSenderId: "...",
+  appId: "1:..."
+};'></textarea>
+            <small style="display:block;color:var(--text-muted);font-size:11.5px;margin-top:6px">
+              <i class="fa-solid fa-circle-info" style="color:var(--primary);margin-right:4px"></i> You can paste either the full <code>firebaseConfig = { ... }</code> snippet or raw JSON. Our parser handles it automatically.
+            </small>
+
+            <!-- Collapsible individual fields -->
+            <div id="individualConfigFields" style="display:none;margin-top:16px;padding-top:16px;border-top:1px dashed #cbd5e1">
+              <div class="form-grid">
+                <div class="field">
+                  <label><i class="fa-solid fa-database" style="color:var(--primary)"></i> Project ID *</label>
+                  <input class="input" id="fbProjectId" placeholder="e.g. devusons-fleet">
+                </div>
+                <div class="field">
+                  <label><i class="fa-solid fa-key" style="color:var(--amber)"></i> API Key *</label>
+                  <input class="input" id="fbApiKey" placeholder="AIzaSy...">
+                </div>
+                <div class="field">
+                  <label><i class="fa-solid fa-globe" style="color:var(--cyan)"></i> Auth Domain</label>
+                  <input class="input" id="fbAuthDomain" placeholder="devusons-fleet.firebaseapp.com">
+                </div>
+                <div class="field">
+                  <label><i class="fa-solid fa-cube" style="color:var(--emerald)"></i> App ID</label>
+                  <input class="input" id="fbAppId" placeholder="1:123456789:web:abcdef">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cloud Action Buttons -->
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <button class="btn btn-primary" onclick="saveAndConnectFirebase()" id="btnConnectCloud">
+              <i class="fa-solid fa-bolt"></i> Test & Save Cloud Connection
+            </button>
+            <button class="btn btn-light" onclick="syncLocalToCloud()" id="btnPushCloud" title="Upload all current buses, drivers, and records to Firebase Firestore">
+              <i class="fa-solid fa-cloud-arrow-up" style="color:var(--primary)"></i> Push Local Fleet to Cloud
+            </button>
+            <button class="btn btn-light" onclick="pullCloudToLocal()" id="btnPullCloud" title="Fetch fresh records from cloud">
+              <i class="fa-solid fa-rotate" style="color:var(--cyan)"></i> Refresh from Cloud
+            </button>
+            <button class="btn btn-light" onclick="disconnectFirebase()" id="btnDisconnectCloud" style="color:var(--red)">
+              <i class="fa-solid fa-power-off"></i> Disconnect Cloud
+            </button>
+          </div>
+
+          <!-- Quick 2-Minute Setup Instructions Accordion -->
+          <details style="margin-top:20px;background:#f1f5f9;border-radius:12px;padding:14px 18px;border:1px solid #e2e8f0;font-size:12.5px;color:#334155">
+            <summary style="font-weight:700;color:var(--primary);cursor:pointer;display:flex;align-items:center;gap:8px">
+              <i class="fa-solid fa-circle-question"></i> How to set up your free Firebase Cloud Database (2-minute guide)
+            </summary>
+            <div style="margin-top:12px;line-height:1.6">
+              <ol style="margin:0 0 12px 18px;padding:0">
+                <li>Go to <a href="https://console.firebase.google.com" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700;text-decoration:underline">console.firebase.google.com</a> and click <strong>"Create a project"</strong> (Name it <em>devusons-fleet</em>).</li>
+                <li>In the left sidebar, click <strong>Build &gt; Firestore Database</strong> &rarr; Click <strong>"Create database"</strong> (choose closest region, e.g. <em>asia-south1 (Mumbai)</em>). Select <strong>Start in test mode</strong>.</li>
+                <li>Go to <strong>Project Settings (gear icon) &gt; General</strong>, scroll down to <strong>"Your apps"</strong> &rarr; click the Web icon (<strong>&lt;/&gt;</strong>) &rarr; Register app.</li>
+                <li>Copy the <code>firebaseConfig = { ... }</code> code and paste it into the box above, then click <strong>"Test & Save Cloud Connection"</strong>!</li>
+                <li>Click <strong>"Push Local Fleet to Cloud"</strong> to instantly upload your 7 buses and 22 drivers to Firestore.</li>
+              </ol>
+              <div style="background:#fff;padding:12px 14px;border-radius:8px;border:1px solid #cbd5e1;font-family:monospace;font-size:11.5px">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                  <strong style="font-family:sans-serif">Recommended Firestore Security Rules:</strong>
+                  <button type="button" class="text-btn" onclick="copyFirestoreRules()" style="font-size:11px"><i class="fa-regular fa-copy"></i> Copy Rules</button>
+                </div>
+                <pre id="firestoreRulesSnippet" style="margin:0;white-space:pre-wrap;color:#0f172a">rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}</pre>
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <!-- FLEET CONFIGURATION & LOCAL BACKUP PANEL -->
         <div class="panel form-card">
-          <h3 style="margin-top:0">Fleet configuration</h3>
+          <h3 style="margin-top:0">Fleet configuration & local backup</h3>
           <div class="form-grid">
             <div class="field full">
               <label><i class="fa-solid fa-building" style="color:var(--primary)"></i> Fleet / organization name</label>
@@ -1441,7 +1624,7 @@ td strong{color:#0f172a;font-weight:700}
             </div>
           </div>
           <div class="form-actions" style="justify-content:flex-start;flex-wrap:wrap">
-            <button class="btn btn-primary" onclick="saveSettings()"><i class="fa-solid fa-check"></i>Save settings</button>
+            <button class="btn btn-primary" onclick="saveSettings()"><i class="fa-solid fa-check"></i>Save fleet name</button>
             <button class="btn btn-light" onclick="backupDatabase()"><i class="fa-solid fa-cloud-arrow-down"></i>Backup database (JSON)</button>
             <label class="btn btn-light" style="cursor:pointer">
               <i class="fa-solid fa-cloud-arrow-up"></i>Restore database
@@ -1491,7 +1674,14 @@ td strong{color:#0f172a;font-weight:700}
       <button class="close" onclick="closeMobileMenu()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="sheet-body">
-      <div class="sheet-list">
+              <div id="mobileDrawerCloudBadge" style="margin-bottom:12px;padding:10px 14px;border-radius:12px;background:#f8fafc;border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="closeMobileMenu();navigate('settings')">
+          <div style="display:flex;align-items:center;gap:8px">
+            <i class="fa-solid fa-cloud" style="color:var(--primary)"></i>
+            <span style="font-size:12px;font-weight:700">Cloud Database</span>
+          </div>
+          <span id="mobileDrawerCloudStatus" style="font-size:11px;font-weight:700;color:var(--text-muted)">Local Mode</span>
+        </div>
+        <div class="sheet-list">
         <!-- DRIVER STAFF -->
         <button class="sheet-card" onclick="navigate('drivers');closeMobileMenu()">
           <div class="sheet-card-icon" style="background:var(--primary-subtle);color:var(--primary)">
@@ -2404,6 +2594,7 @@ function saveEntry(ev, id){
   }
 
   save();
+  syncEntryToCloud(entry);
   closeModal();
   renderAll();
   toast(id ? 'Record updated successfully' : 'Record saved successfully');
@@ -2413,6 +2604,7 @@ function deleteEntry(id){
   if (!confirm('Are you sure you want to delete this trip record?')) return;
   state.entries = state.entries.filter(e => e.id !== id);
   save();
+  deleteEntryFromCloud(id);
   renderAll();
   toast('Record deleted');
 }
@@ -2465,6 +2657,7 @@ function saveBus(ev, id){
   }
 
   save();
+  syncBusToCloud(b);
   closeModal();
   renderAll();
   toast('Bus profile saved');
@@ -2477,6 +2670,7 @@ function deleteBus(id){
   if (!confirm('Delete this bus from fleet?')) return;
   state.buses = state.buses.filter(b => b.id !== id);
   save();
+  deleteBusFromCloud(id);
   closeModal();
   renderAll();
   toast('Bus deleted');
@@ -2570,6 +2764,7 @@ function saveDriver(ev, id){
   }
 
   save();
+  syncDriverToCloud(x);
   closeModal();
   renderAll();
   toast('Driver profile and login credentials saved');
@@ -2580,6 +2775,7 @@ function deleteDriver(id){
   if (!confirm(`Remove ${d?.name || 'this driver'} from driver staff?`)) return;
   state.drivers = state.drivers.filter(x => x.id !== id);
   save();
+  deleteDriverFromCloud(id);
   closeModal();
   renderAll();
   toast('Driver removed from staff');
@@ -2996,12 +3192,25 @@ function restoreDatabase(e){
   reader.readAsText(file);
 }
 
-function clearTripRecords(){
+async function clearTripRecords(){
   if (!confirm('Are you sure you want to delete all trip records? Bus profiles and driver staff will be kept.')) return;
   if (!confirm('This cannot be undone. Proceed with clearing all records?')) return;
+  
+  if (db) {
+    try {
+      let snap = await db.collection('devusons_entries').get();
+      let batch = db.batch();
+      snap.forEach(doc => batch.delete(doc.ref));
+      await batch.commit();
+    } catch(err) {
+      console.warn('Cloud batch delete error:', err);
+    }
+  }
+  
   state.entries = [];
   save();
   renderAll();
+  renderCloudSettings();
   toast('Trip records cleared');
 }
 
@@ -3009,9 +3218,14 @@ function loadSettings(){
   document.getElementById('fleetName').value = state.settings.fleetName || 'Devusons Bus Fleet';
 }
 
+function saveSettings(){
+  saveFleetName();
+}
+
 function saveFleetName(){
   state.settings.fleetName = document.getElementById('fleetName').value.trim() || 'Devusons Bus Fleet';
   save();
+  syncConfigToCloud();
   document.getElementById('topbarOrgName').textContent = state.settings.fleetName;
   document.getElementById('sidebarFleetTitle').textContent = state.settings.fleetName;
   document.title = (state.settings.fleetName || 'Devusons') + ' — Bus Fleet Manager';
@@ -3088,7 +3302,8 @@ function updateNetworkBadge(){
     el.innerHTML = '<span class="network-badge offline"><i class="fa-solid fa-wifi-slash"></i> Offline</span>';
   }
 }
-window.addEventListener('online', () => { updateNetworkBadge(); toast('Connection restored: Online'); });
+window.addEventListener('online', () => { updateNetworkBadge();
+  initFirebaseFromStorage(); toast('Connection restored: Online'); });
 window.addEventListener('offline', () => { updateNetworkBadge(); toast('Offline mode: Trips will be saved locally on this device'); });
 
 // Keyboard Shortcuts (Ctrl+N: Add Record, Escape: Close Modals)
@@ -3105,6 +3320,501 @@ window.addEventListener('keydown', (e) => {
 
 updateNetworkBadge();
 renderAll();
+
+/* ========================================================
+   FIREBASE FIRESTORE REAL-TIME CLOUD DATABASE ENGINE
+   ======================================================== */
+const FIREBASE_CONFIG_KEY = 'devusons_firebase_config';
+let firebaseApp = null;
+let db = null;
+let cloudSyncActive = false;
+let cloudUnsubs = [];
+let hasConnectedCloud = false;
+
+function parseFirebaseConfig(raw) {
+  if (!raw || typeof raw !== 'string') return null;
+  let cleaned = raw.trim();
+  let objMatch = cleaned.match(/\{[\s\S]*\}/);
+  if (objMatch) {
+    cleaned = objMatch[0];
+  }
+  // Try pure JSON
+  try {
+    let parsed = JSON.parse(cleaned);
+    if (parsed.projectId) return parsed;
+  } catch(e) {}
+
+  // Try relaxed JS object syntax
+  try {
+    let jsonified = cleaned
+      .replace(/([a-zA-Z0-9_]+)\s*:/g, '"$1":')
+      .replace(/'/g, '"')
+      .replace(/,\s*\}/g, '}');
+    let parsed = JSON.parse(jsonified);
+    if (parsed.projectId) return parsed;
+  } catch(e) {}
+
+  // Fallback regex matching
+  let apiKey = (cleaned.match(/apiKey["']?\s*:\s*["']([^"']+)["']/) || [])[1];
+  let projectId = (cleaned.match(/projectId["']?\s*:\s*["']([^"']+)["']/) || [])[1];
+  let authDomain = (cleaned.match(/authDomain["']?\s*:\s*["']([^"']+)["']/) || [])[1];
+  let appId = (cleaned.match(/appId["']?\s*:\s*["']([^"']+)["']/) || [])[1];
+  let storageBucket = (cleaned.match(/storageBucket["']?\s*:\s*["']([^"']+)["']/) || [])[1];
+  let messagingSenderId = (cleaned.match(/messagingSenderId["']?\s*:\s*["']([^"']+)["']/) || [])[1];
+
+  if (projectId) {
+    return {
+      apiKey: apiKey || '',
+      authDomain: authDomain || (projectId + '.firebaseapp.com'),
+      projectId,
+      storageBucket: storageBucket || (projectId + '.firebasestorage.app'),
+      messagingSenderId: messagingSenderId || '',
+      appId: appId || ''
+    };
+  }
+  return null;
+}
+
+async function initFirebaseFromStorage() {
+  let raw = localStorage.getItem(FIREBASE_CONFIG_KEY);
+  if (!raw) {
+    updateCloudBadges('local', 'Local Storage');
+    renderCloudSettings();
+    return;
+  }
+  try {
+    let config = JSON.parse(raw);
+    await connectToFirestore(config, false);
+  } catch(err) {
+    console.warn('Could not connect to saved Firebase config:', err);
+    updateCloudBadges('local', 'Local Storage');
+    renderCloudSettings();
+  }
+}
+
+async function connectToFirestore(config, showToast = true) {
+  if (typeof firebase === 'undefined') {
+    if (showToast) alert('Firebase SDK is not loaded. Please ensure you are connected to the internet.');
+    return false;
+  }
+
+  try {
+    // Unsubscribe from any previous listeners
+    cloudUnsubs.forEach(u => { try { u(); } catch(e){} });
+    cloudUnsubs = [];
+
+    let appName = 'devusons_fleet_app';
+    let existing = firebase.apps.find(a => a.name === appName || a.name === '[DEFAULT]');
+    if (existing) {
+      firebaseApp = existing;
+    } else {
+      firebaseApp = firebase.initializeApp(config, appName);
+    }
+
+    db = firebaseApp.firestore();
+
+    // Enable offline persistence for uninterrupted mobile offline experience
+    try {
+      await db.enablePersistence({ synchronizeTabs: true });
+    } catch(err) {
+      if (err.code !== 'already-exists' && err.code !== 'failed-precondition') {
+        console.warn('Firestore offline persistence notice:', err.message);
+      }
+    }
+
+    updateCloudBadges('syncing', 'Connecting...');
+    setupFirestoreListeners();
+
+    localStorage.setItem(FIREBASE_CONFIG_KEY, JSON.stringify(config));
+    hasConnectedCloud = true;
+
+    if (showToast) {
+      toast('Connected to Firebase Cloud Database!');
+    }
+    renderCloudSettings();
+    return true;
+  } catch(err) {
+    console.error('Firebase initialization error:', err);
+    updateCloudBadges('error', 'Cloud Error');
+    if (showToast) {
+      alert('Firebase Connection Error:\n' + err.message + '\n\nPlease check your project credentials.');
+    }
+    renderCloudSettings();
+    return false;
+  }
+}
+
+let debouncedRenderTimer = null;
+function requestDebouncedRender() {
+  if (debouncedRenderTimer) clearTimeout(debouncedRenderTimer);
+  debouncedRenderTimer = setTimeout(() => {
+    renderAll();
+  }, 40);
+}
+
+function setupFirestoreListeners() {
+  if (!db) return;
+
+  // 1. Live Trip Entries Listener
+  let unsubEntries = db.collection('devusons_entries').onSnapshot(snapshot => {
+    let docs = [];
+    snapshot.forEach(doc => {
+      let data = doc.data();
+      if (!data.id) data.id = doc.id;
+      if (data.date) data.date = toIsoDate(data.date);
+      docs.push(data);
+    });
+
+    docs.sort((a,b) => ((b.date||'') + (b.created||'')).localeCompare((a.date||'') + (a.created||'')));
+
+    // If cloud has documents or local was empty, adopt cloud state
+    if (!snapshot.empty || state.entries.length === 0) {
+      state.entries = docs;
+      localStorage.setItem(STORE, JSON.stringify(state));
+      requestDebouncedRender();
+    }
+
+    let fromCache = snapshot.metadata.fromCache;
+    if (!navigator.onLine || fromCache) {
+      updateCloudBadges('syncing', 'Offline Cache (' + docs.length + ')');
+    } else {
+      updateCloudBadges('online', 'Cloud Synced (' + docs.length + ')');
+    }
+    renderCloudSettings();
+  }, err => {
+    console.warn('Firestore entries listener warning:', err);
+    updateCloudBadges('error', 'Sync Issue');
+  });
+  cloudUnsubs.push(unsubEntries);
+
+  // 2. Live Buses Listener
+  let unsubBuses = db.collection('devusons_buses').onSnapshot(snapshot => {
+    if (!snapshot.empty) {
+      let docs = [];
+      snapshot.forEach(doc => {
+        let b = doc.data();
+        if (!b.id) b.id = doc.id;
+        docs.push(b);
+      });
+      state.buses = docs;
+      localStorage.setItem(STORE, JSON.stringify(state));
+      requestDebouncedRender();
+      renderCloudSettings();
+    }
+  }, err => console.warn('Firestore buses listener warning:', err));
+  cloudUnsubs.push(unsubBuses);
+
+  // 3. Live Drivers Listener
+  let unsubDrivers = db.collection('devusons_drivers').onSnapshot(snapshot => {
+    if (!snapshot.empty) {
+      let docs = [];
+      snapshot.forEach(doc => {
+        let d = doc.data();
+        if (!d.id) d.id = doc.id;
+        docs.push(d);
+      });
+      state.drivers = docs;
+      localStorage.setItem(STORE, JSON.stringify(state));
+      requestDebouncedRender();
+      renderCloudSettings();
+    }
+  }, err => console.warn('Firestore drivers listener warning:', err));
+  cloudUnsubs.push(unsubDrivers);
+
+  // 4. Live Fleet Settings Listener
+  let unsubConfig = db.collection('devusons_config').doc('fleet').onSnapshot(doc => {
+    if (doc.exists) {
+      let data = doc.data();
+      if (data.fleetName && data.fleetName !== state.settings.fleetName) {
+        state.settings.fleetName = data.fleetName;
+        localStorage.setItem(STORE, JSON.stringify(state));
+        document.getElementById('topbarOrgName').textContent = data.fleetName;
+        document.getElementById('sidebarFleetTitle').textContent = data.fleetName;
+        document.title = data.fleetName + ' — Bus Fleet Manager';
+      }
+    }
+  }, err => console.warn('Firestore config listener warning:', err));
+  cloudUnsubs.push(unsubConfig);
+}
+
+/* Cloud writes */
+function syncEntryToCloud(entry) {
+  if (db && entry) {
+    db.collection('devusons_entries').doc(entry.id).set(entry, { merge: true })
+      .catch(err => console.warn('Cloud sync error for entry:', err));
+  }
+}
+
+function deleteEntryFromCloud(id) {
+  if (db && id) {
+    db.collection('devusons_entries').doc(id).delete()
+      .catch(err => console.warn('Cloud delete error for entry:', err));
+  }
+}
+
+function syncBusToCloud(bus) {
+  if (db && bus) {
+    db.collection('devusons_buses').doc(bus.id).set(bus, { merge: true })
+      .catch(err => console.warn('Cloud sync error for bus:', err));
+  }
+}
+
+function deleteBusFromCloud(id) {
+  if (db && id) {
+    db.collection('devusons_buses').doc(id).delete()
+      .catch(err => console.warn('Cloud delete error for bus:', err));
+  }
+}
+
+function syncDriverToCloud(driver) {
+  if (db && driver) {
+    db.collection('devusons_drivers').doc(driver.id).set(driver, { merge: true })
+      .catch(err => console.warn('Cloud sync error for driver:', err));
+  }
+}
+
+function deleteDriverFromCloud(id) {
+  if (db && id) {
+    db.collection('devusons_drivers').doc(id).delete()
+      .catch(err => console.warn('Cloud delete error for driver:', err));
+  }
+}
+
+function syncConfigToCloud() {
+  if (db) {
+    db.collection('devusons_config').doc('fleet').set({
+      fleetName: state.settings.fleetName || 'Devusons Bus Fleet',
+      updatedAt: Date.now()
+    }, { merge: true }).catch(err => console.warn('Cloud sync error for config:', err));
+  }
+}
+
+/* Settings Page Controls & Migration */
+function toggleCloudConfigFields() {
+  let fields = document.getElementById('individualConfigFields');
+  let btn = document.getElementById('toggleCloudFieldsBtn');
+  if (!fields) return;
+  if (fields.style.display === 'none') {
+    fields.style.display = 'block';
+    btn.innerHTML = '<i class="fa-solid fa-sliders"></i> Hide individual fields';
+  } else {
+    fields.style.display = 'none';
+    btn.innerHTML = '<i class="fa-solid fa-sliders"></i> Show individual fields';
+  }
+}
+
+async function saveAndConnectFirebase() {
+  let pasteVal = (document.getElementById('firebaseConfigPaste')?.value || '').trim();
+  let projectId = (document.getElementById('fbProjectId')?.value || '').trim();
+  let apiKey = (document.getElementById('fbApiKey')?.value || '').trim();
+  let authDomain = (document.getElementById('fbAuthDomain')?.value || '').trim();
+  let appId = (document.getElementById('fbAppId')?.value || '').trim();
+
+  let config = null;
+  if (pasteVal) {
+    config = parseFirebaseConfig(pasteVal);
+  } else if (projectId) {
+    config = {
+      apiKey: apiKey || '',
+      authDomain: authDomain || (projectId + '.firebaseapp.com'),
+      projectId,
+      storageBucket: projectId + '.firebasestorage.app',
+      appId: appId || ''
+    };
+  }
+
+  if (!config || !config.projectId) {
+    alert('Please enter a valid Firebase Project ID or paste your Firebase web configuration snippet.');
+    return;
+  }
+
+  let ok = await connectToFirestore(config, true);
+  if (ok) {
+    // If connected and user has local data, ask if they want to push to cloud
+    if (confirm('Firebase connected successfully! Would you like to upload your fleet buses (' + state.buses.length + ') and driver staff (' + state.drivers.length + ') to the cloud now?')) {
+      await syncLocalToCloud();
+    }
+  }
+}
+
+async function syncLocalToCloud() {
+  if (!db) {
+    alert('Cloud database is not connected. Please enter your Firebase configuration and connect first.');
+    return;
+  }
+
+  try {
+    toast('Uploading fleet data to Firebase Cloud...');
+    let batch = db.batch();
+    let count = 0;
+
+    // 1. Buses
+    state.buses.forEach(b => {
+      let ref = db.collection('devusons_buses').doc(b.id);
+      batch.set(ref, b, { merge: true });
+      count++;
+    });
+
+    // 2. Drivers
+    state.drivers.forEach(d => {
+      let ref = db.collection('devusons_drivers').doc(d.id);
+      batch.set(ref, d, { merge: true });
+      count++;
+    });
+
+    // 3. Entries
+    state.entries.forEach(e => {
+      let ref = db.collection('devusons_entries').doc(e.id);
+      batch.set(ref, e, { merge: true });
+      count++;
+    });
+
+    // 4. Config
+    let configRef = db.collection('devusons_config').doc('fleet');
+    batch.set(configRef, {
+      fleetName: state.settings.fleetName || 'Devusons Bus Fleet',
+      updatedAt: Date.now()
+    }, { merge: true });
+
+    await batch.commit();
+    toast('Successfully uploaded ' + count + ' fleet items to Firebase Cloud!');
+    renderCloudSettings();
+  } catch(err) {
+    console.error('Migration error:', err);
+    alert('Failed to upload to Firebase: ' + err.message + '\n\nPlease verify your Firestore Security Rules permit writes.');
+  }
+}
+
+async function pullCloudToLocal() {
+  if (!db) {
+    alert('Cloud database is not connected. Please connect first.');
+    return;
+  }
+
+  try {
+    toast('Fetching latest data from cloud...');
+    let snapEntries = await db.collection('devusons_entries').get();
+    let snapBuses = await db.collection('devusons_buses').get();
+    let snapDrivers = await db.collection('devusons_drivers').get();
+
+    if (!snapBuses.empty) {
+      let buses = [];
+      snapBuses.forEach(d => buses.push(d.data()));
+      state.buses = buses;
+    }
+    if (!snapDrivers.empty) {
+      let drivers = [];
+      snapDrivers.forEach(d => drivers.push(d.data()));
+      state.drivers = drivers;
+    }
+    if (!snapEntries.empty) {
+      let entries = [];
+      snapEntries.forEach(d => {
+        let item = d.data();
+        if (item.date) item.date = toIsoDate(item.date);
+        entries.push(item);
+      });
+      entries.sort((a,b) => ((b.date||'') + (b.created||'')).localeCompare((a.date||'') + (a.created||'')));
+      state.entries = entries;
+    }
+
+    save();
+    renderAll();
+    renderCloudSettings();
+    toast('Cloud database refreshed successfully');
+  } catch(err) {
+    console.error('Cloud pull error:', err);
+    alert('Failed to pull from cloud: ' + err.message);
+  }
+}
+
+function disconnectFirebase() {
+  if (!confirm('Disconnect from Firebase Cloud Database? The app will return to offline Local Storage mode.')) return;
+  cloudUnsubs.forEach(u => { try { u(); } catch(e){} });
+  cloudUnsubs = [];
+  db = null;
+  firebaseApp = null;
+  hasConnectedCloud = false;
+  localStorage.removeItem(FIREBASE_CONFIG_KEY);
+  updateCloudBadges('local', 'Local Storage');
+  renderCloudSettings();
+  toast('Cloud database disconnected (Local mode)');
+}
+
+function copyFirestoreRules() {
+  let snippet = document.getElementById('firestoreRulesSnippet')?.textContent || '';
+  navigator.clipboard.writeText(snippet).then(() => {
+    toast('Firestore Security Rules copied to clipboard!');
+  }).catch(() => {
+    alert(snippet);
+  });
+}
+
+function updateCloudBadges(mode, text) {
+  let badge = document.getElementById('cloudDbBadge');
+  let drawerStatus = document.getElementById('mobileDrawerCloudStatus');
+  let detailBadge = document.getElementById('cloudDbDetailBadge');
+
+  let icon = mode === 'online' ? 'fa-cloud' : (mode === 'syncing' ? 'fa-cloud-arrow-up' : (mode === 'error' ? 'fa-triangle-exclamation' : 'fa-hard-drive'));
+
+  if (badge) {
+    badge.className = 'cloud-badge ' + mode;
+    badge.innerHTML = '<span class="cloud-dot ' + mode + '"></span> <i class="fa-solid ' + icon + '"></i> <span class="hide-mobile">' + esc(text) + '</span>';
+  }
+  if (drawerStatus) {
+    drawerStatus.textContent = text;
+    drawerStatus.style.color = mode === 'online' ? 'var(--emerald)' : (mode === 'error' ? 'var(--red)' : 'var(--text-muted)');
+  }
+  if (detailBadge) {
+    detailBadge.innerHTML = '<span class="cloud-badge ' + mode + '"><span class="cloud-dot ' + mode + '"></span> ' + esc(text) + '</span>';
+  }
+}
+
+function renderCloudSettings() {
+  let raw = localStorage.getItem(FIREBASE_CONFIG_KEY);
+  let config = null;
+  try { if (raw) config = JSON.parse(raw); } catch(e){}
+
+  let modeEl = document.getElementById('cloudDbModeText');
+  let projEl = document.getElementById('cloudDbProjectText');
+  let busEl = document.getElementById('cloudBusesCountText');
+  let drvEl = document.getElementById('cloudDriversCountText');
+  let entEl = document.getElementById('cloudEntriesCountText');
+
+  if (modeEl) {
+    modeEl.textContent = db ? (navigator.onLine ? 'Cloud Synced' : 'Offline Cache') : 'Local Storage';
+    modeEl.style.color = db ? 'var(--emerald)' : 'var(--text-main)';
+  }
+  if (projEl) {
+    projEl.textContent = config?.projectId || 'Not Configured';
+  }
+  if (busEl) {
+    busEl.textContent = state.buses.length + ' Buses';
+  }
+  if (drvEl) {
+    drvEl.textContent = state.drivers.length + ' Drivers';
+  }
+  if (entEl) {
+    entEl.textContent = state.entries.length + ' Records';
+  }
+
+  // Pre-fill fields if empty
+  if (config) {
+    let pArea = document.getElementById('firebaseConfigPaste');
+    if (pArea && !pArea.value) {
+      pArea.value = JSON.stringify(config, null, 2);
+    }
+    let pId = document.getElementById('fbProjectId');
+    if (pId && !pId.value) pId.value = config.projectId || '';
+    let pKey = document.getElementById('fbApiKey');
+    if (pKey && !pKey.value) pKey.value = config.apiKey || '';
+    let pDom = document.getElementById('fbAuthDomain');
+    if (pDom && !pDom.value) pDom.value = config.authDomain || '';
+    let pApp = document.getElementById('fbAppId');
+    if (pApp && !pApp.value) pApp.value = config.appId || '';
+  }
+}
+
 </script>
 </body>
 </html>
