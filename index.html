@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="theme-color" content="#0b1728" />
-<title>Devusons — Bus Fleet Management System</title>
+<meta name="theme-color" content="#0a1526" />
+<title>Devusons — Bus Fleet Management</title>
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -232,12 +232,6 @@ button{cursor:pointer}
   border:1px solid var(--red-border);
 }
 .btn-danger:hover{background:#fee2e2}
-.btn-success{
-  background:var(--emerald);
-  color:#fff;
-  box-shadow:0 6px 16px rgba(5,150,105,.25);
-}
-.btn-success:hover{background:#047857}
 
 /* Stats */
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:26px}
@@ -260,8 +254,8 @@ button{cursor:pointer}
   font-size:16px;
 }
 .stat:nth-child(1) .stat-icon{background:var(--primary-subtle);color:var(--primary)}
-.stat:nth-child(2) .stat-icon{background:var(--emerald-subtle);color:var(--emerald)}
-.stat:nth-child(3) .stat-icon{background:var(--amber-subtle);color:var(--amber)}
+.stat:nth-child(2) .stat-icon{background:var(--amber-subtle);color:var(--amber)}
+.stat:nth-child(3) .stat-icon{background:var(--emerald-subtle);color:var(--emerald)}
 .stat:nth-child(4) .stat-icon{background:var(--indigo-subtle);color:var(--indigo)}
 .stat-value{font-size:28px;font-weight:800;letter-spacing:-.8px;margin:12px 0 4px}
 .stat-foot{font-size:11.5px;color:var(--text-muted)}
@@ -312,20 +306,6 @@ button{cursor:pointer}
   align-items:center;
   gap:5px;
 }
-.status{
-  border-radius:100px;
-  padding:4px 10px;
-  font-size:10.5px;
-  font-weight:800;
-  white-space:nowrap;
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-  letter-spacing:.2px;
-}
-.status.active{background:var(--emerald-subtle);color:var(--emerald);border:1px solid var(--emerald-border)}
-.status.maintenance{background:var(--amber-subtle);color:var(--amber);border:1px solid var(--amber-border)}
-.status.inactive{background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0}
 
 .bus-driver{
   font-size:12.5px;
@@ -342,10 +322,10 @@ button{cursor:pointer}
 .bus-driver i{color:var(--primary);font-size:13px}
 .bus-driver strong{color:#0f172a}
 
-.bus-metrics{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:auto}
-.metric{padding:10px 12px;background:#f8fafc;border-radius:11px;border:1px solid #f1f5f9}
-.metric span{display:block;color:var(--text-muted);font-size:10.5px;font-weight:600;margin-bottom:4px}
-.metric strong{font-size:15px;font-weight:800}
+.bus-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:auto}
+.metric{padding:10px 10px;background:#f8fafc;border-radius:11px;border:1px solid #f1f5f9;text-align:center}
+.metric span{display:block;color:var(--text-muted);font-size:10px;font-weight:600;margin-bottom:4px}
+.metric strong{font-size:14.5px;font-weight:800}
 
 .bus-bottom{
   display:flex;
@@ -407,21 +387,6 @@ td strong{color:#0f172a;font-weight:700}
 .field.full{grid-column:1/-1}
 .form-card{padding:24px}
 .form-actions{display:flex;gap:11px;justify-content:flex-end;padding-top:20px;margin-top:22px;border-top:1px solid var(--line)}
-
-.notice{
-  padding:14px 16px;
-  border-radius:12px;
-  background:var(--primary-subtle);
-  color:#1e40af;
-  border:1px solid var(--primary-border);
-  font-size:13px;
-  line-height:1.55;
-  margin-bottom:20px;
-  display:flex;
-  gap:11px;
-  align-items:flex-start;
-}
-.notice i{font-size:16px;margin-top:2px;color:var(--primary)}
 
 /* Charts */
 .charts-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:18px}
@@ -493,7 +458,7 @@ td strong{color:#0f172a;font-weight:700}
 .modal-backdrop.open{display:flex}
 .modal{
   background:#fff;
-  width:min(660px,100%);
+  width:min(600px,100%);
   border-radius:20px;
   max-height:90vh;
   overflow:auto;
@@ -617,7 +582,7 @@ td strong{color:#0f172a;font-weight:700}
     </nav>
     <div class="sidebar-foot">
       <span>Operational Fleet</span>
-      <strong>7 Buses Active</strong>
+      <strong>7 Buses Configured</strong>
       <div>Vijayawada • Kakinada • Addaripeta • Kapileswaram</div>
     </div>
   </aside>
@@ -640,15 +605,15 @@ td strong{color:#0f172a;font-weight:700}
       <section class="page active" id="page-dashboard">
         <div class="welcome">
           <div>
-            <h2>Fleet overview 👋</h2>
-            <p>Live metrics and performance across your 7 buses and rotating driver staff.</p>
+            <h2>Dashboard overview 👋</h2>
+            <p>Today's performance, distance travelled, and fuel logs across your fleet.</p>
           </div>
-          <button class="btn btn-primary" onclick="openEntry()"><i class="fa-solid fa-plus"></i>Add daily record</button>
+          <button class="btn btn-primary" onclick="openEntry()"><i class="fa-solid fa-plus"></i>Add record</button>
         </div>
         <div class="stats" id="dashboardStats"></div>
         <div class="section-head">
           <div>
-            <h3>Active buses <span class="text-muted" id="busCountLabel" style="font-weight:normal;font-size:14px"></span></h3>
+            <h3>Fleet buses</h3>
             <p>Vehicles and operating cities</p>
           </div>
           <button class="btn btn-light" onclick="navigate('buses')"><i class="fa-solid fa-arrow-up-right-from-square"></i>Manage buses</button>
@@ -656,8 +621,8 @@ td strong{color:#0f172a;font-weight:700}
         <div class="bus-grid" id="dashboardBuses"></div>
         <div class="section-head">
           <div>
-            <h3>Recent daily trips</h3>
-            <p>Latest manual trip distance and diesel logs</p>
+            <h3>Recent daily records</h3>
+            <p>Latest manual distance and fuel entries</p>
           </div>
           <button class="text-btn" onclick="navigate('entries')">View all records <i class="fa-solid fa-arrow-right"></i></button>
         </div>
@@ -666,13 +631,13 @@ td strong{color:#0f172a;font-weight:700}
             <table>
               <thead>
                 <tr>
-                  <th>Date</th>
+                  <th>Date (DD/MM/YYYY)</th>
                   <th>Bus</th>
                   <th>City</th>
                   <th>Driver</th>
                   <th>Distance</th>
-                  <th>Diesel</th>
-                  <th>Cost</th>
+                  <th>Fuel consumed</th>
+                  <th>Mileage</th>
                 </tr>
               </thead>
               <tbody id="recentRows"></tbody>
@@ -685,7 +650,7 @@ td strong{color:#0f172a;font-weight:700}
       <section class="page" id="page-buses">
         <div class="welcome">
           <div>
-            <h2>Manage buses</h2>
+            <h2>Fleet buses</h2>
             <p>7 buses operating across Vijayawada, Kakinada, Addaripeta, and Kapileswaram.</p>
           </div>
           <button class="btn btn-primary" onclick="openBusModal()"><i class="fa-solid fa-plus"></i>Add bus</button>
@@ -693,12 +658,6 @@ td strong{color:#0f172a;font-weight:700}
         <div class="panel">
           <div class="toolbar">
             <input id="busSearch" class="input" placeholder="Search bus number or city…" oninput="renderBusesPage()">
-            <select id="busStatusFilter" class="select" onchange="renderBusesPage()">
-              <option value="">All statuses</option>
-              <option>Active</option>
-              <option>Maintenance</option>
-              <option>Inactive</option>
-            </select>
           </div>
           <div id="busesPageGrid" class="bus-grid" style="padding:20px"></div>
         </div>
@@ -708,10 +667,10 @@ td strong{color:#0f172a;font-weight:700}
       <section class="page" id="page-entries">
         <div class="welcome">
           <div>
-            <h2>Daily trip records</h2>
-            <p>Drivers record their trip distance and diesel consumption directly for each shift.</p>
+            <h2>Daily records</h2>
+            <p>Direct manual entries for distance travelled and fuel consumed.</p>
           </div>
-          <button class="btn btn-primary" onclick="openEntry()"><i class="fa-solid fa-plus"></i>Record new trip</button>
+          <button class="btn btn-primary" onclick="openEntry()"><i class="fa-solid fa-plus"></i>Add record</button>
         </div>
         <div class="panel">
           <div class="toolbar">
@@ -720,21 +679,20 @@ td strong{color:#0f172a;font-weight:700}
             <select id="entryBusFilter" class="select" onchange="renderEntries()">
               <option value="">All buses</option>
             </select>
-            <input id="entrySearch" class="input" placeholder="Search driver, route, or city…" oninput="renderEntries()">
+            <input id="entrySearch" class="input" placeholder="Search driver, bus, or city…" oninput="renderEntries()">
             <button class="btn btn-light" onclick="clearEntryFilters()"><i class="fa-solid fa-rotate-left"></i>Reset</button>
           </div>
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
-                  <th>Date</th>
+                  <th>Date (DD/MM/YYYY)</th>
                   <th>Bus</th>
                   <th>City</th>
                   <th>Driver</th>
                   <th>Distance (km)</th>
-                  <th>Diesel</th>
+                  <th>Fuel consumed (L)</th>
                   <th>Mileage</th>
-                  <th>Cost</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -749,10 +707,10 @@ td strong{color:#0f172a;font-weight:700}
         <div class="welcome">
           <div>
             <h2>Reports & analytics</h2>
-            <p>Track distance covered, diesel consumption, and expenditure by bus and city.</p>
+            <p>Analyze distance covered, fuel consumption, and mileage by bus.</p>
           </div>
           <div style="display:flex;gap:9px;flex-wrap:wrap">
-            <button class="btn btn-light" onclick="exportCSV()"><i class="fa-solid fa-file-csv"></i>Export Excel / CSV</button>
+            <button class="btn btn-light" onclick="exportCSV()"><i class="fa-solid fa-file-csv"></i>Export CSV</button>
             <button class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print"></i>Print / Save PDF</button>
           </div>
         </div>
@@ -771,16 +729,16 @@ td strong{color:#0f172a;font-weight:700}
             <div class="legend"><span><i class="emerald-dot"></i>Avg. Mileage (km/L)</span></div>
           </div>
           <div class="chart-card">
-            <h3>Diesel consumed by bus</h3>
+            <h3>Fuel consumed by bus</h3>
             <p>Total liters consumed in selected month</p>
             <div id="dieselChart" class="bar-chart"></div>
-            <div class="legend"><span><i class="blue-dot"></i>Diesel (Liters)</span></div>
+            <div class="legend"><span><i class="blue-dot"></i>Fuel (Liters)</span></div>
           </div>
         </div>
         <div class="section-head">
           <div>
             <h3>Monthly bus breakdown</h3>
-            <p>Comprehensive statistics for each vehicle</p>
+            <p>Distance and fuel statistics per vehicle</p>
           </div>
         </div>
         <div class="panel">
@@ -793,9 +751,8 @@ td strong{color:#0f172a;font-weight:700}
                   <th>Drivers</th>
                   <th>Trips</th>
                   <th>Distance</th>
-                  <th>Diesel</th>
+                  <th>Fuel consumed</th>
                   <th>Avg. mileage</th>
-                  <th>Diesel cost</th>
                 </tr>
               </thead>
               <tbody id="reportRows"></tbody>
@@ -808,8 +765,8 @@ td strong{color:#0f172a;font-weight:700}
       <section class="page" id="page-drivers">
         <div class="welcome">
           <div>
-            <h2>Driver staff directory <span id="driverCountLabel" class="text-muted" style="font-size:15px;font-weight:normal"></span></h2>
-            <p>Drivers rotate across all buses daily. View staff roster and lifetime stats.</p>
+            <h2>Driver staff directory</h2>
+            <p>Driver roster and total lifetime distance driven.</p>
           </div>
           <button class="btn btn-primary" onclick="openDriverModal()"><i class="fa-solid fa-user-plus"></i>Add driver</button>
         </div>
@@ -826,7 +783,6 @@ td strong{color:#0f172a;font-weight:700}
                   <th>License number</th>
                   <th>Total trips logged</th>
                   <th>Distance driven</th>
-                  <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -840,26 +796,16 @@ td strong{color:#0f172a;font-weight:700}
       <section class="page" id="page-settings">
         <div class="welcome">
           <div>
-            <h2>Settings & data management</h2>
-            <p>Configure fleet details and download or restore database backups.</p>
+            <h2>Settings & backup</h2>
+            <p>Fleet profile and data backup / restore tools.</p>
           </div>
         </div>
         <div class="panel form-card">
-          <div class="notice">
-            <i class="fa-solid fa-shield-halved"></i>
-            <div>
-              <strong>Production data safe & offline:</strong> All bus records, driver staff, and trip entries are saved securely in your browser's persistent local storage. Use the backup option to download backup copies anytime.
-            </div>
-          </div>
           <h3 style="margin-top:0">Fleet configuration</h3>
           <div class="form-grid">
-            <div class="field">
+            <div class="field full">
               <label><i class="fa-solid fa-building" style="color:var(--primary)"></i> Fleet / organization name</label>
               <input id="fleetName" class="input" value="Devusons Bus Fleet">
-            </div>
-            <div class="field">
-              <label><i class="fa-solid fa-gas-pump" style="color:var(--amber)"></i> Default diesel price (₹/liter)</label>
-              <input id="defaultPrice" class="input" type="number" min="0" step=".01" value="95">
             </div>
           </div>
           <div class="form-actions" style="justify-content:flex-start;flex-wrap:wrap">
@@ -880,7 +826,7 @@ td strong{color:#0f172a;font-weight:700}
 
 <!-- Mobile Nav -->
 <nav class="mobile-nav" id="mobileNav">
-  <button class="active" data-page="dashboard"><i class="fa-solid fa-gauge-high"></i>Dashboard</button>
+  <button class="active" data-page="dashboard"><i class="fa-solid fa-gauge-high"></i>Home</button>
   <button data-page="buses"><i class="fa-solid fa-bus"></i>Buses</button>
   <button class="add" onclick="openEntry()"><i class="fa-solid fa-plus"></i>Add</button>
   <button data-page="entries"><i class="fa-solid fa-clipboard-list"></i>Records</button>
@@ -891,7 +837,7 @@ td strong{color:#0f172a;font-weight:700}
 <div class="modal-backdrop" id="modalBackdrop" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-head">
-      <h3 id="modalTitle">Record trip</h3>
+      <h3 id="modalTitle">Add record</h3>
       <button class="close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body" id="modalBody"></div>
@@ -901,53 +847,67 @@ td strong{color:#0f172a;font-weight:700}
 <div class="toast" id="toast"></div>
 
 <script>
-const STORE = 'fleetpilot_prod_v1';
+const STORE = 'fleetpilot_prod_v2';
 const today = new Date();
 const iso = d => {
   const x = new Date(d);
   return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;
 };
-const money = n => '₹' + Number(n||0).toLocaleString('en-IN', {maximumFractionDigits:2});
+
+// Format date strictly as DD/MM/YYYY
+function fmtDate(s){
+  if (!s) return '—';
+  if (typeof s === 'string' && s.includes('-')) {
+    let parts = s.split('-');
+    if (parts.length === 3) {
+      return `${parts[2].padStart(2, '0')}/${parts[1].padStart(2, '0')}/${parts[0]}`;
+    }
+  }
+  let d = new Date(s);
+  if (isNaN(d.getTime())) return s;
+  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+}
+
 const num = n => Number(n||0).toLocaleString('en-IN', {maximumFractionDigits:1});
 const esc = s => String(s??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-// Initial production state with the 7 buses and 22 driver staff roster
+// Initial fleet state
 const defaultState = () => ({
-  settings: { fleetName: 'Devusons Bus Fleet', defaultPrice: 95 },
+  settings: { fleetName: 'Devusons Bus Fleet' },
   buses: [
-    { id: 'bus_1245', reg: '1245', city: 'Vijayawada', status: 'Active', fuel: 'Diesel' },
-    { id: 'bus_4494', reg: '4494', city: 'Addaripeta', status: 'Active', fuel: 'Diesel' },
-    { id: 'bus_0069', reg: '0069', city: 'Kakinada', status: 'Active', fuel: 'Diesel' },
-    { id: 'bus_7188', reg: '7188', city: 'Kakinada', status: 'Active', fuel: 'Diesel' },
-    { id: 'bus_9829', reg: '9829', city: 'Kakinada', status: 'Active', fuel: 'Diesel' },
-    { id: 'bus_4179', reg: '4179', city: 'Kapileswaram', status: 'Active', fuel: 'Diesel' },
-    { id: 'bus_4179u', reg: '4179 Ultra', city: 'Kakinada', status: 'Active', fuel: 'Diesel' }
+    { id: 'bus_1245', reg: '1245', city: 'Vijayawada', fuel: 'Diesel' },
+    { id: 'bus_4494', reg: '4494', city: 'Addaripeta', fuel: 'Diesel' },
+    { id: 'bus_0069', reg: '0069', city: 'Kakinada', fuel: 'Diesel' },
+    { id: 'bus_7188', reg: '7188', city: 'Kakinada', fuel: 'Diesel' },
+    { id: 'bus_9829', reg: '9829', city: 'Kakinada', fuel: 'Diesel' },
+    { id: 'bus_4179', reg: '4179', city: 'Kapileswaram', fuel: 'Diesel' },
+    { id: 'bus_4179u', reg: '4179 Ultra', city: 'Kakinada', fuel: 'Diesel' }
   ],
   drivers: [
-    { id: 'drv1', name: 'K. Appa Rao', phone: '98480 12341', license: 'AP05 2018001', status: 'Active' },
-    { id: 'drv2', name: 'P. Suresh Babu', phone: '98480 12342', license: 'AP05 2017002', status: 'Active' },
-    { id: 'drv3', name: 'M. Venkatesh', phone: '98480 12343', license: 'AP05 2019003', status: 'Active' },
-    { id: 'drv4', name: 'Ch. Satyanarayana', phone: '98480 12344', license: 'AP05 2016004', status: 'Active' },
-    { id: 'drv5', name: 'B. Ramesh Kumar', phone: '98480 12345', license: 'AP05 2020005', status: 'Active' },
-    { id: 'drv6', name: 'G. Krishna Murthy', phone: '98480 12346', license: 'AP05 2015006', status: 'Active' },
-    { id: 'drv7', name: 'T. Durga Rao', phone: '98480 12347', license: 'AP05 2018007', status: 'Active' },
-    { id: 'drv8', name: 'S. Veerabhadram', phone: '98480 12348', license: 'AP05 2019008', status: 'Active' },
-    { id: 'drv9', name: 'N. Srinivas', phone: '98480 12349', license: 'AP05 2017009', status: 'Active' },
-    { id: 'drv10', name: 'K. Ravi Teja', phone: '98480 12350', license: 'AP05 2021010', status: 'Active' },
-    { id: 'drv11', name: 'Y. Subba Rao', phone: '98480 12351', license: 'AP05 2016011', status: 'Active' },
-    { id: 'drv12', name: 'V. Sivaiah', phone: '98480 12352', license: 'AP05 2020012', status: 'Active' },
-    { id: 'drv13', name: 'D. Somaraju', phone: '98480 12353', license: 'AP05 2018013', status: 'Active' },
-    { id: 'drv14', name: 'P. Naidu', phone: '98480 12354', license: 'AP05 2019014', status: 'Active' },
-    { id: 'drv15', name: 'A. Jagadeesh', phone: '98480 12355', license: 'AP05 2017015', status: 'Active' },
-    { id: 'drv16', name: 'M. Anil Kumar', phone: '98480 12356', license: 'AP05 2021016', status: 'Active' },
-    { id: 'drv17', name: 'K. Tirupathi Rao', phone: '98480 12357', license: 'AP05 2018017', status: 'Active' },
-    { id: 'drv18', name: 'G. Prasad', phone: '98480 12358', license: 'AP05 2016018', status: 'Active' },
-    { id: 'drv19', name: 'R. Kondala Rao', phone: '98480 12359', license: 'AP05 2019019', status: 'Active' },
-    { id: 'drv20', name: 'B. Nageswara Rao', phone: '98480 12360', license: 'AP05 2015020', status: 'Active' },
-    { id: 'drv21', name: 'Ch. Ramana', phone: '98480 12361', license: 'AP05 2020021', status: 'Active' },
-    { id: 'drv22', name: 'V. Mahesh', phone: '98480 12362', license: 'AP05 2022022', status: 'Active' }
+    { id: 'drv1', name: 'K. Appa Rao', phone: '98480 12341', license: 'AP05 2018001' },
+    { id: 'drv2', name: 'P. Suresh Babu', phone: '98480 12342', license: 'AP05 2017002' },
+    { id: 'drv3', name: 'M. Venkatesh', phone: '98480 12343', license: 'AP05 2019003' },
+    { id: 'drv4', name: 'Ch. Satyanarayana', phone: '98480 12344', license: 'AP05 2016004' },
+    { id: 'drv5', name: 'B. Ramesh Kumar', phone: '98480 12345', license: 'AP05 2020005' },
+    { id: 'drv6', name: 'G. Krishna Murthy', phone: '98480 12346', license: 'AP05 2015006' },
+    { id: 'drv7', name: 'T. Durga Rao', phone: '98480 12347', license: 'AP05 2018007' },
+    { id: 'drv8', name: 'S. Veerabhadram', phone: '98480 12348', license: 'AP05 2019008' },
+    { id: 'drv9', name: 'N. Srinivas', phone: '98480 12349', license: 'AP05 2017009' },
+    { id: 'drv10', name: 'K. Ravi Teja', phone: '98480 12350', license: 'AP05 2021010' },
+    { id: 'drv11', name: 'Y. Subba Rao', phone: '98480 12351', license: 'AP05 2016011' },
+    { id: 'drv12', name: 'V. Sivaiah', phone: '98480 12352', license: 'AP05 2020012' },
+    { id: 'drv13', name: 'D. Somaraju', phone: '98480 12353', license: 'AP05 2018013' },
+    { id: 'drv14', name: 'P. Naidu', phone: '98480 12354', license: 'AP05 2019014' },
+    { id: 'drv15', name: 'A. Jagadeesh', phone: '98480 12355', license: 'AP05 2017015' },
+    { id: 'drv16', name: 'M. Anil Kumar', phone: '98480 12356', license: 'AP05 2021016' },
+    { id: 'drv17', name: 'K. Tirupathi Rao', phone: '98480 12357', license: 'AP05 2018017' },
+    { id: 'drv18', name: 'G. Prasad', phone: '98480 12358', license: 'AP05 2016018' },
+    { id: 'drv19', name: 'R. Kondala Rao', phone: '98480 12359', license: 'AP05 2019019' },
+    { id: 'drv20', name: 'B. Nageswara Rao', phone: '98480 12360', license: 'AP05 2015020' },
+    { id: 'drv21', name: 'Ch. Ramana', phone: '98480 12361', license: 'AP05 2020021' },
+    { id: 'drv22', name: 'V. Mahesh', phone: '98480 12362', license: 'AP05 2022022' }
   ],
-  entries: [] // Clean empty production records ready for actual usage
+  entries: []
 });
 
 let state;
@@ -956,8 +916,7 @@ try {
   if (raw) {
     state = JSON.parse(raw);
   } else {
-    // Check previous key if user already started
-    let old = localStorage.getItem('fleetpilot_v2');
+    let old = localStorage.getItem('fleetpilot_prod_v1') || localStorage.getItem('fleetpilot_v2');
     if (old) {
       let parsed = JSON.parse(old);
       state = parsed;
@@ -992,16 +951,14 @@ function statsForDriver(driverName){
   let drvEntries = state.entries.filter(e => e.driver.toLowerCase() === driverName.toLowerCase());
   let km = drvEntries.reduce((a, e) => a + (+e.km || 0), 0);
   let liters = drvEntries.reduce((a, e) => a + (+e.liters || 0), 0);
-  let cost = drvEntries.reduce((a, e) => a + (+e.cost || 0), 0);
-  return { trips: drvEntries.length, km, liters, cost };
+  return { trips: drvEntries.length, km, liters };
 }
 
 function entryTotals(entries){
   return entries.reduce((a, e) => ({
     km: a.km + (+e.km || 0),
-    liters: a.liters + (+e.liters || 0),
-    cost: a.cost + (+e.cost || 0)
-  }), { km: 0, liters: 0, cost: 0 });
+    liters: a.liters + (+e.liters || 0)
+  }), { km: 0, liters: 0 });
 }
 
 function mileage(e){
@@ -1015,11 +972,6 @@ function todayEntries(){
 function statsFor(entries){
   let t = entryTotals(entries);
   return { ...t, trips: entries.length, mpg: t.liters ? t.km / t.liters : 0 };
-}
-
-function fmtDate(s){
-  if (!s) return '—';
-  return new Date(s + 'T12:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
 function toast(msg){
@@ -1053,13 +1005,12 @@ function navigate(page){
 }
 
 document.querySelectorAll('[data-page]').forEach(b => b.addEventListener('click', () => navigate(b.dataset.page)));
-document.getElementById('todayPill').innerHTML = `<i class="fa-regular fa-calendar-days"></i> ${today.toLocaleDateString('en-IN', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' })}`;
+document.getElementById('todayPill').innerHTML = `<i class="fa-regular fa-calendar-days"></i> ${fmtDate(iso(today))}`;
 
 function busCard(b, entries){
-  let t = statsFor(entries), status = (b.status || 'Active').toLowerCase();
+  let t = statsFor(entries);
   let busLabel = b.reg.toLowerCase().includes('bus') ? b.reg : 'Bus ' + b.reg;
   let last = getLastDriverForBus(b.id);
-  let statusIcon = status === 'active' ? '<i class="fa-solid fa-circle-check"></i>' : (status === 'maintenance' ? '<i class="fa-solid fa-wrench"></i>' : '<i class="fa-solid fa-circle-pause"></i>');
 
   return `<article class="bus-card">
     <div class="bus-top">
@@ -1070,17 +1021,15 @@ function busCard(b, entries){
           <p class="bus-city"><i class="fa-solid fa-location-dot"></i> ${esc(b.city || 'City not set')}</p>
         </div>
       </div>
-      <span class="status ${status}">${statusIcon} ${esc(b.status || 'Active')}</span>
     </div>
     <div class="bus-driver">
       <i class="fa-solid fa-user-clock"></i>
-      <span>${last ? `Last driven by: <strong>${esc(last.name)}</strong> <small class="text-muted">(${fmtDate(last.date)})</small>` : 'Available in pool (Rotating drivers)'}</span>
+      <span>${last ? `Last driven by: <strong>${esc(last.name)}</strong> <small class="text-muted">(${fmtDate(last.date)})</small>` : 'Rotating driver pool'}</span>
     </div>
     <div class="bus-metrics">
       <div class="metric"><span>Distance today</span><strong>${num(t.km)} <small>km</small></strong></div>
-      <div class="metric"><span>Diesel today</span><strong>${num(t.liters)} <small>L</small></strong></div>
-      <div class="metric"><span>Mileage today</span><strong>${t.mpg ? num(t.mpg) : '—'} <small>km/L</small></strong></div>
-      <div class="metric"><span>Diesel cost</span><strong>${money(t.cost)}</strong></div>
+      <div class="metric"><span>Fuel today</span><strong>${num(t.liters)} <small>L</small></strong></div>
+      <div class="metric"><span>Mileage</span><strong>${t.mpg ? num(t.mpg) : '—'} <small>km/L</small></strong></div>
     </div>
     <div class="bus-bottom">
       <span class="city-pill"><i class="fa-solid fa-location-dot"></i> ${esc(b.city || 'Location')}</span>
@@ -1090,15 +1039,14 @@ function busCard(b, entries){
 }
 
 function renderDashboard(){
-  let es = todayEntries(), t = statsFor(es), active = state.buses.filter(b => b.status === 'Active').length;
+  let es = todayEntries(), t = statsFor(es);
   document.getElementById('dashboardStats').innerHTML = [
-    ['Fleet buses', state.buses.length, '<i class="fa-solid fa-bus"></i>', 'Configured vehicles'],
-    ['Driver staff', state.drivers.length, '<i class="fa-solid fa-users"></i>', 'Active rotating staff'],
-    ['Distance today', num(t.km) + ' km', '<i class="fa-solid fa-route"></i>', 'Total logged across trips'],
-    ['Diesel cost today', money(t.cost), '<i class="fa-solid fa-indian-rupee-sign"></i>', `${num(t.liters)} L consumed`]
+    ['Distance today', num(t.km) + ' km', '<i class="fa-solid fa-route"></i>', 'Total distance logged today'],
+    ['Fuel consumed today', num(t.liters) + ' L', '<i class="fa-solid fa-gas-pump"></i>', 'Total liters recorded today'],
+    ['Average mileage today', (t.mpg ? num(t.mpg) + ' km/L' : '—'), '<i class="fa-solid fa-gauge-high"></i>', 'Today fleet efficiency'],
+    ['Total records logged', state.entries.length + ' records', '<i class="fa-solid fa-clipboard-check"></i>', 'All-time trip entries']
   ].map(x => `<div class="stat"><div class="stat-head"><span>${x[0]}</span><span class="stat-icon">${x[2]}</span></div><div class="stat-value">${x[1]}</div><div class="stat-foot">${x[3]}</div></div>`).join('');
 
-  document.getElementById('busCountLabel').textContent = '(' + active + ' of ' + state.buses.length + ' active)';
   document.getElementById('dashboardBuses').innerHTML = state.buses.map(b => busCard(b, es.filter(e => e.busId === b.id))).join('') || '<div class="empty"><i class="fa-solid fa-bus"></i>No buses configured.</div>';
 
   let recent = [...state.entries].sort((a,b) => (b.date + b.created).localeCompare(a.date + a.created)).slice(0, 7);
@@ -1109,18 +1057,17 @@ function renderDashboard(){
       <td>${fmtDate(e.date)}</td>
       <td><strong>${esc(busLabel)}</strong></td>
       <td><span class="city-pill"><i class="fa-solid fa-location-dot"></i> ${esc(b.city || '—')}</span></td>
-      <td><i class="fa-solid fa-user-check" style="font-size:11px;color:var(--primary);margin-right:4px"></i>${esc(e.driver)}</td>
+      <td><i class="fa-solid fa-user" style="font-size:11px;color:var(--primary);margin-right:5px"></i>${esc(e.driver)}</td>
       <td><strong>${num(e.km)} km</strong></td>
-      <td>${num(e.liters)} L</td>
-      <td>${money(e.cost)}</td>
+      <td><strong>${num(e.liters)} L</strong></td>
+      <td>${mileage(e) ? num(mileage(e)) + ' km/L' : '—'}</td>
     </tr>`;
-  }).join('') : '<tr><td colspan="7" class="empty"><i class="fa-solid fa-clipboard"></i>No trips recorded yet. Click "Add daily record" to record the first trip.</td></tr>';
+  }).join('') : '<tr><td colspan="7" class="empty"><i class="fa-solid fa-clipboard"></i>No records logged yet. Click "Add record" above.</td></tr>';
 }
 
 function renderBusesPage(){
   let q = (document.getElementById('busSearch')?.value || '').toLowerCase();
-  let st = document.getElementById('busStatusFilter')?.value || '';
-  let arr = state.buses.filter(b => (b.reg + ' ' + (b.city || '')).toLowerCase().includes(q) && (!st || b.status === st));
+  let arr = state.buses.filter(b => (b.reg + ' ' + (b.city || '')).toLowerCase().includes(q));
   document.getElementById('busesPageGrid').innerHTML = arr.map(b => busCard(b, state.entries.filter(e => e.busId === b.id && e.date === iso(today)))).join('') || '<div class="empty"><i class="fa-solid fa-magnifying-glass"></i>No matching buses found.</div>';
 }
 
@@ -1143,7 +1090,7 @@ function renderEntries(){
 
   let arr = [...state.entries].filter(e => {
     let b = bus(e.busId);
-    let matchText = (e.driver + ' ' + (e.route || '') + ' ' + b.reg + ' ' + (b.city || '')).toLowerCase();
+    let matchText = (e.driver + ' ' + b.reg + ' ' + (b.city || '')).toLowerCase();
     return (!from || e.date >= from) && (!to || e.date <= to) && (!bid || e.busId === bid) && matchText.includes(q);
   }).sort((a,b) => (b.date + b.created).localeCompare(a.date + a.created));
 
@@ -1154,17 +1101,16 @@ function renderEntries(){
       <td>${fmtDate(e.date)}</td>
       <td><strong>${esc(busLabel)}</strong></td>
       <td><span class="city-pill"><i class="fa-solid fa-location-dot"></i> ${esc(b.city || '—')}</span></td>
-      <td><i class="fa-solid fa-user-check" style="font-size:11px;color:var(--primary);margin-right:4px"></i>${esc(e.driver)}</td>
+      <td><i class="fa-solid fa-user" style="font-size:11px;color:var(--primary);margin-right:5px"></i>${esc(e.driver)}</td>
       <td><strong>${num(e.km)} km</strong></td>
-      <td>${num(e.liters)} L</td>
+      <td><strong>${num(e.liters)} L</strong></td>
       <td>${mileage(e) ? num(mileage(e)) + ' km/L' : '—'}</td>
-      <td>${money(e.cost)}</td>
       <td>
         <button class="text-btn" onclick="openEntry('${e.id}')"><i class="fa-solid fa-pen"></i> Edit</button>
         <button class="text-btn" style="color:var(--red)" onclick="deleteEntry('${e.id}')"><i class="fa-solid fa-trash-can"></i></button>
       </td>
     </tr>`;
-  }).join('') : '<tr><td colspan="9" class="empty"><i class="fa-solid fa-folder-open"></i>No trip records match the selected filters.</td></tr>';
+  }).join('') : '<tr><td colspan="8" class="empty"><i class="fa-solid fa-folder-open"></i>No trip records match the selected filters.</td></tr>';
 }
 
 function clearEntryFilters(){
@@ -1201,99 +1147,67 @@ function openEntry(id){
   let e = id ? state.entries.find(x => x.id === id) : null;
   let bId = e?.busId || state.buses[0]?.id || '';
 
-  // Sort drivers alphabetically for easy selection
+  // Sort drivers alphabetically; show only driver name (without mobile number)
   let sortedDrivers = [...state.drivers].sort((a,b) => a.name.localeCompare(b.name));
 
   let body = `<form id="entryForm" onsubmit="saveEntry(event,'${e?.id || ''}')">
-    <div class="notice">
-      <i class="fa-solid fa-circle-info"></i>
-      <div>
-        <strong>Driver trip entry:</strong> Select your name and the bus you operated today. Enter the manual distance traveled and diesel pumped.
-      </div>
-    </div>
     <div class="form-grid">
-      <!-- DRIVER SELECTION -->
+      <!-- DRIVER SELECTION (NAME ONLY - NO MOBILE NUMBER) -->
       <div class="field full" style="background:var(--primary-subtle);padding:16px;border-radius:14px;border:1px solid var(--primary-border);">
         <label style="color:var(--primary);font-size:13.5px;font-weight:800;">
-          <i class="fa-solid fa-user-check"></i> Select Driver (Your Name) *
+          <i class="fa-solid fa-user-check"></i> Driver Name *
         </label>
-        <select class="select" name="driver" id="entryDriverSelect" required onchange="handleDriverSelectChange(this)" style="font-weight:700;font-size:14px;">
-          <option value="">-- Choose your name from driver staff --</option>
-          ${sortedDrivers.map(d => `<option value="${esc(d.name)}" ${d.name === (e?.driver || '') ? 'selected' : ''}>${esc(d.name)} ${d.phone ? '— (' + esc(d.phone) + ')' : ''}</option>`).join('')}
-          <option value="__NEW__">➕ Add New / Substitute Driver...</option>
+        <select class="select" name="driver" id="entryDriverSelect" required onchange="handleDriverSelectChange(this)" style="font-weight:700;font-size:14.5px;">
+          <option value="">-- Select Driver Name --</option>
+          ${sortedDrivers.map(d => `<option value="${esc(d.name)}" ${d.name === (e?.driver || '') ? 'selected' : ''}>${esc(d.name)}</option>`).join('')}
+          <option value="__NEW__">➕ Add New Driver...</option>
         </select>
         <div id="newDriverContainer" class="hidden" style="margin-top:10px;">
-          <label style="font-size:12px;color:var(--text-muted);">Enter new driver full name *</label>
-          <input class="input" id="newDriverInput" placeholder="Driver's Full Name (e.g. S. Narayana)">
+          <label style="font-size:12px;color:var(--text-muted);">New driver name *</label>
+          <input class="input" id="newDriverInput" placeholder="Enter driver name">
         </div>
-        <small style="color:#475569;margin-top:6px;">Drivers rotate daily across buses. Select yourself to credit this trip to your record.</small>
       </div>
 
       <!-- BUS SELECTION -->
       <div class="field">
-        <label><i class="fa-solid fa-bus" style="color:var(--primary)"></i> Select Bus *</label>
+        <label><i class="fa-solid fa-bus" style="color:var(--primary)"></i> Bus *</label>
         <select class="select" name="busId" id="entryBusSelect" required style="font-weight:700;">
           ${state.buses.map(b => `<option value="${b.id}" ${b.id === bId ? 'selected' : ''}>Bus ${esc(b.reg)} — 📍 ${esc(b.city)}</option>`).join('')}
         </select>
       </div>
 
-      <!-- DATE -->
+      <!-- DATE (DD/MM/YYYY) -->
       <div class="field">
-        <label><i class="fa-regular fa-calendar" style="color:var(--primary)"></i> Date of trip *</label>
-        <input class="input" name="date" type="date" required value="${e?.date || iso(today)}">
+        <label><i class="fa-regular fa-calendar" style="color:var(--primary)"></i> Date (DD/MM/YYYY) *</label>
+        <input class="input" name="date" type="date" required value="${e?.date || iso(today)}" style="font-weight:600;">
       </div>
 
-      <!-- MANUAL DISTANCE -->
+      <!-- DISTANCE TRAVELED (KM) -->
       <div class="field">
-        <label><i class="fa-solid fa-route" style="color:var(--primary)"></i> Distance traveled (km) *</label>
-        <input class="input" name="km" id="entryKm" type="number" min="0.1" step="0.1" required value="${e?.km ?? ''}" oninput="calcEntry()" placeholder="e.g. 74.5" style="font-size:15px;font-weight:700;">
-        <small>Manual kilometers driven for this shift</small>
+        <label><i class="fa-solid fa-route" style="color:var(--primary)"></i> Distance Travelled (km) *</label>
+        <input class="input" name="km" id="entryKm" type="number" min="0.1" step="0.1" required value="${e?.km ?? ''}" oninput="calcEntry()" placeholder="e.g. 75.5" style="font-size:16px;font-weight:700;">
+        <small>Manual kilometers driven</small>
       </div>
 
-      <!-- DIESEL CONSUMPTION -->
+      <!-- FUEL CONSUMED (LITERS) -->
       <div class="field">
-        <label><i class="fa-solid fa-gas-pump" style="color:var(--amber)"></i> Diesel filled (Liters) *</label>
-        <input class="input" name="liters" id="entryLiters" type="number" min="0" step="0.01" required value="${e?.liters ?? ''}" oninput="calcEntry()" placeholder="e.g. 18.0 (enter 0 if no diesel pumped)" style="font-size:15px;font-weight:700;">
-        <small>Enter 0 if this shift had no diesel refill</small>
-      </div>
-
-      <!-- DIESEL PRICE -->
-      <div class="field">
-        <label><i class="fa-solid fa-indian-rupee-sign" style="color:var(--emerald)"></i> Diesel price (₹/Liter) *</label>
-        <input class="input" name="price" id="entryPrice" type="number" min="0" step="0.01" required value="${e?.price ?? state.settings.defaultPrice}" oninput="calcEntry()">
-      </div>
-
-      <!-- CALCULATED DIESEL COST -->
-      <div class="field">
-        <label><i class="fa-solid fa-calculator" style="color:var(--indigo)"></i> Calculated diesel cost</label>
-        <input class="input" id="calcCost" readonly value="${money(e?.cost || 0)}" style="font-weight:800;color:var(--text-main);background:#f8fafc;font-size:15px;">
+        <label><i class="fa-solid fa-gas-pump" style="color:var(--amber)"></i> Fuel Consumed (Liters) *</label>
+        <input class="input" name="liters" id="entryLiters" type="number" min="0" step="0.01" required value="${e?.liters ?? ''}" oninput="calcEntry()" placeholder="e.g. 18.0" style="font-size:16px;font-weight:700;">
+        <small>Liters of fuel pumped / used</small>
       </div>
 
       <!-- LIVE EFFICIENCY BADGE -->
       <div class="field full">
-        <div id="entryEfficiencyBadge" style="padding:11px 16px;background:var(--emerald-subtle);border:1px solid var(--emerald-border);border-radius:12px;font-size:13px;color:#065f46;display:none;font-weight:600;"></div>
-      </div>
-
-      <!-- ROUTE -->
-      <div class="field">
-        <label><i class="fa-solid fa-signs-post" style="color:var(--text-muted)"></i> Route / shift description</label>
-        <input class="input" name="route" value="${esc(e?.route || '')}" placeholder="e.g. Vijayawada – Guntur Route, Shift 1">
-      </div>
-
-      <!-- NOTES -->
-      <div class="field">
-        <label><i class="fa-solid fa-note-sticky" style="color:var(--text-muted)"></i> Remarks / Notes</label>
-        <textarea class="textarea" name="notes" rows="2" placeholder="Fuel bunk name, road conditions, delay notes...">${esc(e?.notes || '')}</textarea>
+        <div id="entryEfficiencyBadge" style="padding:12px 16px;background:var(--emerald-subtle);border:1px solid var(--emerald-border);border-radius:12px;font-size:13.5px;color:#065f46;display:none;font-weight:700;"></div>
       </div>
     </div>
-    <div id="entryWarning" class="hidden" style="color:var(--red);font-size:12.5px;margin-top:12px;font-weight:600"></div>
     <div class="form-actions">
       <button type="button" class="btn btn-light" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-primary" type="submit"><i class="fa-solid fa-check"></i>Save daily entry</button>
+      <button class="btn btn-primary" type="submit"><i class="fa-solid fa-check"></i>Save record</button>
     </div>
   </form>`;
 
-  openModal(e ? 'Edit trip record' : 'Record new trip', body);
+  openModal(e ? 'Edit record' : 'Add record', body);
   calcEntry();
 }
 
@@ -1302,28 +1216,15 @@ function calcEntry(){
   if (!f) return;
   let km = +f.elements.km.value || 0;
   let liters = +f.elements.liters.value || 0;
-  let price = +f.elements.price.value || 0;
-
-  document.getElementById('calcCost').value = money(liters * price);
 
   let badge = document.getElementById('entryEfficiencyBadge');
   if (badge) {
     if (km > 0 && liters > 0) {
       let mpg = (km / liters).toFixed(2);
       badge.style.display = 'block';
-      badge.innerHTML = `<i class="fa-solid fa-gauge" style="color:var(--emerald);margin-right:6px"></i><strong>Fuel efficiency:</strong> ${mpg} km/L (${km} km on ${liters} L diesel)`;
+      badge.innerHTML = `<i class="fa-solid fa-gauge" style="color:var(--emerald);margin-right:6px"></i>Calculated mileage: ${mpg} km/L (${km} km on ${liters} L fuel)`;
     } else {
       badge.style.display = 'none';
-    }
-  }
-
-  let w = document.getElementById('entryWarning');
-  if (w) {
-    if (km > 0 && liters > 0 && (km / liters) > 12) {
-      w.textContent = 'Notice: Mileage is unusually high (> 12 km/L). Please double check distance and liters.';
-      w.classList.remove('hidden');
-    } else {
-      w.classList.add('hidden');
     }
   }
 }
@@ -1333,7 +1234,6 @@ function saveEntry(ev, id){
   let f = ev.target, d = new FormData(f);
   let km = +d.get('km');
   let liters = +d.get('liters');
-  let price = +d.get('price');
   let bid = d.get('busId');
   let date = d.get('date');
   let driverSel = d.get('driver').trim();
@@ -1342,7 +1242,7 @@ function saveEntry(ev, id){
   if (driverSel === '__NEW__') {
     let customName = document.getElementById('newDriverInput')?.value.trim();
     if (!customName) {
-      toast('Please enter the new driver name.');
+      toast('Please enter the driver name.');
       return;
     }
     driverName = customName;
@@ -1353,7 +1253,7 @@ function saveEntry(ev, id){
     return;
   }
   if (km <= 0) {
-    toast('Please enter distance traveled in km.');
+    toast('Please enter distance travelled in km.');
     return;
   }
 
@@ -1362,12 +1262,8 @@ function saveEntry(ev, id){
     date,
     busId: bid,
     driver: driverName,
-    route: d.get('route').trim(),
     km: +km.toFixed(2),
     liters: +liters.toFixed(2),
-    price: +price.toFixed(2),
-    cost: +(liters * price).toFixed(2),
-    notes: d.get('notes').trim(),
     created: id ? (state.entries.find(x => x.id === id)?.created || Date.now()) : Date.now()
   };
 
@@ -1377,22 +1273,21 @@ function saveEntry(ev, id){
     state.entries.push(entry);
   }
 
-  // Dynamically ensure driver is in staff roster
+  // Ensure driver is in staff roster
   let existingDrv = state.drivers.find(x => x.name.toLowerCase() === driverName.toLowerCase());
   if (!existingDrv) {
     state.drivers.push({
       id: 'drv' + Date.now(),
       name: driverName,
       phone: '',
-      license: '',
-      status: 'Active'
+      license: ''
     });
   }
 
   save();
   closeModal();
   renderAll();
-  toast(id ? 'Trip entry updated successfully' : 'Trip entry recorded successfully');
+  toast(id ? 'Record updated successfully' : 'Record saved successfully');
 }
 
 function deleteEntry(id){
@@ -1405,9 +1300,9 @@ function deleteEntry(id){
 
 function openBusModal(id){
   let b = id ? state.buses.find(x => x.id === id) : null;
-  let x = b || { id: 'bus' + Date.now(), reg: '', city: 'Kakinada', status: 'Active', fuel: 'Diesel' };
+  let x = b || { id: 'bus' + Date.now(), reg: '', city: 'Kakinada', fuel: 'Diesel' };
 
-  openModal(b ? 'Manage bus profile' : 'Add new bus', `<form onsubmit="saveBus(event,'${b?.id || ''}')">
+  openModal(b ? 'Manage bus' : 'Add new bus', `<form onsubmit="saveBus(event,'${b?.id || ''}')">
     <div class="form-grid">
       <div class="field">
         <label><i class="fa-solid fa-bus" style="color:var(--primary)"></i> Bus number *</label>
@@ -1419,19 +1314,13 @@ function openBusModal(id){
         <input class="input" name="city" required value="${esc(x.city || '')}" placeholder="e.g. Vijayawada, Kakinada, Addaripeta, Kapileswaram" style="font-weight:700">
         <small>Assigned city / operating base</small>
       </div>
-      <div class="field">
+      <div class="field full">
         <label><i class="fa-solid fa-gas-pump" style="color:var(--amber)"></i> Fuel type</label>
         <select class="select" name="fuel">
           <option ${(x.fuel || 'Diesel') === 'Diesel' ? 'selected' : ''}>Diesel</option>
           <option ${x.fuel === 'Petrol' ? 'selected' : ''}>Petrol</option>
           <option ${x.fuel === 'CNG' ? 'selected' : ''}>CNG</option>
           <option ${x.fuel === 'Electric' ? 'selected' : ''}>Electric</option>
-        </select>
-      </div>
-      <div class="field">
-        <label><i class="fa-solid fa-circle-check" style="color:var(--emerald)"></i> Operational status</label>
-        <select class="select" name="status">
-          ${['Active','Maintenance','Inactive'].map(s => `<option ${x.status === s ? 'selected' : ''}>${s}</option>`).join('')}
         </select>
       </div>
     </div>
@@ -1461,8 +1350,7 @@ function saveBus(ev, id){
     id: id || 'bus' + Date.now(),
     reg,
     city,
-    fuel: d.get('fuel'),
-    status: d.get('status')
+    fuel: d.get('fuel')
   };
 
   if (id) {
@@ -1479,7 +1367,7 @@ function saveBus(ev, id){
 
 function deleteBus(id){
   if (state.entries.some(e => e.busId === id)) {
-    toast('This bus has existing trip records. Change its status to Maintenance or Inactive instead of deleting.');
+    toast('This bus has existing trip records. Cannot delete bus with records.');
     return;
   }
   if (!confirm('Delete this bus from fleet?')) return;
@@ -1492,9 +1380,9 @@ function deleteBus(id){
 
 function openDriverModal(id){
   let d = id ? state.drivers.find(x => x.id === id) : null;
-  let x = d || { id: 'drv' + Date.now(), name: '', phone: '', license: '', status: 'Active' };
+  let x = d || { id: 'drv' + Date.now(), name: '', phone: '', license: '' };
 
-  openModal(d ? 'Edit driver profile' : 'Add driver staff', `<form onsubmit="saveDriver(event,'${d?.id || ''}')">
+  openModal(d ? 'Edit driver' : 'Add driver staff', `<form onsubmit="saveDriver(event,'${d?.id || ''}')">
     <div class="form-grid">
       <div class="field full">
         <label><i class="fa-solid fa-user" style="color:var(--primary)"></i> Full name *</label>
@@ -1507,14 +1395,6 @@ function openDriverModal(id){
       <div class="field">
         <label><i class="fa-solid fa-id-card" style="color:var(--indigo)"></i> Driving license number</label>
         <input class="input" name="license" value="${esc(x.license)}" placeholder="e.g. AP05 2020001">
-      </div>
-      <div class="field full">
-        <label><i class="fa-solid fa-circle-check" style="color:var(--emerald)"></i> Staff status</label>
-        <select class="select" name="status">
-          <option ${x.status === 'Active' ? 'selected' : ''}>Active</option>
-          <option ${x.status === 'Inactive' ? 'selected' : ''}>Inactive</option>
-        </select>
-        <small>Drivers dynamically exchange buses every day and select themselves upon recording trips.</small>
       </div>
     </div>
     <div class="form-actions">
@@ -1535,8 +1415,7 @@ function saveDriver(ev, id){
     id: id || 'drv' + Date.now(),
     name,
     phone: d.get('phone').trim(),
-    license: d.get('license').trim(),
-    status: d.get('status')
+    license: d.get('license').trim()
   };
 
   if (id) {
@@ -1566,24 +1445,20 @@ function renderDrivers(){
   let arr = state.drivers.filter(d => (d.name + ' ' + (d.phone || '') + ' ' + (d.license || '')).toLowerCase().includes(q))
                          .sort((a,b) => a.name.localeCompare(b.name));
 
-  let countEl = document.getElementById('driverCountLabel');
-  if (countEl) countEl.textContent = `(${state.drivers.length} registered members)`;
-
   document.getElementById('driverRows').innerHTML = arr.length ? arr.map(d => {
     let stats = statsForDriver(d.name);
     return `<tr>
-      <td><strong style="font-size:13.5px"><i class="fa-solid fa-id-badge" style="color:var(--primary);margin-right:7px"></i>${esc(d.name)}</strong></td>
+      <td><strong style="font-size:13.5px"><i class="fa-solid fa-user" style="color:var(--primary);margin-right:7px"></i>${esc(d.name)}</strong></td>
       <td>${d.phone ? '<i class="fa-solid fa-phone" style="font-size:11px;color:var(--text-muted);margin-right:5px"></i>' + esc(d.phone) : '—'}</td>
       <td>${esc(d.license || '—')}</td>
       <td><strong>${stats.trips}</strong> <span class="text-muted">trips</span></td>
       <td><strong>${num(stats.km)} km</strong></td>
-      <td><span class="status ${(d.status || 'Active').toLowerCase()}">${esc(d.status || 'Active')}</span></td>
       <td>
         <button class="text-btn" onclick="openDriverModal('${d.id}')"><i class="fa-solid fa-pen"></i> Edit</button>
         <button class="text-btn" style="color:var(--red)" onclick="deleteDriver('${d.id}')"><i class="fa-solid fa-trash-can"></i></button>
       </td>
     </tr>`;
-  }).join('') : '<tr><td colspan="7" class="empty"><i class="fa-solid fa-users"></i>No drivers found matching your search.</td></tr>';
+  }).join('') : '<tr><td colspan="6" class="empty"><i class="fa-solid fa-users"></i>No drivers found.</td></tr>';
 }
 
 function monthEntries(){
@@ -1595,8 +1470,8 @@ function renderReports(){
   let es = monthEntries(), t = statsFor(es);
   document.getElementById('reportSummary').innerHTML = [
     ['Total distance', num(t.km) + ' km'],
-    ['Diesel consumed', num(t.liters) + ' L'],
-    ['Diesel expenditure', money(t.cost)]
+    ['Fuel consumed', num(t.liters) + ' L'],
+    ['Fleet average mileage', (t.mpg ? num(t.mpg) + ' km/L' : '—')]
   ].map(x => `<div class="stat"><div class="stat-head">${x[0]}</div><div class="stat-value">${x[1]}</div><div class="stat-foot">Selected month</div></div>`).join('');
 
   let per = state.buses.map(b => ({ b, es: es.filter(e => e.busId === b.id) }));
@@ -1625,9 +1500,8 @@ function renderReports(){
       <td>${esc(drivers)}</td>
       <td>${s.trips}</td>
       <td><strong>${num(s.km)} km</strong></td>
-      <td>${num(s.liters)} L</td>
+      <td><strong>${num(s.liters)} L</strong></td>
       <td>${s.mpg ? num(s.mpg) + ' km/L' : '—'}</td>
-      <td>${money(s.cost)}</td>
     </tr>`;
   }).join('');
 }
@@ -1650,20 +1524,17 @@ function drawBars(id, data){
 
 function exportCSV(){
   let rows = [
-    ['Date', 'Bus Number', 'City', 'Driver', 'Route', 'Distance (km)', 'Diesel (liters)', 'Price per Liter (INR)', 'Diesel Cost (INR)', 'Remarks'],
+    ['Date (DD/MM/YYYY)', 'Bus Number', 'City', 'Driver', 'Distance (km)', 'Fuel Consumed (Liters)', 'Mileage (km/L)'],
     ...state.entries.map(e => {
       let b = bus(e.busId);
       return [
-        e.date,
+        fmtDate(e.date),
         b.reg,
         b.city || '',
         e.driver,
-        e.route || '',
         e.km,
         e.liters,
-        e.price,
-        e.cost,
-        e.notes || ''
+        mileage(e) ? mileage(e).toFixed(2) : '—'
       ];
     })
   ];
@@ -1673,10 +1544,10 @@ function exportCSV(){
   let url = URL.createObjectURL(blob);
   let a = document.createElement('a');
   a.href = url;
-  a.download = 'devusons-fleet-records-' + iso(today) + '.csv';
+  a.download = 'devusons-bus-records-' + iso(today) + '.csv';
   a.click();
   URL.revokeObjectURL(url);
-  toast('CSV export downloaded successfully');
+  toast('CSV export downloaded');
 }
 
 function backupDatabase(){
@@ -1715,19 +1586,17 @@ function clearTripRecords(){
   state.entries = [];
   save();
   renderAll();
-  toast('All trip records cleared');
+  toast('All records cleared');
 }
 
 function loadSettings(){
   document.getElementById('fleetName').value = state.settings.fleetName || 'Devusons Bus Fleet';
-  document.getElementById('defaultPrice').value = state.settings.defaultPrice ?? 95;
   document.getElementById('sidebarFleetTitle').textContent = state.settings.fleetName || 'Devusons Fleet';
   document.getElementById('topbarOrgName').textContent = state.settings.fleetName || 'Devusons Fleet';
 }
 
 function saveSettings(){
   state.settings.fleetName = document.getElementById('fleetName').value.trim() || 'Devusons Bus Fleet';
-  state.settings.defaultPrice = +document.getElementById('defaultPrice').value || 0;
   save();
   loadSettings();
   toast('Settings saved');
