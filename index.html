@@ -1044,7 +1044,7 @@ function renderDashboard(){
     ['Distance today', num(t.km) + ' km', '<i class="fa-solid fa-route"></i>', 'Total distance logged today'],
     ['Fuel consumed today', num(t.liters) + ' L', '<i class="fa-solid fa-gas-pump"></i>', 'Total liters recorded today'],
     ['Average mileage today', (t.mpg ? num(t.mpg) + ' km/L' : '—'), '<i class="fa-solid fa-gauge-high"></i>', 'Today fleet efficiency'],
-    ['Total records logged', state.entries.length + ' records', '<i class="fa-solid fa-clipboard-check"></i>', 'All-time trip entries']
+    ['Records today', es.length + ' records', '<i class="fa-solid fa-clipboard-check"></i>', 'Trips logged today']
   ].map(x => `<div class="stat"><div class="stat-head"><span>${x[0]}</span><span class="stat-icon">${x[2]}</span></div><div class="stat-value">${x[1]}</div><div class="stat-foot">${x[3]}</div></div>`).join('');
 
   document.getElementById('dashboardBuses').innerHTML = state.buses.map(b => busCard(b, es.filter(e => e.busId === b.id))).join('') || '<div class="empty"><i class="fa-solid fa-bus"></i>No buses configured.</div>';
