@@ -11,6 +11,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <!-- FontAwesome 6 Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<!-- PWA Manifest & App Icons -->
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="apple-touch-icon" href="icon-192.svg" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Devusons" />
+<meta name="application-name" content="Devusons Fleet" />
 <style>
 :root{
   --primary:#2563eb;
@@ -714,6 +723,53 @@ td strong{color:#0f172a;font-weight:700}
 }
 .modal-backdrop.open{display:flex}
 
+/* PWA & Utilities */
+.btn-toggle-eye{
+  position:absolute;
+  right:12px;
+  top:50%;
+  transform:translateY(-50%);
+  background:transparent;
+  border:0;
+  color:#94a3b8;
+  cursor:pointer;
+  font-size:14px;
+  padding:4px;
+  transition:color .15s;
+}
+.btn-toggle-eye:hover{color:var(--primary)}
+.network-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 10px;
+  border-radius:8px;
+}
+.network-badge.online{background:var(--emerald-subtle);color:var(--emerald);border:1px solid var(--emerald-border)}
+.network-badge.offline{background:var(--red-subtle);color:var(--red);border:1px solid var(--red-border)}
+.btn-install-pwa{
+  display:none;
+  background:linear-gradient(135deg, #10b981, #059669);
+  color:#fff;
+  border:0;
+  border-radius:10px;
+  padding:7px 12px;
+  font-size:12px;
+  font-weight:700;
+  align-items:center;
+  gap:6px;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(16,185,129,0.3);
+  transition:.15s;
+}
+.btn-install-pwa:hover{
+  transform:translateY(-1px);
+  box-shadow:0 6px 16px rgba(16,185,129,0.4);
+}
+
+
 /* Mobile Sheet & Menu Trigger */
 .mobile-sheet{
   background:#fff;
@@ -972,20 +1028,20 @@ td strong{color:#0f172a;font-weight:700}
         <label><i class="fa-solid fa-user-shield" style="color:var(--primary);margin-right:5px"></i> Admin ID *</label>
         <div class="login-input-wrap">
           <i class="fa-solid fa-user"></i>
-          <input class="login-input" id="adminId" required value="devusons" placeholder="Enter admin ID (devusons)" autocomplete="username">
+          <input class="login-input" id="adminId" required placeholder="Enter admin ID" autocomplete="username">
         </div>
       </div>
       <div class="login-field">
         <label><i class="fa-solid fa-lock" style="color:var(--amber);margin-right:5px"></i> Admin Password *</label>
         <div class="login-input-wrap">
           <i class="fa-solid fa-key"></i>
-          <input class="login-input" id="adminPass" type="password" required placeholder="Enter password (devuson@1245)" autocomplete="current-password">
+          <input class="login-input" id="adminPass" type="password" required placeholder="Enter password" autocomplete="current-password">
+          <button type="button" class="btn-toggle-eye" onclick="togglePasswordVis('adminPass', this)" title="Toggle password visibility">
+            <i class="fa-regular fa-eye"></i>
+          </button>
         </div>
       </div>
       <button class="login-btn" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Sign In as Admin</button>
-      <div class="login-hint">
-        <i class="fa-solid fa-shield-halved" style="color:var(--primary);margin-right:5px"></i> <strong>Admin credentials:</strong> ID: <code>devusons</code> • Password: <code>devuson@1245</code>
-      </div>
     </form>
 
     <!-- DRIVER LOGIN FORM -->
@@ -994,21 +1050,24 @@ td strong{color:#0f172a;font-weight:700}
         <label><i class="fa-solid fa-id-card" style="color:var(--emerald);margin-right:5px"></i> Driver Username / ID *</label>
         <div class="login-input-wrap">
           <i class="fa-solid fa-user"></i>
-          <input class="login-input" id="driverUser" required placeholder="Enter username (e.g. apparao or sureshbabu)" autocomplete="username">
+          <input class="login-input" id="driverUser" required placeholder="Enter driver username" autocomplete="username">
         </div>
       </div>
       <div class="login-field">
         <label><i class="fa-solid fa-lock" style="color:var(--amber);margin-right:5px"></i> Driver Password *</label>
         <div class="login-input-wrap">
           <i class="fa-solid fa-key"></i>
-          <input class="login-input" id="driverPass" type="password" required placeholder="Enter driver password" autocomplete="current-password">
+          <input class="login-input" id="driverPass" type="password" required placeholder="Enter password" autocomplete="current-password">
+          <button type="button" class="btn-toggle-eye" onclick="togglePasswordVis('driverPass', this)" title="Toggle password visibility">
+            <i class="fa-regular fa-eye"></i>
+          </button>
         </div>
       </div>
       <button class="login-btn" type="submit" style="background:linear-gradient(135deg, #059669, #047857)">
         <i class="fa-solid fa-right-to-bracket"></i> Sign In as Driver
       </button>
       <div class="login-hint">
-        <i class="fa-solid fa-circle-info" style="color:var(--emerald);margin-right:5px"></i> <strong>Driver accounts:</strong> Driver accounts and passwords are created by Admin in the Driver Staff directory.
+        <i class="fa-solid fa-shield-halved" style="color:var(--emerald);margin-right:5px"></i> Driver credentials are managed by fleet administration.
       </div>
     </form>
   </div>
@@ -1052,6 +1111,10 @@ td strong{color:#0f172a;font-weight:700}
         </div>
       </div>
       <div class="top-right">
+        <div id="networkStatusBadge"></div>
+        <button class="btn-install-pwa" onclick="installPWA()" title="Install app on device">
+          <i class="fa-solid fa-download"></i> <span class="hide-mobile">Install App</span>
+        </button>
         <div class="today-pill" id="todayPill"><i class="fa-regular fa-calendar-days"></i></div>
         <div id="authUserBadge"></div>
         <button class="btn btn-light" onclick="logout()" style="padding:8px 12px;font-size:12px;border-radius:10px" title="Sign out"><i class="fa-solid fa-right-from-bracket"></i> <span class="hide-mobile">Logout</span></button>
@@ -1478,6 +1541,18 @@ td strong{color:#0f172a;font-weight:700}
         </button>
       </div>
 
+      <!-- INSTALL PWA OPTION IN MOBILE SHEET -->
+      <button class="sheet-card btn-install-pwa" onclick="installPWA();closeMobileMenu()" style="margin-top:10px;background:linear-gradient(135deg, #ecfdf5, #d1fae5);border-color:#a7f3d0;display:flex">
+        <div class="sheet-card-icon" style="background:#10b981;color:#fff">
+          <i class="fa-solid fa-download"></i>
+        </div>
+        <div class="sheet-card-text">
+          <strong style="color:#065f46">Install Devusons App</strong>
+          <small style="color:#047857">Add to your phone home screen for quick offline access</small>
+        </div>
+        <i class="fa-solid fa-chevron-right sheet-card-arrow" style="color:#10b981"></i>
+      </button>
+
       <div class="sheet-footer">
         <span style="font-size:12px;color:var(--text-muted);font-weight:600">
           <i class="fa-solid fa-user-shield" style="color:var(--primary);margin-right:4px"></i> Signed in as: <strong>Admin</strong>
@@ -1493,9 +1568,9 @@ td strong{color:#0f172a;font-weight:700}
 
 <script>
 const STORE = 'fleetpilot_prod_v2';
-const AUTH_KEY = 'devusons_auth_user_v2';
-const ADMIN_ID = 'devusons';
-const ADMIN_PASS = 'devuson@1245';
+const AUTH_KEY = 'devusons_auth_user_v3';
+const ADMIN_ID = 'admin';
+const ADMIN_PASS = 'admin@123';
 
 const today = new Date();
 const iso = d => {
@@ -1755,7 +1830,7 @@ function handleAdminLogin(ev){
   } else {
     if (err) {
       err.style.display = 'flex';
-      err.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Invalid admin credentials. ID: <code>devusons</code> | Pass: <code>devuson@1245</code>';
+      err.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Incorrect Admin ID or Password. Please try again.';
     }
   }
 }
@@ -2958,6 +3033,77 @@ function renderAll(){
   document.title = (state.settings.fleetName || 'Devusons') + ' — Bus Fleet Manager';
 }
 
+
+/* ========================================================
+   FULL-PLEDGED WEB APP (PWA) & SERVICE WORKER
+   ======================================================== */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => {
+      console.log('SW registration note:', err);
+    });
+  });
+}
+
+// Password Visibility Toggle
+function togglePasswordVis(inputId, btn){
+  let inp = document.getElementById(inputId);
+  if (!inp) return;
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    btn.innerHTML = '<i class="fa-solid fa-eye-slash" style="color:var(--primary)"></i>';
+  } else {
+    inp.type = 'password';
+    btn.innerHTML = '<i class="fa-regular fa-eye"></i>';
+  }
+}
+
+// PWA Installation Handling
+let deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  document.querySelectorAll('.btn-install-pwa').forEach(b => b.style.display = 'inline-flex');
+});
+
+function installPWA(){
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.then(() => {
+      deferredInstallPrompt = null;
+      document.querySelectorAll('.btn-install-pwa').forEach(b => b.style.display = 'none');
+    });
+  } else {
+    toast('App ready: Open browser menu (⋮) and tap "Install App" or "Add to Home screen".');
+  }
+}
+
+// Online / Offline Connectivity Monitor
+function updateNetworkBadge(){
+  let el = document.getElementById('networkStatusBadge');
+  if (!el) return;
+  if (navigator.onLine) {
+    el.innerHTML = '<span class="network-badge online hide-mobile"><i class="fa-solid fa-circle" style="font-size:7px"></i> Online</span>';
+  } else {
+    el.innerHTML = '<span class="network-badge offline"><i class="fa-solid fa-wifi-slash"></i> Offline</span>';
+  }
+}
+window.addEventListener('online', () => { updateNetworkBadge(); toast('Connection restored: Online'); });
+window.addEventListener('offline', () => { updateNetworkBadge(); toast('Offline mode: Trips will be saved locally on this device'); });
+
+// Keyboard Shortcuts (Ctrl+N: Add Record, Escape: Close Modals)
+window.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && (e.key === 'n' || e.key === 'N')) {
+    e.preventDefault();
+    openEntry();
+  }
+  if (e.key === 'Escape') {
+    closeModal();
+    closeMobileMenu();
+  }
+});
+
+updateNetworkBadge();
 renderAll();
 </script>
 </body>

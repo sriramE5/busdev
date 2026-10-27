@@ -1,0 +1,47 @@
+{
+  "name": "Devusons — Bus Fleet Management",
+  "short_name": "Devusons Fleet",
+  "description": "Enterprise fleet operations, daily fuel & distance tracking, and weekly/monthly performance analytics.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0a1526",
+  "theme_color": "#0a1526",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Add Daily Record",
+      "short_name": "Add Record",
+      "description": "Log today's distance and fuel",
+      "url": "./#page-entries",
+      "icons": [{ "src": "icon-192.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Reports & Analytics",
+      "short_name": "Analytics",
+      "description": "View weekly and monthly fleet metrics",
+      "url": "./#page-reports",
+      "icons": [{ "src": "icon-192.svg", "sizes": "192x192" }]
+    }
+  ]
+}
