@@ -505,6 +505,178 @@ td strong{color:#0f172a;font-weight:700}
 .page{display:none}
 .page.active{display:block}
 
+/* Login Screen */
+.login-screen{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  background:radial-gradient(circle at 50% 15%, #1e293b 0%, #0a1120 100%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  overflow-y:auto;
+}
+.login-card{
+  background:#fff;
+  width:min(440px, 100%);
+  border-radius:24px;
+  padding:36px 30px;
+  box-shadow:0 25px 60px -15px rgba(0,0,0,0.5);
+  border:1px solid rgba(255,255,255,0.25);
+  animation:popIn .25s ease-out;
+  text-align:center;
+}
+.login-badge{
+  width:58px;
+  height:58px;
+  border-radius:18px;
+  background:var(--primary-gradient);
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font-size:26px;
+  margin:0 auto 16px;
+  box-shadow:0 10px 24px rgba(37,99,235,.4);
+}
+.login-card h2{margin:0 0 6px;font-size:24px;font-weight:800;letter-spacing:-.5px}
+.login-card p{margin:0 0 20px;color:var(--text-muted);font-size:13px}
+.login-tabs{
+  display:flex;
+  background:#f1f5f9;
+  border-radius:14px;
+  padding:4px;
+  gap:6px;
+  margin-bottom:22px;
+}
+.login-tab{
+  flex:1;
+  border:0;
+  background:transparent;
+  padding:10px 12px;
+  border-radius:10px;
+  font-weight:700;
+  font-size:13px;
+  color:#64748b;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:.15s;
+}
+.login-tab.active{
+  background:#fff;
+  color:var(--primary);
+  box-shadow:0 4px 12px rgba(15,23,42,.08);
+}
+.login-field{
+  text-align:left;
+  margin-bottom:15px;
+}
+.login-field label{
+  display:block;
+  font-size:12.5px;
+  font-weight:700;
+  color:#334155;
+  margin-bottom:6px;
+}
+.login-input-wrap{position:relative}
+.login-input-wrap i{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#94a3b8;
+  font-size:14px;
+}
+.login-input{
+  width:100%;
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  padding:12px 14px 12px 38px;
+  font-size:14px;
+  font-weight:600;
+  color:#0f172a;
+  outline:none;
+  background:#f8fafc;
+  transition:.15s;
+}
+.login-input:focus{
+  border-color:var(--primary);
+  background:#fff;
+  box-shadow:0 0 0 3px rgba(37,99,235,.15);
+}
+.login-btn{
+  width:100%;
+  background:var(--primary-gradient);
+  color:#fff;
+  border:0;
+  border-radius:12px;
+  padding:13px;
+  font-size:14px;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  box-shadow:0 8px 20px rgba(37,99,235,.32);
+  transition:.15s;
+  margin-top:6px;
+}
+.login-btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 24px rgba(37,99,235,.4);
+}
+.login-error{
+  background:#fef2f2;
+  border:1px solid #fecaca;
+  color:#b91c1c;
+  padding:10px 14px;
+  border-radius:10px;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:16px;
+  display:none;
+  align-items:center;
+  gap:8px;
+  text-align:left;
+}
+.login-hint{
+  font-size:11.5px;
+  color:#64748b;
+  background:#f8fafc;
+  border:1px dashed #cbd5e1;
+  padding:9px 12px;
+  border-radius:10px;
+  margin-top:16px;
+  text-align:left;
+}
+
+/* User Badges */
+.user-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 12px;
+  border-radius:10px;
+  font-size:12.5px;
+  font-weight:700;
+}
+.user-badge.admin{
+  background:#eff6ff;
+  color:var(--primary);
+  border:1px solid var(--primary-border);
+}
+.user-badge.driver{
+  background:var(--emerald-subtle);
+  color:var(--emerald);
+  border:1px solid var(--emerald-border);
+}
+@media(max-width:720px){
+  .hide-mobile{display:none!important}
+}
+
+
 /* Toast */
 .toast{
   position:fixed;
@@ -694,6 +866,74 @@ td strong{color:#0f172a;font-weight:700}
 </style>
 </head>
 <body>
+<!-- LOGIN SCREEN (ADMIN & DRIVER) -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="login-badge"><i class="fa-solid fa-bus-simple"></i></div>
+    <h2>Devusons Bus Fleet</h2>
+    <p>Fleet Operations & Driver Management Portal</p>
+
+    <!-- ROLE SWITCHER TABS -->
+    <div class="login-tabs">
+      <button type="button" class="login-tab active" id="tabAdmin" onclick="switchLoginTab('admin')">
+        <i class="fa-solid fa-user-shield"></i> Admin Login
+      </button>
+      <button type="button" class="login-tab" id="tabDriver" onclick="switchLoginTab('driver')">
+        <i class="fa-solid fa-id-card"></i> Driver Login
+      </button>
+    </div>
+
+    <!-- ERROR ALERT -->
+    <div id="loginError" class="login-error"></div>
+
+    <!-- ADMIN LOGIN FORM -->
+    <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+      <div class="login-field">
+        <label><i class="fa-solid fa-user-shield" style="color:var(--primary);margin-right:5px"></i> Admin ID *</label>
+        <div class="login-input-wrap">
+          <i class="fa-solid fa-user"></i>
+          <input class="login-input" id="adminId" required value="devusons" placeholder="Enter admin ID (devusons)" autocomplete="username">
+        </div>
+      </div>
+      <div class="login-field">
+        <label><i class="fa-solid fa-lock" style="color:var(--amber);margin-right:5px"></i> Admin Password *</label>
+        <div class="login-input-wrap">
+          <i class="fa-solid fa-key"></i>
+          <input class="login-input" id="adminPass" type="password" required placeholder="Enter password (devuson@1245)" autocomplete="current-password">
+        </div>
+      </div>
+      <button class="login-btn" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Sign In as Admin</button>
+      <div class="login-hint">
+        <i class="fa-solid fa-shield-halved" style="color:var(--primary);margin-right:5px"></i> <strong>Admin credentials:</strong> ID: <code>devusons</code> • Password: <code>devuson@1245</code>
+      </div>
+    </form>
+
+    <!-- DRIVER LOGIN FORM -->
+    <form id="driverLoginForm" onsubmit="handleDriverLogin(event)" style="display:none">
+      <div class="login-field">
+        <label><i class="fa-solid fa-id-card" style="color:var(--emerald);margin-right:5px"></i> Driver Username / ID *</label>
+        <div class="login-input-wrap">
+          <i class="fa-solid fa-user"></i>
+          <input class="login-input" id="driverUser" required placeholder="Enter username (e.g. apparao or sureshbabu)" autocomplete="username">
+        </div>
+      </div>
+      <div class="login-field">
+        <label><i class="fa-solid fa-lock" style="color:var(--amber);margin-right:5px"></i> Driver Password *</label>
+        <div class="login-input-wrap">
+          <i class="fa-solid fa-key"></i>
+          <input class="login-input" id="driverPass" type="password" required placeholder="Enter driver password" autocomplete="current-password">
+        </div>
+      </div>
+      <button class="login-btn" type="submit" style="background:linear-gradient(135deg, #059669, #047857)">
+        <i class="fa-solid fa-right-to-bracket"></i> Sign In as Driver
+      </button>
+      <div class="login-hint">
+        <i class="fa-solid fa-circle-info" style="color:var(--emerald);margin-right:5px"></i> <strong>Driver accounts:</strong> Driver accounts and passwords are created by Admin in the Driver Staff directory.
+      </div>
+    </form>
+  </div>
+</div>
+
 <div class="app">
   <!-- SIDEBAR -->
   <aside class="sidebar">
@@ -728,11 +968,60 @@ td strong{color:#0f172a;font-weight:700}
       </div>
       <div class="top-right">
         <div class="today-pill" id="todayPill"><i class="fa-regular fa-calendar-days"></i></div>
-        <div class="avatar"><i class="fa-solid fa-user-shield"></i></div>
+        <div id="authUserBadge"></div>
+        <button class="btn btn-light" onclick="logout()" style="padding:8px 12px;font-size:12px;border-radius:10px" title="Sign out"><i class="fa-solid fa-right-from-bracket"></i> <span class="hide-mobile">Logout</span></button>
       </div>
     </header>
 
     <div class="content">
+      
+      <!-- DRIVER HOME PAGE (MY TRIPS & STATS) -->
+      <section class="page" id="page-driver-home">
+        <div class="welcome">
+          <div>
+            <h2 id="driverWelcomeTitle">Driver portal 👋</h2>
+            <p>Log your daily distance travelled and fuel consumed for your assigned bus.</p>
+          </div>
+          <button class="btn btn-primary" onclick="openEntry()"><i class="fa-solid fa-plus"></i> Add today's record</button>
+        </div>
+        <div class="stats" id="driverStats"></div>
+        <div class="section-head">
+          <div>
+            <h3>My trip records</h3>
+            <p>History of distance and fuel logged under your account</p>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date (DD/MM/YYYY)</th>
+                  <th>Vehicle</th>
+                  <th>Operating city</th>
+                  <th>Distance</th>
+                  <th>Fuel consumed</th>
+                  <th>Mileage</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="driverTripRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- DRIVER BUSES PAGE (FLEET BUSES & CITIES) -->
+      <section class="page" id="page-driver-buses">
+        <div class="welcome">
+          <div>
+            <h2>Fleet buses & operating cities</h2>
+            <p>Reference list of fleet buses and locations. Select any bus to log a trip.</p>
+          </div>
+        </div>
+        <div class="bus-grid" id="driverBusesGrid"></div>
+      </section>
+
       <!-- DASHBOARD PAGE -->
       <section class="page active" id="page-dashboard">
         <div class="welcome">
@@ -967,6 +1256,7 @@ td strong{color:#0f172a;font-weight:700}
               <thead>
                 <tr>
                   <th>Driver name</th>
+                  <th>Login username</th>
                   <th>Mobile number</th>
                   <th>License number</th>
                   <th>Total trips logged</th>
@@ -1036,24 +1326,41 @@ td strong{color:#0f172a;font-weight:700}
 
 <script>
 const STORE = 'fleetpilot_prod_v2';
+const AUTH_KEY = 'devusons_auth_user_v2';
+const ADMIN_ID = 'devusons';
+const ADMIN_PASS = 'devuson@1245';
+
 const today = new Date();
 const iso = d => {
   const x = new Date(d);
   return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;
 };
 
-// Format date strictly as DD/MM/YYYY
+// Strict DD/MM/YYYY date formatting everywhere
 function fmtDate(s){
   if (!s) return '—';
-  if (typeof s === 'string' && s.includes('-')) {
-    let parts = s.split('-');
-    if (parts.length === 3) {
-      return `${parts[2].padStart(2, '0')}/${parts[1].padStart(2, '0')}/${parts[0]}`;
+  if (typeof s === 'string') {
+    let trimmed = s.trim();
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(trimmed)) return trimmed;
+    if (/^\d{4}-\d{2}-\d{2}/.test(trimmed)) {
+      let [y, m, d] = trimmed.slice(0, 10).split('-');
+      return `${d}/${m}/${y}`;
+    }
+    if (/^\d{2}-\d{2}-\d{4}$/.test(trimmed)) {
+      let [d, m, y] = trimmed.split('-');
+      return `${d}/${m}/${y}`;
     }
   }
   let d = new Date(s);
   if (isNaN(d.getTime())) return s;
   return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+}
+
+// Strip initial "Bus " from any bus registration number
+function busNum(bOrId){
+  let b = typeof bOrId === 'string' ? bus(bOrId) : (bOrId || {});
+  let reg = String(b.reg || '').trim();
+  return reg.replace(/^bus\s*/i, '').trim() || '—';
 }
 
 const num = n => Number(n||0).toLocaleString('en-IN', {maximumFractionDigits:1});
@@ -1072,28 +1379,28 @@ const defaultState = () => ({
     { id: 'bus_4179u', reg: '4179 Ultra', city: 'Kakinada', fuel: 'Diesel' }
   ],
   drivers: [
-    { id: 'drv1', name: 'K. Appa Rao', phone: '98480 12341', license: 'AP05 2018001' },
-    { id: 'drv2', name: 'P. Suresh Babu', phone: '98480 12342', license: 'AP05 2017002' },
-    { id: 'drv3', name: 'M. Venkatesh', phone: '98480 12343', license: 'AP05 2019003' },
-    { id: 'drv4', name: 'Ch. Satyanarayana', phone: '98480 12344', license: 'AP05 2016004' },
-    { id: 'drv5', name: 'B. Ramesh Kumar', phone: '98480 12345', license: 'AP05 2020005' },
-    { id: 'drv6', name: 'G. Krishna Murthy', phone: '98480 12346', license: 'AP05 2015006' },
-    { id: 'drv7', name: 'T. Durga Rao', phone: '98480 12347', license: 'AP05 2018007' },
-    { id: 'drv8', name: 'S. Veerabhadram', phone: '98480 12348', license: 'AP05 2019008' },
-    { id: 'drv9', name: 'N. Srinivas', phone: '98480 12349', license: 'AP05 2017009' },
-    { id: 'drv10', name: 'K. Ravi Teja', phone: '98480 12350', license: 'AP05 2021010' },
-    { id: 'drv11', name: 'Y. Subba Rao', phone: '98480 12351', license: 'AP05 2016011' },
-    { id: 'drv12', name: 'V. Sivaiah', phone: '98480 12352', license: 'AP05 2020012' },
-    { id: 'drv13', name: 'D. Somaraju', phone: '98480 12353', license: 'AP05 2018013' },
-    { id: 'drv14', name: 'P. Naidu', phone: '98480 12354', license: 'AP05 2019014' },
-    { id: 'drv15', name: 'A. Jagadeesh', phone: '98480 12355', license: 'AP05 2017015' },
-    { id: 'drv16', name: 'M. Anil Kumar', phone: '98480 12356', license: 'AP05 2021016' },
-    { id: 'drv17', name: 'K. Tirupathi Rao', phone: '98480 12357', license: 'AP05 2018017' },
-    { id: 'drv18', name: 'G. Prasad', phone: '98480 12358', license: 'AP05 2016018' },
-    { id: 'drv19', name: 'R. Kondala Rao', phone: '98480 12359', license: 'AP05 2019019' },
-    { id: 'drv20', name: 'B. Nageswara Rao', phone: '98480 12360', license: 'AP05 2015020' },
-    { id: 'drv21', name: 'Ch. Ramana', phone: '98480 12361', license: 'AP05 2020021' },
-    { id: 'drv22', name: 'V. Mahesh', phone: '98480 12362', license: 'AP05 2022022' }
+    { id: 'drv1', name: 'K. Appa Rao', phone: '98480 12341', license: 'AP05 2018001', username: 'apparao', password: 'devuson@driver1' },
+    { id: 'drv2', name: 'P. Suresh Babu', phone: '98480 12342', license: 'AP05 2017002', username: 'sureshbabu', password: 'devuson@driver2' },
+    { id: 'drv3', name: 'M. Venkatesh', phone: '98480 12343', license: 'AP05 2019003', username: 'venkatesh', password: 'devuson@driver3' },
+    { id: 'drv4', name: 'Ch. Satyanarayana', phone: '98480 12344', license: 'AP05 2016004', username: 'satya', password: 'devuson@driver4' },
+    { id: 'drv5', name: 'B. Ramesh Kumar', phone: '98480 12345', license: 'AP05 2020005', username: 'ramesh', password: 'devuson@driver5' },
+    { id: 'drv6', name: 'G. Krishna Murthy', phone: '98480 12346', license: 'AP05 2015006', username: 'krishna', password: 'devuson@driver6' },
+    { id: 'drv7', name: 'T. Durga Rao', phone: '98480 12347', license: 'AP05 2018007', username: 'durgarao', password: 'devuson@driver7' },
+    { id: 'drv8', name: 'S. Veerabhadram', phone: '98480 12348', license: 'AP05 2019008', username: 'bhadram', password: 'devuson@driver8' },
+    { id: 'drv9', name: 'N. Srinivas', phone: '98480 12349', license: 'AP05 2017009', username: 'srinivas', password: 'devuson@driver9' },
+    { id: 'drv10', name: 'K. Ravi Teja', phone: '98480 12350', license: 'AP05 2021010', username: 'raviteja', password: 'devuson@driver10' },
+    { id: 'drv11', name: 'Y. Subba Rao', phone: '98480 12351', license: 'AP05 2016011', username: 'subbarao', password: 'devuson@driver11' },
+    { id: 'drv12', name: 'V. Sivaiah', phone: '98480 12352', license: 'AP05 2020012', username: 'sivaiah', password: 'devuson@driver12' },
+    { id: 'drv13', name: 'D. Somaraju', phone: '98480 12353', license: 'AP05 2018013', username: 'somaraju', password: 'devuson@driver13' },
+    { id: 'drv14', name: 'P. Naidu', phone: '98480 12354', license: 'AP05 2019014', username: 'naidu', password: 'devuson@driver14' },
+    { id: 'drv15', name: 'A. Jagadeesh', phone: '98480 12355', license: 'AP05 2017015', username: 'jagadeesh', password: 'devuson@driver15' },
+    { id: 'drv16', name: 'M. Anil Kumar', phone: '98480 12356', license: 'AP05 2021016', username: 'anilkumar', password: 'devuson@driver16' },
+    { id: 'drv17', name: 'K. Tirupathi Rao', phone: '98480 12357', license: 'AP05 2018017', username: 'tirupathi', password: 'devuson@driver17' },
+    { id: 'drv18', name: 'G. Prasad', phone: '98480 12358', license: 'AP05 2016018', username: 'prasad', password: 'devuson@driver18' },
+    { id: 'drv19', name: 'R. Kondala Rao', phone: '98480 12359', license: 'AP05 2019019', username: 'kondalarao', password: 'devuson@driver19' },
+    { id: 'drv20', name: 'B. Nageswara Rao', phone: '98480 12360', license: 'AP05 2015020', username: 'nageswararao', password: 'devuson@driver20' },
+    { id: 'drv21', name: 'Ch. Ramana', phone: '98480 12361', license: 'AP05 2020021', username: 'ramana', password: 'devuson@driver21' },
+    { id: 'drv22', name: 'V. Mahesh', phone: '98480 12362', license: 'AP05 2022022', username: 'mahesh', password: 'devuson@driver22' }
   ],
   entries: []
 });
@@ -1113,18 +1420,32 @@ try {
     } else {
       state = defaultState();
     }
-    localStorage.setItem(STORE, JSON.stringify(state));
   }
 } catch(e) {
   state = defaultState();
 }
+
+// Ensure every driver has valid username and password
+if (!state.drivers || !state.drivers.length) {
+  state.drivers = defaultState().drivers;
+}
+state.drivers.forEach((d, idx) => {
+  if (!d.username) {
+    let raw = d.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+    d.username = raw || ('driver' + (idx + 1));
+  }
+  if (!d.password) {
+    d.password = 'devuson@driver' + (idx + 1);
+  }
+});
+localStorage.setItem(STORE, JSON.stringify(state));
 
 function save(){
   localStorage.setItem(STORE, JSON.stringify(state));
 }
 
 function bus(id){
-  return state.buses.find(b => b.id === id) || { reg: 'Unknown bus', city: '—' };
+  return state.buses.find(b => b.id === id) || { reg: 'Unknown', city: '—' };
 }
 
 function getLastDriverForBus(busId){
@@ -1150,54 +1471,281 @@ function entryTotals(entries){
 }
 
 function mileage(e){
-  return +e.liters > 0 ? (+e.km || 0) / (+e.liters) : 0;
+  return (e.liters > 0) ? (e.km / e.liters) : 0;
+}
+
+function statsFor(entries){
+  let t = entryTotals(entries);
+  return {
+    trips: entries.length,
+    km: t.km,
+    liters: t.liters,
+    mpg: t.liters > 0 ? (t.km / t.liters) : 0
+  };
 }
 
 function todayEntries(){
   return state.entries.filter(e => e.date === iso(today));
 }
 
-function statsFor(entries){
-  let t = entryTotals(entries);
-  return { ...t, trips: entries.length, mpg: t.liters ? t.km / t.liters : 0 };
+/* ========================================================
+   AUTHENTICATION & SESSION HANDLING
+   ======================================================== */
+let currentUser = null;
+
+function initAuth(){
+  let raw = localStorage.getItem(AUTH_KEY);
+  if (raw) {
+    try {
+      let parsed = JSON.parse(raw);
+      if (parsed.role === 'admin' && parsed.id === ADMIN_ID) {
+        currentUser = parsed;
+      } else if (parsed.role === 'driver') {
+        let drv = state.drivers.find(d => d.id === parsed.driverId || (d.username && d.username.toLowerCase() === (parsed.username || '').toLowerCase()));
+        if (drv) {
+          currentUser = {
+            role: 'driver',
+            driverId: drv.id,
+            username: drv.username,
+            name: drv.name
+          };
+        }
+      }
+    } catch(e) {
+      currentUser = null;
+    }
+  }
+  applyAuthUI();
 }
 
-function toast(msg){
-  let t = document.getElementById('toast');
-  t.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981"></i><span>${msg}</span>`;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+function switchLoginTab(tab){
+  let tabAdmin = document.getElementById('tabAdmin');
+  let tabDriver = document.getElementById('tabDriver');
+  let formAdmin = document.getElementById('adminLoginForm');
+  let formDriver = document.getElementById('driverLoginForm');
+  let err = document.getElementById('loginError');
+  if (err) err.style.display = 'none';
+
+  if (tab === 'admin') {
+    tabAdmin.classList.add('active');
+    tabDriver.classList.remove('active');
+    formAdmin.style.display = 'block';
+    formDriver.style.display = 'none';
+  } else {
+    tabDriver.classList.add('active');
+    tabAdmin.classList.remove('active');
+    formDriver.style.display = 'block';
+    formAdmin.style.display = 'none';
+  }
 }
 
+function handleAdminLogin(ev){
+  ev.preventDefault();
+  let idInput = document.getElementById('adminId').value.trim();
+  let passInput = document.getElementById('adminPass').value;
+  let err = document.getElementById('loginError');
+
+  if (idInput.toLowerCase() === ADMIN_ID.toLowerCase() && passInput === ADMIN_PASS) {
+    currentUser = {
+      role: 'admin',
+      id: ADMIN_ID,
+      username: ADMIN_ID,
+      name: 'Fleet Administrator'
+    };
+    localStorage.setItem(AUTH_KEY, JSON.stringify(currentUser));
+    if (err) err.style.display = 'none';
+    toast('Welcome, Administrator!');
+    applyAuthUI();
+    navigate('dashboard');
+  } else {
+    if (err) {
+      err.style.display = 'flex';
+      err.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Invalid admin credentials. ID: <code>devusons</code> | Pass: <code>devuson@1245</code>';
+    }
+  }
+}
+
+function handleDriverLogin(ev){
+  ev.preventDefault();
+  let userInput = document.getElementById('driverUser').value.trim().toLowerCase();
+  let passInput = document.getElementById('driverPass').value;
+  let err = document.getElementById('loginError');
+
+  let drv = state.drivers.find(d => 
+    (d.username || '').toLowerCase() === userInput && 
+    (d.password || '') === passInput
+  );
+
+  if (drv) {
+    currentUser = {
+      role: 'driver',
+      driverId: drv.id,
+      username: drv.username,
+      name: drv.name
+    };
+    localStorage.setItem(AUTH_KEY, JSON.stringify(currentUser));
+    if (err) err.style.display = 'none';
+    toast(`Welcome, ${drv.name}!`);
+    applyAuthUI();
+    navigate('driver-home');
+  } else {
+    if (err) {
+      err.style.display = 'flex';
+      err.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Incorrect driver username or password. Check with Devusons fleet administrator.';
+    }
+  }
+}
+
+function logout(){
+  localStorage.removeItem(AUTH_KEY);
+  currentUser = null;
+  applyAuthUI();
+  toast('Signed out successfully.');
+}
+
+function applyAuthUI(){
+  let loginScreen = document.getElementById('loginScreen');
+  let appEl = document.querySelector('.app');
+  let mobileNav = document.getElementById('mobileNav');
+  let userBadge = document.getElementById('authUserBadge');
+  let sideNav = document.getElementById('sideNav');
+
+  if (!currentUser) {
+    loginScreen.style.display = 'flex';
+    appEl.style.display = 'none';
+    if (mobileNav) mobileNav.style.display = 'none';
+    return;
+  }
+
+  loginScreen.style.display = 'none';
+  appEl.style.display = '';
+
+  if (currentUser.role === 'admin') {
+    sideNav.innerHTML = `
+      <div style="padding:10px 12px;margin-bottom:8px;background:var(--sidebar-card);border:1px solid var(--sidebar-border);border-radius:12px;font-size:11.5px;">
+        <span style="color:#7dd3fc;font-weight:700;display:block;margin-bottom:2px;"><i class="fa-solid fa-user-shield"></i> Logged in as:</span>
+        <strong style="color:#fff;font-size:13px">Admin (${esc(currentUser.id)})</strong>
+      </div>
+      <button class="active" data-page="dashboard"><i class="fa-solid fa-gauge-high"></i>Dashboard</button>
+      <button data-page="buses"><i class="fa-solid fa-bus"></i>Buses</button>
+      <button data-page="entries"><i class="fa-solid fa-clipboard-list"></i>Daily records</button>
+      <button data-page="reports"><i class="fa-solid fa-chart-line"></i>Reports & analytics</button>
+      <button data-page="drivers"><i class="fa-solid fa-users"></i>Driver staff</button>
+      <button data-page="settings"><i class="fa-solid fa-sliders"></i>Settings</button>
+      <button onclick="logout()" style="color:#f87171;margin-top:10px"><i class="fa-solid fa-right-from-bracket"></i>Sign out</button>
+    `;
+
+    if (mobileNav) {
+      mobileNav.style.display = 'flex';
+      mobileNav.innerHTML = `
+        <button class="active" data-page="dashboard"><i class="fa-solid fa-gauge-high"></i>Home</button>
+        <button data-page="entries"><i class="fa-solid fa-clipboard-list"></i>Records</button>
+        <button class="add" onclick="openEntry()"><i class="fa-solid fa-plus"></i>Add</button>
+        <button data-page="reports"><i class="fa-solid fa-chart-line"></i>Analytics</button>
+        <button data-page="buses"><i class="fa-solid fa-bus"></i>Buses</button>
+      `;
+    }
+
+    if (userBadge) {
+      userBadge.innerHTML = `<span class="user-badge admin"><i class="fa-solid fa-user-shield"></i> Admin</span>`;
+    }
+
+    document.querySelectorAll('[data-page]').forEach(b => {
+      b.onclick = () => navigate(b.dataset.page);
+    });
+
+  } else if (currentUser.role === 'driver') {
+    sideNav.innerHTML = `
+      <div style="padding:10px 12px;margin-bottom:8px;background:var(--sidebar-card);border:1px solid var(--sidebar-border);border-radius:12px;font-size:11.5px;">
+        <span style="color:#a7f3d0;font-weight:700;display:block;margin-bottom:2px;"><i class="fa-solid fa-id-card"></i> Driver Staff:</span>
+        <strong style="color:#fff;font-size:13px">${esc(currentUser.name)}</strong>
+      </div>
+      <button class="active" data-page="driver-home"><i class="fa-solid fa-gauge-high"></i>My Trips & Stats</button>
+      <button onclick="openEntry()"><i class="fa-solid fa-circle-plus" style="color:#60a5fa"></i>Add Today's Record</button>
+      <button data-page="driver-buses"><i class="fa-solid fa-bus"></i>Fleet Buses & Cities</button>
+      <button onclick="logout()" style="color:#f87171;margin-top:14px"><i class="fa-solid fa-right-from-bracket"></i>Sign out</button>
+    `;
+
+    if (mobileNav) {
+      mobileNav.style.display = 'flex';
+      mobileNav.innerHTML = `
+        <button class="active" data-page="driver-home"><i class="fa-solid fa-gauge-high"></i>My Trips</button>
+        <button class="add" onclick="openEntry()"><i class="fa-solid fa-plus"></i>Add</button>
+        <button data-page="driver-buses"><i class="fa-solid fa-bus"></i>Buses</button>
+        <button onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i>Logout</button>
+      `;
+    }
+
+    if (userBadge) {
+      userBadge.innerHTML = `<span class="user-badge driver"><i class="fa-solid fa-id-card"></i> ${esc(currentUser.name)}</span>`;
+    }
+
+    document.querySelectorAll('[data-page]').forEach(b => {
+      b.onclick = () => navigate(b.dataset.page);
+    });
+  }
+}
+
+/* ========================================================
+   ROUTING & PAGE NAVIGATION
+   ======================================================== */
 function navigate(page){
+  if (!currentUser) {
+    applyAuthUI();
+    return;
+  }
+
+  // Driver route restriction
+  if (currentUser.role === 'driver' && !['driver-home', 'driver-buses'].includes(page)) {
+    page = 'driver-home';
+  }
+
+  // Admin route redirect
+  if (currentUser.role === 'admin' && ['driver-home', 'driver-buses'].includes(page)) {
+    page = 'dashboard';
+  }
+
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
+  let targetPageEl = document.getElementById('page-' + page);
+  if (targetPageEl) targetPageEl.classList.add('active');
+
   document.querySelectorAll('[data-page]').forEach(b => b.classList.toggle('active', b.dataset.page === page));
+
   let names = {
     dashboard: 'Dashboard',
-    buses: 'Buses',
+    buses: 'Fleet buses',
     entries: 'Daily records',
     reports: 'Reports & analytics',
-    drivers: 'Driver staff',
-    settings: 'Settings'
+    drivers: 'Driver staff directory',
+    settings: 'Settings & backup',
+    'driver-home': 'Driver portal — My trips',
+    'driver-buses': 'Fleet buses & locations'
   };
-  document.getElementById('pageTitle').textContent = names[page];
-  document.getElementById('crumbName').textContent = names[page];
+
+  let pageTitle = names[page] || 'Devusons Fleet';
+  document.getElementById('pageTitle').textContent = pageTitle;
+  document.getElementById('crumbName').textContent = pageTitle;
+
   if (page === 'dashboard') renderDashboard();
   if (page === 'buses') renderBusesPage();
   if (page === 'entries') renderEntries();
   if (page === 'reports') renderReports();
   if (page === 'drivers') renderDrivers();
   if (page === 'settings') loadSettings();
+  if (page === 'driver-home') renderDriverHome();
+  if (page === 'driver-buses') renderDriverBuses();
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-document.querySelectorAll('[data-page]').forEach(b => b.addEventListener('click', () => navigate(b.dataset.page)));
 document.getElementById('todayPill').innerHTML = `<i class="fa-regular fa-calendar-days"></i> ${fmtDate(iso(today))}`;
 
+/* ========================================================
+   CARDS & VIEWS
+   ======================================================== */
 function busCard(b, entries){
   let t = statsFor(entries);
-  let busLabel = b.reg.toLowerCase().includes('bus') ? b.reg : 'Bus ' + b.reg;
+  let busLabel = busNum(b);
   let last = getLastDriverForBus(b.id);
 
   return `<article class="bus-card">
@@ -1221,7 +1769,7 @@ function busCard(b, entries){
     </div>
     <div class="bus-bottom">
       <span class="city-pill"><i class="fa-solid fa-location-dot"></i> ${esc(b.city || 'Location')}</span>
-      <button class="text-btn" onclick="openBusModal('${b.id}')"><i class="fa-solid fa-pen-to-square"></i>Manage</button>
+      ${currentUser && currentUser.role === 'admin' ? `<button class="text-btn" onclick="openBusModal('${b.id}')"><i class="fa-solid fa-pen-to-square"></i>Manage</button>` : `<button class="text-btn" onclick="openEntry(null, '${b.id}')"><i class="fa-solid fa-plus"></i>Log trip</button>`}
     </div>
   </article>`;
 }
@@ -1240,10 +1788,9 @@ function renderDashboard(){
   let recent = [...state.entries].sort((a,b) => (b.date + b.created).localeCompare(a.date + a.created)).slice(0, 7);
   document.getElementById('recentRows').innerHTML = recent.length ? recent.map(e => {
     let b = bus(e.busId);
-    let busLabel = b.reg.toLowerCase().includes('bus') ? b.reg : 'Bus ' + b.reg;
     return `<tr>
-      <td>${fmtDate(e.date)}</td>
-      <td><strong>${esc(busLabel)}</strong></td>
+      <td><strong>${fmtDate(e.date)}</strong></td>
+      <td><strong>${esc(busNum(b))}</strong></td>
       <td><span class="city-pill"><i class="fa-solid fa-location-dot"></i> ${esc(b.city || '—')}</span></td>
       <td><i class="fa-solid fa-user" style="font-size:11px;color:var(--primary);margin-right:5px"></i>${esc(e.driver)}</td>
       <td><strong>${num(e.km)} km</strong></td>
@@ -1260,7 +1807,7 @@ function renderBusesPage(){
 }
 
 function fillBusFilters(){
-  let opts = state.buses.map(b => `<option value="${b.id}">Bus ${esc(b.reg)} — 📍 ${esc(b.city)}</option>`).join('');
+  let opts = state.buses.map(b => `<option value="${b.id}">${esc(busNum(b))} — 📍 ${esc(b.city)}</option>`).join('');
   let el = document.getElementById('entryBusFilter');
   if (el) {
     let old = el.value;
@@ -1284,10 +1831,9 @@ function renderEntries(){
 
   document.getElementById('entryRows').innerHTML = arr.length ? arr.map(e => {
     let b = bus(e.busId);
-    let busLabel = b.reg.toLowerCase().includes('bus') ? b.reg : 'Bus ' + b.reg;
     return `<tr>
-      <td>${fmtDate(e.date)}</td>
-      <td><strong>${esc(busLabel)}</strong></td>
+      <td><strong>${fmtDate(e.date)}</strong></td>
+      <td><strong>${esc(busNum(b))}</strong></td>
       <td><span class="city-pill"><i class="fa-solid fa-location-dot"></i> ${esc(b.city || '—')}</span></td>
       <td><i class="fa-solid fa-user" style="font-size:11px;color:var(--primary);margin-right:5px"></i>${esc(e.driver)}</td>
       <td><strong>${num(e.km)} km</strong></td>
@@ -1295,7 +1841,7 @@ function renderEntries(){
       <td>${mileage(e) ? num(mileage(e)) + ' km/L' : '—'}</td>
       <td>
         <button class="text-btn" onclick="openEntry('${e.id}')"><i class="fa-solid fa-pen"></i> Edit</button>
-        <button class="text-btn" style="color:var(--red)" onclick="deleteEntry('${e.id}')"><i class="fa-solid fa-trash-can"></i></button>
+        ${currentUser && currentUser.role === 'admin' ? `<button class="text-btn" style="color:var(--red)" onclick="deleteEntry('${e.id}')"><i class="fa-solid fa-trash-can"></i></button>` : ''}
       </td>
     </tr>`;
   }).join('') : '<tr><td colspan="8" class="empty"><i class="fa-solid fa-folder-open"></i>No trip records match the selected filters.</td></tr>';
@@ -1331,16 +1877,33 @@ function handleDriverSelectChange(sel){
   }
 }
 
-function openEntry(id){
-  let e = id ? state.entries.find(x => x.id === id) : null;
-  let bId = e?.busId || state.buses[0]?.id || '';
+function updateEntryDatePreview(inp){
+  let el = document.getElementById('entryDatePreview');
+  if (el) el.innerHTML = `<i class="fa-solid fa-calendar-check"></i> Selected: <strong>${fmtDate(inp.value)}</strong> (DD/MM/YYYY)`;
+}
 
-  // Sort drivers alphabetically; show only driver name (without mobile number)
+function openEntry(id, preselectedBusId){
+  let e = id ? state.entries.find(x => x.id === id) : null;
+  let bId = preselectedBusId || e?.busId || state.buses[0]?.id || '';
+  let isDriverUser = currentUser && currentUser.role === 'driver';
+
   let sortedDrivers = [...state.drivers].sort((a,b) => a.name.localeCompare(b.name));
 
-  let body = `<form id="entryForm" onsubmit="saveEntry(event,'${e?.id || ''}')">
-    <div class="form-grid">
-      <!-- DRIVER SELECTION (NAME ONLY - NO MOBILE NUMBER) -->
+  let driverFieldHtml = '';
+  if (isDriverUser) {
+    driverFieldHtml = `
+      <div class="field full" style="background:var(--emerald-subtle);padding:14px;border-radius:14px;border:1px solid var(--emerald-border);">
+        <label style="color:var(--emerald);font-size:13px;font-weight:800;display:flex;align-items:center;gap:6px">
+          <i class="fa-solid fa-user-check"></i> Driver Account (Logged in)
+        </label>
+        <div style="font-size:15px;font-weight:800;color:#065f46;margin-top:4px">
+          <i class="fa-solid fa-id-card" style="margin-right:6px"></i> ${esc(currentUser.name)}
+        </div>
+        <input type="hidden" name="driver" value="${esc(currentUser.name)}">
+      </div>
+    `;
+  } else {
+    driverFieldHtml = `
       <div class="field full" style="background:var(--primary-subtle);padding:16px;border-radius:14px;border:1px solid var(--primary-border);">
         <label style="color:var(--primary);font-size:13.5px;font-weight:800;">
           <i class="fa-solid fa-user-check"></i> Driver Name *
@@ -1355,19 +1918,28 @@ function openEntry(id){
           <input class="input" id="newDriverInput" placeholder="Enter driver name">
         </div>
       </div>
+    `;
+  }
 
-      <!-- BUS SELECTION -->
+  let body = `<form id="entryForm" onsubmit="saveEntry(event,'${e?.id || ''}')">
+    <div class="form-grid">
+      ${driverFieldHtml}
+
+      <!-- BUS SELECTION (NO INITIAL "BUS") -->
       <div class="field">
-        <label><i class="fa-solid fa-bus" style="color:var(--primary)"></i> Bus *</label>
+        <label><i class="fa-solid fa-bus" style="color:var(--primary)"></i> Bus number *</label>
         <select class="select" name="busId" id="entryBusSelect" required style="font-weight:700;">
-          ${state.buses.map(b => `<option value="${b.id}" ${b.id === bId ? 'selected' : ''}>Bus ${esc(b.reg)} — 📍 ${esc(b.city)}</option>`).join('')}
+          ${state.buses.map(b => `<option value="${b.id}" ${b.id === bId ? 'selected' : ''}>${esc(busNum(b))} — 📍 ${esc(b.city)}</option>`).join('')}
         </select>
       </div>
 
       <!-- DATE (DD/MM/YYYY) -->
       <div class="field">
-        <label><i class="fa-regular fa-calendar" style="color:var(--primary)"></i> Date (DD/MM/YYYY) *</label>
-        <input class="input" name="date" type="date" required value="${e?.date || iso(today)}" style="font-weight:600;">
+        <label><i class="fa-regular fa-calendar-days" style="color:var(--primary)"></i> Date (DD/MM/YYYY) *</label>
+        <input class="input" name="date" id="entryDateInput" type="date" required value="${e?.date || iso(today)}" onchange="updateEntryDatePreview(this)" style="font-weight:700;">
+        <small id="entryDatePreview" style="color:var(--primary);font-weight:700;display:block;margin-top:3px">
+          <i class="fa-solid fa-calendar-check"></i> Selected: <strong>${fmtDate(e?.date || iso(today))}</strong> (DD/MM/YYYY)
+        </small>
       </div>
 
       <!-- DISTANCE TRAVELED (KM) -->
@@ -1424,7 +1996,7 @@ function saveEntry(ev, id){
   let liters = +d.get('liters');
   let bid = d.get('busId');
   let date = d.get('date');
-  let driverSel = d.get('driver').trim();
+  let driverSel = (d.get('driver') || '').trim();
   let driverName = driverSel;
 
   if (driverSel === '__NEW__') {
@@ -1464,11 +2036,14 @@ function saveEntry(ev, id){
   // Ensure driver is in staff roster
   let existingDrv = state.drivers.find(x => x.name.toLowerCase() === driverName.toLowerCase());
   if (!existingDrv) {
+    let cleanUser = driverName.toLowerCase().replace(/[^a-z0-9]/g, '') || ('driver' + Date.now().toString().slice(-4));
     state.drivers.push({
       id: 'drv' + Date.now(),
       name: driverName,
       phone: '',
-      license: ''
+      license: '',
+      username: cleanUser,
+      password: 'devuson@driver' + (state.drivers.length + 1)
     });
   }
 
@@ -1487,29 +2062,22 @@ function deleteEntry(id){
 }
 
 function openBusModal(id){
-  let b = id ? state.buses.find(x => x.id === id) : null;
-  let x = b || { id: 'bus' + Date.now(), reg: '', city: 'Kakinada', fuel: 'Diesel' };
-
-  openModal(b ? 'Manage bus' : 'Add new bus', `<form onsubmit="saveBus(event,'${b?.id || ''}')">
+  let b = id ? bus(id) : null;
+  let bNum = b ? busNum(b) : '';
+  openModal(b ? ('Edit ' + bNum) : 'Add vehicle', `<form onsubmit="saveBus(event,'${b?.id || ''}')">
     <div class="form-grid">
-      <div class="field">
+      <div class="field full">
         <label><i class="fa-solid fa-bus" style="color:var(--primary)"></i> Bus number *</label>
-        <input class="input" name="reg" required value="${esc(x.reg)}" placeholder="e.g. 1245 or 4179 Ultra" style="font-weight:700">
-        <small>Bus identifier (e.g. 1245, 4494, 0069, 7188, 9829, 4179, 4179 Ultra)</small>
+        <input class="input" name="reg" required value="${esc(bNum)}" placeholder="e.g. 1245, 4494, 0069, 7188, 9829, 4179, 4179 Ultra" style="font-weight:800;font-size:15px">
+        <small>Bus number or identifier without initial "Bus"</small>
       </div>
       <div class="field">
         <label><i class="fa-solid fa-location-dot" style="color:var(--cyan)"></i> City / Base location *</label>
-        <input class="input" name="city" required value="${esc(x.city || '')}" placeholder="e.g. Vijayawada, Kakinada, Addaripeta, Kapileswaram" style="font-weight:700">
-        <small>Assigned city / operating base</small>
+        <input class="input" name="city" required value="${esc(b?.city || '')}" placeholder="e.g. Vijayawada, Kakinada, Addaripeta, Kapileswaram" style="font-weight:600">
       </div>
-      <div class="field full">
+      <div class="field">
         <label><i class="fa-solid fa-gas-pump" style="color:var(--amber)"></i> Fuel type</label>
-        <select class="select" name="fuel">
-          <option ${(x.fuel || 'Diesel') === 'Diesel' ? 'selected' : ''}>Diesel</option>
-          <option ${x.fuel === 'Petrol' ? 'selected' : ''}>Petrol</option>
-          <option ${x.fuel === 'CNG' ? 'selected' : ''}>CNG</option>
-          <option ${x.fuel === 'Electric' ? 'selected' : ''}>Electric</option>
-        </select>
+        <input class="input" name="fuel" value="Diesel" readonly style="background:#f1f5f9;font-weight:700">
       </div>
     </div>
     <div class="form-actions">
@@ -1523,28 +2091,21 @@ function openBusModal(id){
 function saveBus(ev, id){
   ev.preventDefault();
   let d = new FormData(ev.target);
-  let reg = d.get('reg').trim();
+  let reg = d.get('reg').trim().replace(/^bus\s*/i, '');
   let city = d.get('city').trim();
+  if (!reg) { toast('Please enter bus number.'); return; }
 
-  if (!reg) { toast('Please enter a bus number.'); return; }
-  if (!city) { toast('Please enter the city.'); return; }
-
-  if (state.buses.some(b => b.reg.toLowerCase() === reg.toLowerCase() && b.id !== id)) {
-    toast('That bus number already exists in your fleet.');
-    return;
-  }
-
-  let x = {
-    id: id || 'bus' + Date.now(),
+  let b = {
+    id: id || 'bus_' + reg.replace(/\s+/g, '_').toLowerCase(),
     reg,
-    city,
-    fuel: d.get('fuel')
+    city: city || 'Not assigned',
+    fuel: 'Diesel'
   };
 
   if (id) {
-    state.buses = state.buses.map(b => b.id === id ? x : b);
+    state.buses = state.buses.map(x => x.id === id ? b : x);
   } else {
-    state.buses.push(x);
+    state.buses.push(b);
   }
 
   save();
@@ -1555,8 +2116,7 @@ function saveBus(ev, id){
 
 function deleteBus(id){
   if (state.entries.some(e => e.busId === id)) {
-    toast('This bus has existing trip records. Cannot delete bus with records.');
-    return;
+    if (!confirm('This bus has logged trip entries. Deleting it will keep the entries but remove the bus from the active fleet. Continue?')) return;
   }
   if (!confirm('Delete this bus from fleet?')) return;
   state.buses = state.buses.filter(b => b.id !== id);
@@ -1566,29 +2126,56 @@ function deleteBus(id){
   toast('Bus deleted');
 }
 
+/* ========================================================
+   DRIVER STAFF & CREDENTIALS MANAGEMENT (BY ADMIN)
+   ======================================================== */
 function openDriverModal(id){
   let d = id ? state.drivers.find(x => x.id === id) : null;
-  let x = d || { id: 'drv' + Date.now(), name: '', phone: '', license: '' };
+  let defaultUser = d?.username || ('driver' + (state.drivers.length + 1));
+  let defaultPass = d?.password || ('devuson@driver' + (state.drivers.length + 1));
+  let x = d || { id: 'drv' + Date.now(), name: '', phone: '', license: '', username: defaultUser, password: defaultPass };
 
-  openModal(d ? 'Edit driver' : 'Add driver staff', `<form onsubmit="saveDriver(event,'${d?.id || ''}')">
+  openModal(d ? 'Edit driver credentials' : 'Add driver staff', `<form onsubmit="saveDriver(event,'${d?.id || ''}')">
     <div class="form-grid">
       <div class="field full">
-        <label><i class="fa-solid fa-user" style="color:var(--primary)"></i> Full name *</label>
-        <input class="input" name="name" required value="${esc(x.name)}" placeholder="Driver's full name" style="font-weight:700">
+        <label><i class="fa-solid fa-user" style="color:var(--primary)"></i> Driver full name *</label>
+        <input class="input" name="name" required value="${esc(x.name)}" placeholder="e.g. K. Appa Rao" style="font-weight:700">
       </div>
       <div class="field">
-        <label><i class="fa-solid fa-phone" style="color:var(--emerald)"></i> Mobile number</label>
-        <input class="input" name="phone" type="tel" value="${esc(x.phone)}" placeholder="e.g. 98480 12345">
+        <label><i class="fa-solid fa-phone" style="color:var(--emerald)"></i> Mobile number (internal record)</label>
+        <input class="input" name="phone" type="tel" value="${esc(x.phone || '')}" placeholder="e.g. 98480 12345">
       </div>
       <div class="field">
         <label><i class="fa-solid fa-id-card" style="color:var(--indigo)"></i> Driving license number</label>
-        <input class="input" name="license" value="${esc(x.license)}" placeholder="e.g. AP05 2020001">
+        <input class="input" name="license" value="${esc(x.license || '')}" placeholder="e.g. AP05 2020001">
+      </div>
+
+      <!-- DRIVER LOGIN CREDENTIALS SECTION -->
+      <div class="field full" style="margin-top:8px;padding:16px;background:#f8fafc;border-radius:14px;border:1px solid var(--card-border)">
+        <div style="font-weight:800;font-size:14px;color:var(--text-main);margin-bottom:4px;display:flex;align-items:center;gap:7px">
+          <i class="fa-solid fa-key" style="color:var(--primary)"></i> Driver Portal Login Credentials
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin:0 0 12px">
+          Assign unique login credentials so this driver can sign into the Driver Portal to enter distance and fuel logs.
+        </p>
+        <div class="form-grid" style="margin:0">
+          <div class="field">
+            <label><i class="fa-solid fa-at" style="color:var(--primary)"></i> Login username / ID *</label>
+            <input class="input" name="username" required value="${esc(x.username || '')}" placeholder="e.g. apparao" style="font-weight:700">
+            <small>Driver uses this to sign in</small>
+          </div>
+          <div class="field">
+            <label><i class="fa-solid fa-lock" style="color:var(--amber)"></i> Login password *</label>
+            <input class="input" name="password" required value="${esc(x.password || '')}" placeholder="e.g. devuson@driver1" style="font-weight:700">
+            <small>Secret password given to driver</small>
+          </div>
+        </div>
       </div>
     </div>
     <div class="form-actions">
       <button type="button" class="btn btn-light" onclick="closeModal()">Cancel</button>
       ${d ? `<button type="button" class="btn btn-danger" onclick="deleteDriver('${d.id}')"><i class="fa-solid fa-trash-can"></i>Delete</button>` : ''}
-      <button class="btn btn-primary" type="submit"><i class="fa-solid fa-check"></i>Save driver</button>
+      <button class="btn btn-primary" type="submit"><i class="fa-solid fa-check"></i>Save driver credentials</button>
     </div>
   </form>`);
 }
@@ -1597,13 +2184,27 @@ function saveDriver(ev, id){
   ev.preventDefault();
   let d = new FormData(ev.target);
   let name = d.get('name').trim();
+  let username = d.get('username').trim().toLowerCase();
+  let password = d.get('password').trim();
+
   if (!name) { toast('Please enter driver name.'); return; }
+  if (!username) { toast('Please enter login username.'); return; }
+  if (!password) { toast('Please enter login password.'); return; }
+
+  // Check unique username
+  let conflict = state.drivers.find(x => x.id !== id && (x.username || '').toLowerCase() === username);
+  if (conflict) {
+    toast('Username "' + username + '" is already used by another driver. Please choose another.');
+    return;
+  }
 
   let x = {
     id: id || 'drv' + Date.now(),
     name,
     phone: d.get('phone').trim(),
-    license: d.get('license').trim()
+    license: d.get('license').trim(),
+    username,
+    password
   };
 
   if (id) {
@@ -1615,7 +2216,7 @@ function saveDriver(ev, id){
   save();
   closeModal();
   renderAll();
-  toast('Driver profile saved');
+  toast('Driver profile and login credentials saved');
 }
 
 function deleteDriver(id){
@@ -1630,23 +2231,102 @@ function deleteDriver(id){
 
 function renderDrivers(){
   let q = (document.getElementById('driverSearch')?.value || '').toLowerCase();
-  let arr = state.drivers.filter(d => (d.name + ' ' + (d.phone || '') + ' ' + (d.license || '')).toLowerCase().includes(q))
+  let arr = state.drivers.filter(d => (d.name + ' ' + (d.phone || '') + ' ' + (d.license || '') + ' ' + (d.username || '')).toLowerCase().includes(q))
                          .sort((a,b) => a.name.localeCompare(b.name));
 
   document.getElementById('driverRows').innerHTML = arr.length ? arr.map(d => {
     let stats = statsForDriver(d.name);
     return `<tr>
       <td><strong style="font-size:13.5px"><i class="fa-solid fa-user" style="color:var(--primary);margin-right:7px"></i>${esc(d.name)}</strong></td>
+      <td>
+        <span class="user-badge driver" style="padding:3px 9px;border-radius:8px;font-size:11.5px;font-weight:700">
+          <i class="fa-solid fa-key"></i> ${esc(d.username || 'Not set')}
+        </span>
+      </td>
       <td>${d.phone ? '<i class="fa-solid fa-phone" style="font-size:11px;color:var(--text-muted);margin-right:5px"></i>' + esc(d.phone) : '—'}</td>
       <td>${esc(d.license || '—')}</td>
       <td><strong>${stats.trips}</strong> <span class="text-muted">trips</span></td>
       <td><strong>${num(stats.km)} km</strong></td>
       <td>
-        <button class="text-btn" onclick="openDriverModal('${d.id}')"><i class="fa-solid fa-pen"></i> Edit</button>
+        <button class="text-btn" onclick="openDriverModal('${d.id}')" title="Edit driver and login credentials"><i class="fa-solid fa-user-pen"></i> Edit / Login</button>
         <button class="text-btn" style="color:var(--red)" onclick="deleteDriver('${d.id}')"><i class="fa-solid fa-trash-can"></i></button>
       </td>
     </tr>`;
-  }).join('') : '<tr><td colspan="6" class="empty"><i class="fa-solid fa-users"></i>No drivers found.</td></tr>';
+  }).join('') : '<tr><td colspan="7" class="empty"><i class="fa-solid fa-users"></i>No drivers found.</td></tr>';
+}
+
+/* ========================================================
+   DRIVER PORTAL VIEWS (MY TRIPS & FLEET BUSES)
+   ======================================================== */
+function renderDriverHome(){
+  if (!currentUser || currentUser.role !== 'driver') return;
+  let titleEl = document.getElementById('driverWelcomeTitle');
+  if (titleEl) titleEl.textContent = `Welcome, ${currentUser.name} 👋`;
+
+  let myEntries = state.entries.filter(e => (e.driver || '').toLowerCase() === currentUser.name.toLowerCase())
+                               .sort((a,b) => (b.date + b.created).localeCompare(a.date + a.created));
+
+  let t = entryTotals(myEntries);
+  let mpg = t.liters > 0 ? (t.km / t.liters).toFixed(2) : 0;
+
+  let driverStatsEl = document.getElementById('driverStats');
+  if (driverStatsEl) {
+    driverStatsEl.innerHTML = [
+      ['Distance driven', num(t.km) + ' km', '<i class="fa-solid fa-route"></i>', 'Total kilometers recorded'],
+      ['Fuel logged', num(t.liters) + ' L', '<i class="fa-solid fa-gas-pump"></i>', 'Total liters pumped'],
+      ['Average mileage', (mpg ? num(mpg) + ' km/L' : '—'), '<i class="fa-solid fa-gauge-high"></i>', 'Your overall fuel efficiency'],
+      ['Trips completed', myEntries.length + ' trips', '<i class="fa-solid fa-clipboard-check"></i>', 'Total trips recorded']
+    ].map(x => `<div class="stat"><div class="stat-head"><span>${x[0]}</span><span class="stat-icon">${x[2]}</span></div><div class="stat-value">${x[1]}</div><div class="stat-foot">${x[3]}</div></div>`).join('');
+  }
+
+  let tableEl = document.getElementById('driverTripRows');
+  if (tableEl) {
+    tableEl.innerHTML = myEntries.length ? myEntries.map(e => {
+      let b = bus(e.busId);
+      return `<tr>
+        <td><strong>${fmtDate(e.date)}</strong></td>
+        <td><strong>${esc(busNum(b))}</strong></td>
+        <td><span class="city-pill"><i class="fa-solid fa-location-dot"></i> ${esc(b.city || '—')}</span></td>
+        <td><strong>${num(e.km)} km</strong></td>
+        <td><strong>${num(e.liters)} L</strong></td>
+        <td>${mileage(e) ? num(mileage(e)) + ' km/L' : '—'}</td>
+        <td>
+          <button class="text-btn" onclick="openEntry('${e.id}')"><i class="fa-solid fa-pen"></i> Edit</button>
+        </td>
+      </tr>`;
+    }).join('') : '<tr><td colspan="7" class="empty"><i class="fa-solid fa-clipboard"></i>No trips recorded under your name yet. Click "Add today\'s record" above.</td></tr>';
+  }
+}
+
+function renderDriverBuses(){
+  let gridEl = document.getElementById('driverBusesGrid');
+  if (!gridEl) return;
+  gridEl.innerHTML = state.buses.map(b => {
+    let last = getLastDriverForBus(b.id);
+    return `<article class="bus-card">
+      <div class="bus-top">
+        <div class="bus-id">
+          <div class="bus-symbol"><i class="fa-solid fa-bus"></i></div>
+          <div>
+            <h4>${esc(busNum(b))}</h4>
+            <p class="bus-city"><i class="fa-solid fa-location-dot"></i> ${esc(b.city || 'Location')}</p>
+          </div>
+        </div>
+      </div>
+      <div class="bus-driver">
+        <i class="fa-solid fa-location-dot"></i>
+        <span>Operating City: <strong>${esc(b.city || '—')}</strong></span>
+      </div>
+      <div class="bus-driver" style="margin-top:6px">
+        <i class="fa-solid fa-user-clock"></i>
+        <span>${last ? `Last driven by: <strong>${esc(last.name)}</strong> <small class="text-muted">(${fmtDate(last.date)})</small>` : 'Rotating driver pool'}</span>
+      </div>
+      <div class="bus-bottom">
+        <span class="city-pill"><i class="fa-solid fa-gas-pump"></i> Diesel</span>
+        <button class="btn btn-primary" style="padding:7px 12px;font-size:12.5px" onclick="openEntry(null, '${b.id}')"><i class="fa-solid fa-plus"></i> Log trip for ${esc(busNum(b))}</button>
+      </div>
+    </article>`;
+  }).join('');
 }
 
 /* ========================================================
@@ -1656,7 +2336,6 @@ let analyticsMode = 'weekly'; // 'weekly' or 'monthly'
 let currentWeekAnchor = new Date();
 let currentMonthAnchor = iso(today).slice(0, 7);
 
-// Calculate exact Monday-Sunday range for any week
 function getWeekRange(dateObj){
   let d = new Date(dateObj);
   let day = d.getDay(); // 0 is Sunday, 1 is Mon...
@@ -1675,15 +2354,6 @@ function getWeekRange(dateObj){
   };
 }
 
-function getPeriodEntries(){
-  if (analyticsMode === 'weekly') {
-    let range = getWeekRange(currentWeekAnchor);
-    return state.entries.filter(e => e.date >= range.startStr && e.date <= range.endStr);
-  } else {
-    return state.entries.filter(e => e.date.startsWith(currentMonthAnchor));
-  }
-}
-
 function setAnalyticsMode(mode){
   analyticsMode = mode;
   document.querySelectorAll('.period-btn').forEach(b => {
@@ -1697,8 +2367,9 @@ function prevPeriod(){
     currentWeekAnchor.setDate(currentWeekAnchor.getDate() - 7);
   } else {
     let [y, m] = currentMonthAnchor.split('-').map(Number);
-    let d = new Date(y, m - 2, 1);
-    currentMonthAnchor = iso(d).slice(0, 7);
+    m -= 1;
+    if (m < 1) { m = 12; y -= 1; }
+    currentMonthAnchor = `${y}-${String(m).padStart(2,'0')}`;
   }
   renderReports();
 }
@@ -1708,8 +2379,9 @@ function nextPeriod(){
     currentWeekAnchor.setDate(currentWeekAnchor.getDate() + 7);
   } else {
     let [y, m] = currentMonthAnchor.split('-').map(Number);
-    let d = new Date(y, m, 1);
-    currentMonthAnchor = iso(d).slice(0, 7);
+    m += 1;
+    if (m > 12) { m = 1; y += 1; }
+    currentMonthAnchor = `${y}-${String(m).padStart(2,'0')}`;
   }
   renderReports();
 }
@@ -1717,31 +2389,42 @@ function nextPeriod(){
 function jumpToDate(val){
   if (!val) return;
   if (analyticsMode === 'weekly') {
-    currentWeekAnchor = new Date(val + 'T12:00:00');
+    currentWeekAnchor = new Date(val);
   } else {
     currentMonthAnchor = val.slice(0, 7);
   }
   renderReports();
 }
 
+function getPeriodEntries(){
+  if (analyticsMode === 'weekly') {
+    let range = getWeekRange(currentWeekAnchor);
+    return state.entries.filter(e => e.date >= range.startStr && e.date <= range.endStr);
+  } else {
+    return state.entries.filter(e => e.date.startsWith(currentMonthAnchor));
+  }
+}
+
 function renderReports(){
-  let es = getPeriodEntries(), t = statsFor(es);
+  let es = getPeriodEntries();
+  let t = statsFor(es);
+
   let labelEl = document.getElementById('analyticsPeriodLabel');
   let jumpEl = document.getElementById('analyticsDateJump');
 
   if (analyticsMode === 'weekly') {
     let range = getWeekRange(currentWeekAnchor);
     let label = `${fmtDate(range.startStr)} – ${fmtDate(range.endStr)}`;
-    if (labelEl) labelEl.innerHTML = `<i class="fa-solid fa-calendar-week" style="color:var(--primary);margin-right:6px"></i>${label}`;
+    if (labelEl) labelEl.textContent = label;
     if (jumpEl) {
       jumpEl.type = 'date';
       jumpEl.value = range.startStr;
-      jumpEl.title = 'Jump to any week';
+      jumpEl.title = 'Jump to any date';
     }
   } else {
     let [y, m] = currentMonthAnchor.split('-').map(Number);
     let monthName = new Date(y, m - 1, 1).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
-    if (labelEl) labelEl.innerHTML = `<i class="fa-solid fa-calendar-days" style="color:var(--primary);margin-right:6px"></i>${monthName}`;
+    if (labelEl) labelEl.textContent = monthName;
     if (jumpEl) {
       jumpEl.type = 'month';
       jumpEl.value = currentMonthAnchor;
@@ -1764,25 +2447,25 @@ function renderReports(){
   // 2. Bus Breakdown Data
   let per = state.buses.map(b => ({ b, es: es.filter(e => e.busId === b.id) }));
 
-  // Mileage Chart
+  // Mileage Chart (No initial "Bus")
   drawBars('mileageChart', per.map(x => ({
-    label: x.b.reg,
+    label: busNum(x.b),
     value: statsFor(x.es).mpg,
     suffix: ' km/L',
     type: 'emerald'
   })));
 
-  // Fuel Chart
+  // Fuel Chart (No initial "Bus")
   drawBars('dieselChart', per.map(x => ({
-    label: x.b.reg,
+    label: busNum(x.b),
     value: statsFor(x.es).liters,
     suffix: ' L',
     type: 'blue'
   })));
 
-  // Distance Chart
+  // Distance Chart (No initial "Bus")
   drawBars('distanceChart', per.map(x => ({
-    label: x.b.reg,
+    label: busNum(x.b),
     value: statsFor(x.es).km,
     suffix: ' km',
     type: 'purple'
@@ -1800,7 +2483,7 @@ function renderReports(){
       let dayEntries = es.filter(e => e.date === curStr);
       let dayKm = dayEntries.reduce((a, e) => a + (+e.km || 0), 0);
       trendData.push({
-        label: `${days[i]} ${cur.getDate()}`,
+        label: `${days[i]} (${fmtDate(curStr).slice(0,5)})`,
         value: dayKm,
         suffix: ' km',
         type: 'amber'
@@ -1836,13 +2519,12 @@ function renderReports(){
     drawBars('trendChart', trendData);
   }
 
-  // 3. Bus Breakdown Table
+  // 3. Bus Breakdown Table (No initial "Bus")
   let busRowsHtml = per.map(x => {
     let s = statsFor(x.es);
     let drivers = [...new Set(x.es.map(e => e.driver))].filter(Boolean).join(', ') || '—';
-    let busLabel = x.b.reg.toLowerCase().includes('bus') ? x.b.reg : 'Bus ' + x.b.reg;
     return `<tr>
-      <td><strong>${esc(busLabel)}</strong></td>
+      <td><strong>${esc(busNum(x.b))}</strong></td>
       <td><span class="city-pill"><i class="fa-solid fa-location-dot"></i> ${esc(x.b.city || '—')}</span></td>
       <td>${esc(drivers)}</td>
       <td><strong>${s.trips}</strong></td>
@@ -1906,7 +2588,7 @@ function exportCSV(){
       let b = bus(e.busId);
       return [
         fmtDate(e.date),
-        b.reg,
+        busNum(b),
         b.city || '',
         e.driver,
         e.km,
@@ -1933,26 +2615,23 @@ function backupDatabase(){
   a.setAttribute('href', dataStr);
   a.setAttribute('download', 'devusons-fleet-backup-' + iso(today) + '.json');
   a.click();
-  toast('Database backup JSON downloaded');
+  toast('Database backup downloaded');
 }
 
-function restoreDatabase(ev){
-  let file = ev.target.files?.[0];
+function restoreDatabase(e){
+  let file = e.target.files[0];
   if (!file) return;
   let reader = new FileReader();
-  reader.onload = function(e){
+  reader.onload = function(evt){
     try {
-      let parsed = JSON.parse(e.target.result);
-      if (parsed.buses && parsed.drivers) {
-        state = parsed;
-        save();
-        renderAll();
-        toast('Database restored successfully');
-      } else {
-        alert('Invalid backup file structure.');
-      }
-    } catch(err) {
-      alert('Error reading backup file: ' + err.message);
+      let parsed = JSON.parse(evt.target.result);
+      if (!parsed.buses || !parsed.entries) throw new Error('Invalid format');
+      state = parsed;
+      save();
+      renderAll();
+      toast('Database restored successfully');
+    } catch(err){
+      alert('Error restoring backup file: Invalid JSON format.');
     }
   };
   reader.readAsText(file);
@@ -1960,33 +2639,38 @@ function restoreDatabase(ev){
 
 function clearTripRecords(){
   if (!confirm('Are you sure you want to delete all trip records? Bus profiles and driver staff will be kept.')) return;
+  if (!confirm('This cannot be undone. Proceed with clearing all records?')) return;
   state.entries = [];
   save();
   renderAll();
-  toast('All records cleared');
+  toast('Trip records cleared');
 }
 
 function loadSettings(){
   document.getElementById('fleetName').value = state.settings.fleetName || 'Devusons Bus Fleet';
-  document.getElementById('sidebarFleetTitle').textContent = state.settings.fleetName || 'Devusons Fleet';
-  document.getElementById('topbarOrgName').textContent = state.settings.fleetName || 'Devusons Fleet';
 }
 
-function saveSettings(){
+function saveFleetName(){
   state.settings.fleetName = document.getElementById('fleetName').value.trim() || 'Devusons Bus Fleet';
   save();
-  loadSettings();
-  toast('Settings saved');
+  document.getElementById('topbarOrgName').textContent = state.settings.fleetName;
+  document.getElementById('sidebarFleetTitle').textContent = state.settings.fleetName;
   document.title = (state.settings.fleetName || 'Devusons') + ' — Bus Fleet Manager';
+  toast('Fleet name updated');
+}
+
+function toast(msg){
+  let t = document.getElementById('toast');
+  if (!t) return;
+  t.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10b981"></i> ' + esc(msg);
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
 }
 
 function renderAll(){
-  renderDashboard();
-  renderBusesPage();
-  renderEntries();
-  renderReports();
-  renderDrivers();
-  loadSettings();
+  initAuth();
+  document.getElementById('topbarOrgName').textContent = state.settings.fleetName || 'Devusons Fleet';
+  document.getElementById('sidebarFleetTitle').textContent = state.settings.fleetName || 'Devusons Fleet';
   document.title = (state.settings.fleetName || 'Devusons') + ' — Bus Fleet Manager';
 }
 
