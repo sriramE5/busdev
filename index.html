@@ -713,6 +713,86 @@ td strong{color:#0f172a;font-weight:700}
   z-index:50;
 }
 .modal-backdrop.open{display:flex}
+
+/* Mobile Sheet & Menu Trigger */
+.mobile-sheet{
+  background:#fff;
+  width:min(500px, 100%);
+  border-radius:24px 24px 0 0;
+  max-height:85vh;
+  overflow-y:auto;
+  box-shadow:0 -10px 40px rgba(15,23,42,.25);
+  animation:slideUp .22s ease-out;
+}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.sheet-head{
+  padding:18px 20px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.sheet-body{padding:18px 20px 24px}
+.sheet-list{display:grid;gap:10px}
+.sheet-card{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:14px 16px;
+  border-radius:14px;
+  border:1.5px solid var(--card-border);
+  background:#fff;
+  text-align:left;
+  width:100%;
+  cursor:pointer;
+  transition:.15s;
+}
+.sheet-card:hover, .sheet-card:active{
+  background:#f8fafc;
+  border-color:var(--primary-border);
+  transform:translateY(-1px);
+}
+.sheet-card-icon{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  font-size:18px;
+  flex-shrink:0;
+}
+.sheet-card-text{flex:1;min-width:0}
+.sheet-card-text strong{display:block;font-size:14px;color:var(--text-main);margin-bottom:2px}
+.sheet-card-text small{display:block;font-size:11.5px;color:var(--text-muted)}
+.sheet-card-arrow{color:#94a3b8;font-size:13px}
+.sheet-footer{
+  margin-top:16px;
+  padding-top:14px;
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.mobile-menu-trigger{
+  display:none;
+  border:0;
+  background:#f1f5f9;
+  color:#334155;
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  font-size:16px;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:.15s;
+  flex-shrink:0;
+}
+.mobile-menu-trigger:hover{background:#e2e8f0;color:#0f172a}
+@media(max-width:720px){
+  .mobile-menu-trigger{display:flex!important}
+}
+
 .modal{
   background:#fff;
   width:min(600px,100%);
@@ -962,9 +1042,14 @@ td strong{color:#0f172a;font-weight:700}
   <!-- MAIN -->
   <main class="main">
     <header class="topbar">
-      <div>
-        <div class="crumb"><span id="topbarOrgName">Devusons Fleet</span> / <span id="crumbName">Dashboard</span></div>
-        <h1 id="pageTitle">Dashboard</h1>
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="mobile-menu-trigger" onclick="openMobileMenu()" title="Open Navigation Menu" aria-label="Open menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div>
+          <div class="crumb"><span id="topbarOrgName">Devusons Fleet</span> / <span id="crumbName">Dashboard</span></div>
+          <h1 id="pageTitle">Dashboard</h1>
+        </div>
       </div>
       <div class="top-right">
         <div class="today-pill" id="todayPill"><i class="fa-regular fa-calendar-days"></i></div>
@@ -1053,7 +1138,7 @@ td strong{color:#0f172a;font-weight:700}
               <thead>
                 <tr>
                   <th>Date (DD/MM/YYYY)</th>
-                  <th>Bus</th>
+                  <th>Vehicle No.</th>
                   <th>City</th>
                   <th>Driver</th>
                   <th>Distance</th>
@@ -1094,13 +1179,19 @@ td strong{color:#0f172a;font-weight:700}
           <button class="btn btn-primary" onclick="openEntry()"><i class="fa-solid fa-plus"></i>Add record</button>
         </div>
         <div class="panel">
-          <div class="toolbar">
-            <input type="date" id="entryFrom" class="input" aria-label="From date" onchange="renderEntries()">
-            <input type="date" id="entryTo" class="input" aria-label="To date" onchange="renderEntries()">
+          <div class="toolbar" style="gap:10px">
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="font-size:12px;font-weight:700;color:var(--text-muted);white-space:nowrap">From:</span>
+              <input type="date" id="entryFrom" class="input" title="Filter from date" onchange="renderEntries()">
+            </div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="font-size:12px;font-weight:700;color:var(--text-muted);white-space:nowrap">To:</span>
+              <input type="date" id="entryTo" class="input" title="Filter to date" onchange="renderEntries()">
+            </div>
             <select id="entryBusFilter" class="select" onchange="renderEntries()">
-              <option value="">All buses</option>
+              <option value="">All vehicles</option>
             </select>
-            <input id="entrySearch" class="input" placeholder="Search driver, bus, or city…" oninput="renderEntries()">
+            <input id="entrySearch" class="input" placeholder="Search driver, bus number, or city…" oninput="renderEntries()">
             <button class="btn btn-light" onclick="clearEntryFilters()"><i class="fa-solid fa-rotate-left"></i>Reset</button>
           </div>
           <div class="table-wrap">
@@ -1323,6 +1414,82 @@ td strong{color:#0f172a;font-weight:700}
 </div>
 
 <div class="toast" id="toast"></div>
+<!-- MOBILE NAVIGATION SHEET (DRIVER STAFF & SETTINGS ACCESS) -->
+<div class="modal-backdrop" id="mobileMenuModal" onclick="if(event.target===this)closeMobileMenu()">
+  <div class="mobile-sheet">
+    <div class="sheet-head">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="brand-mark" style="width:36px;height:36px;font-size:16px"><i class="fa-solid fa-bus-simple"></i></div>
+        <div>
+          <strong style="font-size:15px;display:block">Devusons Fleet Menu</strong>
+          <small style="color:var(--text-muted);font-size:11.5px">Full Management Navigation</small>
+        </div>
+      </div>
+      <button class="close" onclick="closeMobileMenu()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="sheet-body">
+      <div class="sheet-list">
+        <!-- DRIVER STAFF -->
+        <button class="sheet-card" onclick="navigate('drivers');closeMobileMenu()">
+          <div class="sheet-card-icon" style="background:var(--primary-subtle);color:var(--primary)">
+            <i class="fa-solid fa-users"></i>
+          </div>
+          <div class="sheet-card-text">
+            <strong>Driver Staff Directory</strong>
+            <small>Manage 20+ driver roster & login credentials</small>
+          </div>
+          <i class="fa-solid fa-chevron-right sheet-card-arrow"></i>
+        </button>
+
+        <!-- SETTINGS -->
+        <button class="sheet-card" onclick="navigate('settings');closeMobileMenu()">
+          <div class="sheet-card-icon" style="background:var(--amber-subtle);color:var(--amber)">
+            <i class="fa-solid fa-sliders"></i>
+          </div>
+          <div class="sheet-card-text">
+            <strong>Settings & Database Backup</strong>
+            <small>Backup, restore, and fleet system options</small>
+          </div>
+          <i class="fa-solid fa-chevron-right sheet-card-arrow"></i>
+        </button>
+
+        <!-- FLEET BUSES -->
+        <button class="sheet-card" onclick="navigate('buses');closeMobileMenu()">
+          <div class="sheet-card-icon" style="background:var(--cyan-subtle);color:var(--cyan)">
+            <i class="fa-solid fa-bus"></i>
+          </div>
+          <div class="sheet-card-text">
+            <strong>Fleet Buses</strong>
+            <small>7 vehicles across Vijayawada, Kakinada, etc.</small>
+          </div>
+          <i class="fa-solid fa-chevron-right sheet-card-arrow"></i>
+        </button>
+
+        <!-- REPORTS & ANALYTICS -->
+        <button class="sheet-card" onclick="navigate('reports');closeMobileMenu()">
+          <div class="sheet-card-icon" style="background:var(--emerald-subtle);color:var(--emerald)">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <div class="sheet-card-text">
+            <strong>Weekly & Monthly Analytics</strong>
+            <small>Fuel efficiency, distance trends & exports</small>
+          </div>
+          <i class="fa-solid fa-chevron-right sheet-card-arrow"></i>
+        </button>
+      </div>
+
+      <div class="sheet-footer">
+        <span style="font-size:12px;color:var(--text-muted);font-weight:600">
+          <i class="fa-solid fa-user-shield" style="color:var(--primary);margin-right:4px"></i> Signed in as: <strong>Admin</strong>
+        </span>
+        <button class="btn btn-danger" style="padding:7px 12px;font-size:12px;border-radius:10px" onclick="closeMobileMenu();logout()">
+          <i class="fa-solid fa-right-from-bracket"></i> Sign out
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
 const STORE = 'fleetpilot_prod_v2';
@@ -1336,23 +1503,43 @@ const iso = d => {
   return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;
 };
 
+// Convert any date string (DD/MM/YYYY, DD-MM-YYYY, timestamp) to standard ISO YYYY-MM-DD
+function toIsoDate(s){
+  if (!s) return iso(new Date());
+  let str = String(s).trim();
+  // If already YYYY-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}$/.test(str)) return str;
+  // If DD/MM/YYYY or DD-MM-YYYY
+  if (/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/.test(str)) {
+    let m = str.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+    let d = m[1].padStart(2, '0');
+    let mo = m[2].padStart(2, '0');
+    let y = m[3];
+    return `${y}-${mo}-${d}`;
+  }
+  let d = new Date(s);
+  if (!isNaN(d.getTime())) return iso(d);
+  return str;
+}
+
 // Strict DD/MM/YYYY date formatting everywhere
 function fmtDate(s){
   if (!s) return '—';
-  if (typeof s === 'string') {
-    let trimmed = s.trim();
-    if (/^\d{2}\/\d{2}\/\d{4}$/.test(trimmed)) return trimmed;
-    if (/^\d{4}-\d{2}-\d{2}/.test(trimmed)) {
-      let [y, m, d] = trimmed.slice(0, 10).split('-');
-      return `${d}/${m}/${y}`;
-    }
-    if (/^\d{2}-\d{2}-\d{4}$/.test(trimmed)) {
-      let [d, m, y] = trimmed.split('-');
-      return `${d}/${m}/${y}`;
-    }
+  let str = String(s).trim();
+  // If already DD/MM/YYYY
+  if (/^\d{2}\/\d{2}\/\d{4}$/.test(str)) return str;
+  // If DD-MM-YYYY
+  if (/^(\d{1,2})\-(\d{1,2})\-(\d{4})$/.test(str)) {
+    let m = str.match(/^(\d{1,2})\-(\d{1,2})\-(\d{4})$/);
+    return `${m[1].padStart(2,'0')}/${m[2].padStart(2,'0')}/${m[3]}`;
+  }
+  // If YYYY-MM-DD
+  if (/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/.test(str)) {
+    let m = str.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
+    return `${m[3].padStart(2,'0')}/${m[2].padStart(2,'0')}/${m[1]}`;
   }
   let d = new Date(s);
-  if (isNaN(d.getTime())) return s;
+  if (isNaN(d.getTime())) return str;
   return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
 }
 
@@ -1438,6 +1625,13 @@ state.drivers.forEach((d, idx) => {
     d.password = 'devuson@driver' + (idx + 1);
   }
 });
+
+// Normalize all entry dates to ISO format internally for bulletproof filtering
+if (state.entries && state.entries.length) {
+  state.entries.forEach(e => {
+    if (e.date) e.date = toIsoDate(e.date);
+  });
+}
 localStorage.setItem(STORE, JSON.stringify(state));
 
 function save(){
@@ -1485,7 +1679,8 @@ function statsFor(entries){
 }
 
 function todayEntries(){
-  return state.entries.filter(e => e.date === iso(today));
+  let todayIso = iso(today);
+  return state.entries.filter(e => toIsoDate(e.date) === todayIso);
 }
 
 /* ========================================================
@@ -1603,6 +1798,16 @@ function logout(){
   toast('Signed out successfully.');
 }
 
+function openMobileMenu(){
+  let m = document.getElementById('mobileMenuModal');
+  if (m) m.classList.add('open');
+}
+
+function closeMobileMenu(){
+  let m = document.getElementById('mobileMenuModal');
+  if (m) m.classList.remove('open');
+}
+
 function applyAuthUI(){
   let loginScreen = document.getElementById('loginScreen');
   let appEl = document.querySelector('.app');
@@ -1642,7 +1847,7 @@ function applyAuthUI(){
         <button data-page="entries"><i class="fa-solid fa-clipboard-list"></i>Records</button>
         <button class="add" onclick="openEntry()"><i class="fa-solid fa-plus"></i>Add</button>
         <button data-page="reports"><i class="fa-solid fa-chart-line"></i>Analytics</button>
-        <button data-page="buses"><i class="fa-solid fa-bus"></i>Buses</button>
+        <button onclick="openMobileMenu()" id="btnMobileMenu" title="Driver staff, settings, buses"><i class="fa-solid fa-bars"></i>Menu</button>
       `;
     }
 
@@ -1666,13 +1871,13 @@ function applyAuthUI(){
       <button onclick="logout()" style="color:#f87171;margin-top:14px"><i class="fa-solid fa-right-from-bracket"></i>Sign out</button>
     `;
 
+    // Driver task bar (mobileNav): LOGOUT BUTTON REMOVED!
     if (mobileNav) {
       mobileNav.style.display = 'flex';
       mobileNav.innerHTML = `
         <button class="active" data-page="driver-home"><i class="fa-solid fa-gauge-high"></i>My Trips</button>
         <button class="add" onclick="openEntry()"><i class="fa-solid fa-plus"></i>Add</button>
-        <button data-page="driver-buses"><i class="fa-solid fa-bus"></i>Buses</button>
-        <button onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i>Logout</button>
+        <button data-page="driver-buses"><i class="fa-solid fa-bus"></i>Fleet Buses</button>
       `;
     }
 
@@ -1785,11 +1990,11 @@ function renderDashboard(){
 
   document.getElementById('dashboardBuses').innerHTML = state.buses.map(b => busCard(b, es.filter(e => e.busId === b.id))).join('') || '<div class="empty"><i class="fa-solid fa-bus"></i>No buses configured.</div>';
 
-  let recent = [...state.entries].sort((a,b) => (b.date + b.created).localeCompare(a.date + a.created)).slice(0, 7);
+  let recent = [...state.entries].sort((a,b) => (toIsoDate(b.date) + b.created).localeCompare(toIsoDate(a.date) + a.created)).slice(0, 7);
   document.getElementById('recentRows').innerHTML = recent.length ? recent.map(e => {
     let b = bus(e.busId);
     return `<tr>
-      <td><strong>${fmtDate(e.date)}</strong></td>
+      <td><strong style="color:var(--primary);font-size:13.5px">${fmtDate(e.date)}</strong></td>
       <td><strong>${esc(busNum(b))}</strong></td>
       <td><span class="city-pill"><i class="fa-solid fa-location-dot"></i> ${esc(b.city || '—')}</span></td>
       <td><i class="fa-solid fa-user" style="font-size:11px;color:var(--primary);margin-right:5px"></i>${esc(e.driver)}</td>
@@ -1803,7 +2008,7 @@ function renderDashboard(){
 function renderBusesPage(){
   let q = (document.getElementById('busSearch')?.value || '').toLowerCase();
   let arr = state.buses.filter(b => (b.reg + ' ' + (b.city || '')).toLowerCase().includes(q));
-  document.getElementById('busesPageGrid').innerHTML = arr.map(b => busCard(b, state.entries.filter(e => e.busId === b.id && e.date === iso(today)))).join('') || '<div class="empty"><i class="fa-solid fa-magnifying-glass"></i>No matching buses found.</div>';
+  document.getElementById('busesPageGrid').innerHTML = arr.map(b => busCard(b, state.entries.filter(e => e.busId === b.id && toIsoDate(e.date) === iso(today)))).join('') || '<div class="empty"><i class="fa-solid fa-magnifying-glass"></i>No matching buses found.</div>';
 }
 
 function fillBusFilters(){
@@ -1811,7 +2016,7 @@ function fillBusFilters(){
   let el = document.getElementById('entryBusFilter');
   if (el) {
     let old = el.value;
-    el.innerHTML = '<option value="">All buses</option>' + opts;
+    el.innerHTML = '<option value="">All vehicles</option>' + opts;
     if (old) el.value = old;
   }
 }
@@ -1825,14 +2030,15 @@ function renderEntries(){
 
   let arr = [...state.entries].filter(e => {
     let b = bus(e.busId);
+    let eIso = toIsoDate(e.date);
     let matchText = (e.driver + ' ' + b.reg + ' ' + (b.city || '')).toLowerCase();
-    return (!from || e.date >= from) && (!to || e.date <= to) && (!bid || e.busId === bid) && matchText.includes(q);
-  }).sort((a,b) => (b.date + b.created).localeCompare(a.date + a.created));
+    return (!from || eIso >= from) && (!to || eIso <= to) && (!bid || e.busId === bid) && matchText.includes(q);
+  }).sort((a,b) => (toIsoDate(b.date) + b.created).localeCompare(toIsoDate(a.date) + a.created));
 
   document.getElementById('entryRows').innerHTML = arr.length ? arr.map(e => {
     let b = bus(e.busId);
     return `<tr>
-      <td><strong>${fmtDate(e.date)}</strong></td>
+      <td><strong style="color:var(--primary);font-size:13.5px">${fmtDate(e.date)}</strong></td>
       <td><strong>${esc(busNum(b))}</strong></td>
       <td><span class="city-pill"><i class="fa-solid fa-location-dot"></i> ${esc(b.city || '—')}</span></td>
       <td><i class="fa-solid fa-user" style="font-size:11px;color:var(--primary);margin-right:5px"></i>${esc(e.driver)}</td>
@@ -1877,15 +2083,66 @@ function handleDriverSelectChange(sel){
   }
 }
 
-function updateEntryDatePreview(inp){
-  let el = document.getElementById('entryDatePreview');
-  if (el) el.innerHTML = `<i class="fa-solid fa-calendar-check"></i> Selected: <strong>${fmtDate(inp.value)}</strong> (DD/MM/YYYY)`;
+/* Date input helpers for strict DD/MM/YYYY */
+function onDateInputType(input){
+  let v = input.value.replace(/[^\d]/g, '');
+  if (v.length > 2 && v.length <= 4) {
+    v = v.slice(0, 2) + '/' + v.slice(2);
+  } else if (v.length > 4) {
+    v = v.slice(0, 2) + '/' + v.slice(2, 4) + '/' + v.slice(4, 8);
+  }
+  input.value = v;
+
+  if (v.length === 10) {
+    let isoStr = toIsoDate(v);
+    let hidden = document.getElementById('hiddenNativeDatePicker');
+    if (hidden && /^\d{4}-\d{2}-\d{2}$/.test(isoStr)) {
+      hidden.value = isoStr;
+    }
+  }
+}
+
+function onDateInputBlur(input){
+  let val = input.value.trim();
+  if (!val) {
+    input.value = fmtDate(iso(today));
+    return;
+  }
+  let isoVal = toIsoDate(val);
+  input.value = fmtDate(isoVal);
+  let hidden = document.getElementById('hiddenNativeDatePicker');
+  if (hidden && /^\d{4}-\d{2}-\d{2}$/.test(isoVal)) {
+    hidden.value = isoVal;
+  }
+}
+
+function openCalendarPicker(){
+  let hidden = document.getElementById('hiddenNativeDatePicker');
+  if (hidden) {
+    try {
+      hidden.showPicker();
+    } catch(err) {
+      hidden.focus();
+      hidden.click();
+    }
+  }
+}
+
+function onNativePickerChange(val){
+  if (!val) return;
+  let display = document.getElementById('entryDateDisplayInput');
+  if (display) {
+    display.value = fmtDate(val);
+  }
 }
 
 function openEntry(id, preselectedBusId){
   let e = id ? state.entries.find(x => x.id === id) : null;
   let bId = preselectedBusId || e?.busId || state.buses[0]?.id || '';
   let isDriverUser = currentUser && currentUser.role === 'driver';
+
+  let initialDateIso = toIsoDate(e?.date || iso(today));
+  let initialDateDisplay = fmtDate(initialDateIso);
 
   let sortedDrivers = [...state.drivers].sort((a,b) => a.name.localeCompare(b.name));
 
@@ -1933,12 +2190,31 @@ function openEntry(id, preselectedBusId){
         </select>
       </div>
 
-      <!-- DATE (DD/MM/YYYY) -->
+      <!-- DATE (STRICT DD/MM/YYYY FORMAT) -->
       <div class="field">
         <label><i class="fa-regular fa-calendar-days" style="color:var(--primary)"></i> Date (DD/MM/YYYY) *</label>
-        <input class="input" name="date" id="entryDateInput" type="date" required value="${e?.date || iso(today)}" onchange="updateEntryDatePreview(this)" style="font-weight:700;">
-        <small id="entryDatePreview" style="color:var(--primary);font-weight:700;display:block;margin-top:3px">
-          <i class="fa-solid fa-calendar-check"></i> Selected: <strong>${fmtDate(e?.date || iso(today))}</strong> (DD/MM/YYYY)
+        <div style="position:relative;display:flex;gap:8px;align-items:center">
+          <input class="input" 
+                 name="dateDisplay" 
+                 id="entryDateDisplayInput" 
+                 type="text" 
+                 required 
+                 value="${initialDateDisplay}" 
+                 placeholder="DD/MM/YYYY" 
+                 maxlength="10"
+                 style="font-weight:700;font-size:15px;letter-spacing:0.5px"
+                 oninput="onDateInputType(this)"
+                 onblur="onDateInputBlur(this)">
+          <button type="button" class="btn btn-light" onclick="openCalendarPicker()" title="Choose date from calendar" style="padding:10px 14px;border-radius:10px;flex-shrink:0">
+            <i class="fa-solid fa-calendar-days" style="color:var(--primary);font-size:16px"></i>
+          </button>
+          <input type="date" id="hiddenNativeDatePicker" 
+                 value="${initialDateIso}" 
+                 style="position:absolute;right:0;bottom:0;width:1px;height:1px;opacity:0;pointer-events:none" 
+                 onchange="onNativePickerChange(this.value)">
+        </div>
+        <small style="color:var(--text-muted);font-weight:600;display:block;margin-top:4px">
+          Format: <strong>DD/MM/YYYY</strong> (e.g. ${fmtDate(iso(today))})
         </small>
       </div>
 
@@ -1995,7 +2271,8 @@ function saveEntry(ev, id){
   let km = +d.get('km');
   let liters = +d.get('liters');
   let bid = d.get('busId');
-  let date = d.get('date');
+  let rawDate = d.get('dateDisplay') || d.get('date');
+  let date = toIsoDate(rawDate);
   let driverSel = (d.get('driver') || '').trim();
   let driverName = driverSel;
 
@@ -2010,6 +2287,10 @@ function saveEntry(ev, id){
 
   if (!driverName) {
     toast('Please select or enter driver name.');
+    return;
+  }
+  if (!date || date === '—' || isNaN(new Date(date).getTime())) {
+    toast('Please enter a valid date in DD/MM/YYYY format.');
     return;
   }
   if (km <= 0) {
@@ -2264,7 +2545,7 @@ function renderDriverHome(){
   if (titleEl) titleEl.textContent = `Welcome, ${currentUser.name} 👋`;
 
   let myEntries = state.entries.filter(e => (e.driver || '').toLowerCase() === currentUser.name.toLowerCase())
-                               .sort((a,b) => (b.date + b.created).localeCompare(a.date + a.created));
+                               .sort((a,b) => (toIsoDate(b.date) + b.created).localeCompare(toIsoDate(a.date) + a.created));
 
   let t = entryTotals(myEntries);
   let mpg = t.liters > 0 ? (t.km / t.liters).toFixed(2) : 0;
@@ -2284,7 +2565,7 @@ function renderDriverHome(){
     tableEl.innerHTML = myEntries.length ? myEntries.map(e => {
       let b = bus(e.busId);
       return `<tr>
-        <td><strong>${fmtDate(e.date)}</strong></td>
+        <td><strong style="color:var(--primary);font-size:13.5px">${fmtDate(e.date)}</strong></td>
         <td><strong>${esc(busNum(b))}</strong></td>
         <td><span class="city-pill"><i class="fa-solid fa-location-dot"></i> ${esc(b.city || '—')}</span></td>
         <td><strong>${num(e.km)} km</strong></td>
@@ -2399,9 +2680,12 @@ function jumpToDate(val){
 function getPeriodEntries(){
   if (analyticsMode === 'weekly') {
     let range = getWeekRange(currentWeekAnchor);
-    return state.entries.filter(e => e.date >= range.startStr && e.date <= range.endStr);
+    return state.entries.filter(e => {
+      let eIso = toIsoDate(e.date);
+      return eIso >= range.startStr && eIso <= range.endStr;
+    });
   } else {
-    return state.entries.filter(e => e.date.startsWith(currentMonthAnchor));
+    return state.entries.filter(e => toIsoDate(e.date).startsWith(currentMonthAnchor));
   }
 }
 
@@ -2480,7 +2764,7 @@ function renderReports(){
       let cur = new Date(range.start);
       cur.setDate(range.start.getDate() + i);
       let curStr = iso(cur);
-      let dayEntries = es.filter(e => e.date === curStr);
+      let dayEntries = es.filter(e => toIsoDate(e.date) === curStr);
       let dayKm = dayEntries.reduce((a, e) => a + (+e.km || 0), 0);
       trendData.push({
         label: `${days[i]} (${fmtDate(curStr).slice(0,5)})`,
@@ -2503,7 +2787,7 @@ function renderReports(){
     ];
     let trendData = weekBuckets.map(w => {
       let bEntries = es.filter(e => {
-        let dayNum = Number(e.date.split('-')[2]);
+        let dayNum = Number(toIsoDate(e.date).split('-')[2]);
         return dayNum >= w.start && dayNum <= w.end;
       });
       let bKm = bEntries.reduce((a, e) => a + (+e.km || 0), 0);
