@@ -1,4 +1,4 @@
-const CACHE_NAME = 'devusons-fleet-v2';
+const CACHE_NAME = 'devusons-fleet-v3';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

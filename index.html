@@ -3325,6 +3325,15 @@ renderAll();
    FIREBASE FIRESTORE REAL-TIME CLOUD DATABASE ENGINE
    ======================================================== */
 const FIREBASE_CONFIG_KEY = 'devusons_firebase_config';
+const DEFAULT_FIREBASE_CONFIG = {
+  apiKey: "AIzaSyB4E8cRLDD4ckuKBMRepqcHc7qWMUAF6Ls",
+  authDomain: "devusons-fleet-91e81.firebaseapp.com",
+  projectId: "devusons-fleet-91e81",
+  storageBucket: "devusons-fleet-91e81.firebasestorage.app",
+  messagingSenderId: "231253918212",
+  appId: "1:231253918212:web:f945bbf60135146af26b51"
+};
+
 let firebaseApp = null;
 let db = null;
 let cloudSyncActive = false;
@@ -3377,16 +3386,17 @@ function parseFirebaseConfig(raw) {
 
 async function initFirebaseFromStorage() {
   let raw = localStorage.getItem(FIREBASE_CONFIG_KEY);
-  if (!raw) {
-    updateCloudBadges('local', 'Local Storage');
-    renderCloudSettings();
-    return;
+  let config = null;
+  if (raw) {
+    try { config = JSON.parse(raw); } catch(e){}
+  }
+  if (!config) {
+    config = DEFAULT_FIREBASE_CONFIG;
   }
   try {
-    let config = JSON.parse(raw);
     await connectToFirestore(config, false);
   } catch(err) {
-    console.warn('Could not connect to saved Firebase config:', err);
+    console.warn('Could not connect to Firebase config:', err);
     updateCloudBadges('local', 'Local Storage');
     renderCloudSettings();
   }
@@ -3487,8 +3497,8 @@ function setupFirestoreListeners() {
   });
   cloudUnsubs.push(unsubEntries);
 
-  // 2. Live Buses Listener
-  let unsubBuses = db.collection('devusons_buses').onSnapshot(snapshot => {
+  // 2. Live Buses Listener with Auto-Seed
+  let unsubBuses = db.collection('devusons_buses').onSnapshot(async snapshot => {
     if (!snapshot.empty) {
       let docs = [];
       snapshot.forEach(doc => {
@@ -3500,12 +3510,23 @@ function setupFirestoreListeners() {
       localStorage.setItem(STORE, JSON.stringify(state));
       requestDebouncedRender();
       renderCloudSettings();
+    } else if (state.buses && state.buses.length > 0) {
+      try {
+        let batch = db.batch();
+        state.buses.forEach(b => {
+          batch.set(db.collection('devusons_buses').doc(b.id), b, { merge: true });
+        });
+        await batch.commit();
+        console.log('Auto-seeded fleet buses to Firebase cloud');
+      } catch(err) {
+        console.warn('Auto-seed buses notice:', err.message);
+      }
     }
   }, err => console.warn('Firestore buses listener warning:', err));
   cloudUnsubs.push(unsubBuses);
 
-  // 3. Live Drivers Listener
-  let unsubDrivers = db.collection('devusons_drivers').onSnapshot(snapshot => {
+  // 3. Live Drivers Listener with Auto-Seed
+  let unsubDrivers = db.collection('devusons_drivers').onSnapshot(async snapshot => {
     if (!snapshot.empty) {
       let docs = [];
       snapshot.forEach(doc => {
@@ -3517,6 +3538,17 @@ function setupFirestoreListeners() {
       localStorage.setItem(STORE, JSON.stringify(state));
       requestDebouncedRender();
       renderCloudSettings();
+    } else if (state.drivers && state.drivers.length > 0) {
+      try {
+        let batch = db.batch();
+        state.drivers.forEach(d => {
+          batch.set(db.collection('devusons_drivers').doc(d.id), d, { merge: true });
+        });
+        await batch.commit();
+        console.log('Auto-seeded drivers to Firebase cloud');
+      } catch(err) {
+        console.warn('Auto-seed drivers notice:', err.message);
+      }
     }
   }, err => console.warn('Firestore drivers listener warning:', err));
   cloudUnsubs.push(unsubDrivers);
@@ -3774,6 +3806,7 @@ function renderCloudSettings() {
   let raw = localStorage.getItem(FIREBASE_CONFIG_KEY);
   let config = null;
   try { if (raw) config = JSON.parse(raw); } catch(e){}
+  if (!config) config = DEFAULT_FIREBASE_CONFIG;
 
   let modeEl = document.getElementById('cloudDbModeText');
   let projEl = document.getElementById('cloudDbProjectText');
